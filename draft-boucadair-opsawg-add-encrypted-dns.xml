@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-boucadair-opsawg-add-encrypted-dns-05"
+<rfc category="std" docName="draft-boucadair-opsawg-add-encrypted-dns-06"
      ipr="trust200902">
   <front>
     <title abbrev="RADIUS for Encrypted DNS">RADIUS Extensions for Encrypted
@@ -37,17 +37,17 @@
     </author>
 
     <author fullname="Tirumaleswar Reddy" initials="T." surname="Reddy">
-      <organization>Akamai</organization>
+      <organization>Nokia</organization>
 
       <address>
         <postal>
-          <street>Embassy Golf Link Business Park</street>
+          <street></street>
 
-          <city>Bangalore</city>
+          <city></city>
 
-          <region>Karnataka</region>
+          <region></region>
 
-          <code>560071</code>
+          <code></code>
 
           <country>India</country>
         </postal>
@@ -60,6 +60,34 @@
 
     <workgroup>opsawg</workgroup>
 
+    <keyword>redirection</keyword>
+
+    <keyword>subscriber policies</keyword>
+
+    <keyword>differentiated service</keyword>
+
+    <keyword>DNS</keyword>
+
+    <keyword>DoH</keyword>
+
+    <keyword>DoT</keyword>
+
+    <keyword>DoQ</keyword>
+
+    <keyword>QUIC</keyword>
+
+    <keyword>Encryption</keyword>
+
+    <keyword>Service delivery</keyword>
+
+    <keyword>Service provisioning</keyword>
+
+    <keyword>service activation</keyword>
+
+    <keyword>policies</keyword>
+
+    <keyword>connectivity</keyword>
+
     <abstract>
       <t>This document specifies new Remote Authentication Dial-In User
       Service (RADIUS) attributes that carry an authentication domain name, a
@@ -71,13 +99,15 @@
 
   <middle>
     <section title="Introduction">
-      <t>In the context of broadband services, ISPs traditionally provide DNS
-      resolvers to their customers. To that aim, ISPs deploy dedicated
-      mechanisms to advertise a list of DNS Recursive DNS server(s) to their
-      customers (e.g., DHCP, IPv6 Router Advertisement). The information used
-      to populate DHCP messages and/or IPv6 Router Advertisements relies upon
+      <t>In the context of broadband services, Internet Service Providers
+      (ISPs) usually provide DNS resolvers to their customers. To that aim,
+      ISPs deploy dedicated mechanisms to advertise a list of DNS Recursive
+      DNS server(s) to their customers (e.g., DHCP <xref
+      target="RFC2132"></xref> <xref target="RFC8415"></xref>, IPv6 Router
+      Advertisement <xref target="RFC4861"></xref>). The information used to
+      populate DHCP messages and/or IPv6 Router Advertisements relies upon
       specific Remote Authentication Dial-In User Service (RADIUS) <xref
-      target="RFC2865"></xref> attributes such as the DNS-Server-IPv6-Address
+      target="RFC2865"></xref> attributes, such as the DNS-Server-IPv6-Address
       Attribute specified in <xref target="RFC6911"></xref>.</t>
 
       <t>With the advent of Encrypted DNS (e.g., DNS-over-HTTPS (DoH) <xref
@@ -87,8 +117,8 @@
       hosts with network-designated Encrypted DNS. To fill that void, <xref
       target="I-D.ietf-add-dnr"></xref> leverages existing protocols such as
       DHCP and IPv6 Router Advertisement to provide hosts with the required
-      information to connect to an Encrypted DNS server. However, there are no
-      RADIUS attributes that can be used to populate the discovery messages
+      information to connect to an encrypted DNS resolver. However, there are
+      no RADIUS attributes that can be used to populate the discovery messages
       discussed in <xref target="I-D.ietf-add-dnr"></xref>.</t>
 
       <t>This document specifies two new RADIUS attributes: IPv6-Encrypted-DNS
@@ -105,7 +135,7 @@
       a Network Access Server (NAS) to pass attributes obtained from a RADIUS
       server to a DHCP server. For illustration purposes, <xref
       target="ex"></xref> shows an example where a Customer Premises Equipment
-      (CPE) is provided with an Encrypted DNS server. This example assumes
+      (CPE) is provided with an encrypted DNS resolver. This example assumes
       that the NAS embeds both RADIUS client and DHCPv6 server
       capabilities.</t>
 
@@ -153,13 +183,13 @@
       target="RFC5176"></xref> that carries the RADIUS IPv6-Encrypted-DNS
       Attributed to the NAS. Once that message is accepted by the NAS, it
       replies with a RADIUS CoA ACK message. The NAS replaces the old
-      Encrypted DNS server information with the new one and sends a DHCPv6
+      encrypted DNS resolver information with the new one and sends a DHCPv6
       Reconfigure message to cause the DHCPv6 client to initiate a Renew/Reply
       message exchange with the DHCPv6 server.</t>
 
       <t><xref target="ex2"></xref> shows another example where a CPE is
-      provided with an Encrypted DNS server, but the CPE uses DHCPv4 to
-      retrieve its Encrypted DNS server.</t>
+      provided with an encrypted DNS resolver, but the CPE uses DHCPv4 to
+      retrieve its encrypted DNS resolver.</t>
 
       <t><figure align="center" anchor="ex2"
           title="An Example of RADIUS IPv4 Encrypted DNS Exchange">
@@ -187,8 +217,8 @@
         </figure></t>
 
       <t>Other deployment scenarios can be envisaged, such as returning
-      customized service parameters (e.g., different DoH URI) as a function of
-      the service/policies/preferences that are set by a home network
+      customized service parameters (e.g., different DoH URI templates) as a
+      function of the service/policies/preferences that are set by a network
       administrator. How an administrator indicates its
       service/policies/preferences to an AAA server is out of scope.</t>
 
@@ -206,11 +236,13 @@
       <t>This document makes use of the terms defined in <xref
       target="RFC8499"></xref>. The following additional terms are used: <list
           style="hanging">
+          <t hangText="DHCP:">refers to both DHCPv4 <xref
+          target="RFC2132"></xref> and DHCPv6 <xref
+          target="RFC8415"></xref>.</t>
+
           <t hangText="Encrypted DNS:">refers to a scheme where DNS exchanges
           are transported over an encrypted channel. Examples of encrypted DNS
-          are DNS-over-TLS (DoT) <xref target="RFC7858"></xref>,
-          DNS-over-HTTPS (DoH) <xref target="RFC8484"></xref>, or
-          DNS-over-QUIC (DoQ) <xref target="RFC9250"></xref>.</t>
+          are DoT, DoH, and DoQ.</t>
 
           <t hangText="*-Encrypted-DNS:">refers to IPv6-Encrypted-DNS and
           IPv4-Encrypted-DNS Attributes.</t>
@@ -229,8 +261,9 @@
       target="v6"></xref> and <xref format="counter" target="v4"></xref>.</t>
 
       <t>These attributes and their embedded TLVs (<xref target="tlv"></xref>)
-      are defined with globally unique names and follow the guidelines in
-      Section 2.7.1 of <xref target="RFC6929"></xref>.</t>
+      are defined with globally unique names. The definition of the attributes
+      follows the guidelines in Section 2.7.1 of <xref
+      target="RFC6929"></xref>.</t>
 
       <t><figure align="center" anchor="attr-format"
           title="Format of IPv6-Encrypted-DNS and IPv4-Encrypted-DNS Attributes">
@@ -256,7 +289,7 @@
         <t>Because multiple IPv6-Encrypted-DNS Attributes may be provisioned
         to a requesting host, multiple instances of the IPv6-Encrypted-DNS
         attribute MAY be included; each instance of the attribute carries a
-        distinct Encrypted DNS server. These TLVs SHOULD be processed
+        distinct encrypted DNS resolver. These TLVs SHOULD be processed
         following their service priority (i.e., smaller service priority
         indicates a higher preference).</t>
 
@@ -300,10 +333,12 @@
                 <t hangText="Encrypted-DNS-IPv6-Address TLV:">The
                 IPv6-Encrypted-DNS Attribute SHOULD include one or multiple
                 instances of Encrypted-DNS-IPv6-Address TLV (<xref
-                target="v6locator"></xref>). In contexts where putting
-                additional complexity on requesting hosts is acceptable,
-                returning an ADN only (that is, no Encrypted-DNS-IPv6-Address
-                TLV is returned) can be considered.</t>
+                target="v6locator"></xref>). If multiple instances are
+                included, they are ordered in the preference for use. In
+                contexts where putting additional complexity on requesting
+                hosts is acceptable, returning an ADN only (that is, no
+                Encrypted-DNS-IPv6-Address TLV is returned) can be
+                considered.</t>
 
                 <t hangText="Encrypted-DNS-SvcParams TLV:">The
                 IPv6-Encrypted-DNS Attribute SHOULD include one instance of
@@ -332,7 +367,7 @@
         <t>Because multiple IPv4-Encrypted-DNS attributes may be provisioned
         to a requesting host, multiple instances of the IPv4-Encrypted-DNS
         attribute MAY be included; each instance of the attribute carries a
-        distinct Encrypted DNS server. These TLVs SHOULD be processed
+        distinct encrypted DNS resolver. These TLVs SHOULD be processed
         following their service priority (i.e., smaller service priority
         indicates a higher preference).</t>
 
@@ -397,10 +432,12 @@
 
       <section anchor="tlv" title="RADIUS TLVs for Encrypted DNS">
         <t>The TLVs defined in the following subsections use the format
-        defined in <xref target="RFC6929"></xref>. These TLVs have the same
-        name and number when encapsulated in any of the parent attributes
-        defined in Sections <xref format="counter" target="v6"></xref> and
-        <xref format="counter" target="v4"></xref>.</t>
+        defined in <xref target="RFC6929"></xref>. </t>
+
+        <t>These TLVs have the same name and number when encapsulated in any
+        of the parent attributes defined in Sections <xref format="counter"
+        target="v6"></xref> and <xref format="counter"
+        target="v4"></xref>.</t>
 
         <t>The encoding of the "Value" field of these TLVs follows the
         recommendation of <xref target="RFC6158"></xref>.</t>
@@ -417,7 +454,7 @@
               <xref target="RFC8044"></xref>).</t>
             </list>TLV-Value<list style="empty">
               <t>This field includes a fully qualified domain name of the
-              Encrypted DNS server. This field is formatted as specified in
+              encrypted DNS resolver. This field is formatted as specified in
               Section 10 of <xref target="RFC8415"></xref>.</t>
             </list></t>
 
@@ -439,7 +476,7 @@
               (Section 3.9 of <xref target="RFC8044"></xref>).</t>
             </list>TLV-Value<list style="empty">
               <t>This field includes an IPv6 address (128 bits) of the
-              Encrypted DNS server. <vspace blankLines="1" />The
+              encrypted DNS resolver. <vspace blankLines="1" />The
               Encrypted-DNS-IPv6-Address attribute MUST NOT include multicast
               and host loopback addresses <xref target="RFC6890"></xref>.</t>
             </list>This TLV is identified as 241.TBA1.TBA4 as part of the
@@ -460,7 +497,7 @@
               (Section 3.8 of <xref target="RFC8044"></xref>).</t>
             </list>TLV-Value<list style="empty">
               <t>This field includes an IPv4 address (32 bits) of the
-              Encrypted DNS server. <vspace blankLines="1" />The
+              encrypted DNS resolver. <vspace blankLines="1" />The
               Encrypted-DNS-IPv4-Address attribute MUST NOT include multicast
               and host loopback addresses.</t>
             </list></t>
@@ -505,7 +542,9 @@
                   Template (Section 5.1 of <xref
                   target="I-D.ietf-add-svcb-dns"></xref>).</t>
                 </list><vspace blankLines="1" />The service parameters MUST
-              NOT include "ipv4hint" or "ipv6hint" SvcParams as they are
+              include at least "alpn" SvcParam (<xref section="4.1"
+              target="I-D.ietf-add-svcb-dns"></xref>). The service parameters
+              MUST NOT include "ipv4hint" or "ipv6hint" SvcParams as they are
               superseded by the included IP addresses.</t>
             </list></t>
 
@@ -532,9 +571,9 @@
           <t>TLV-Value<list style="empty">
               <t>Specifies the priority (unsigned16) of this *-Encrypted-DNS
               instance compared to other instances, right justified, and the
-              unused bits in this field MUST be set to zero. The encoding MUST
-              follow the rules specified in Section 2.4.1 of <xref
-              target="I-D.ietf-dnsop-svcb-https"></xref>.</t>
+              unused bits in this field MUST be set to zero. The value is
+              interpreted following the rules specified in <xref
+              section="2.4.1" target="I-D.ietf-dnsop-svcb-https"></xref>.</t>
             </list></t>
 
           <t>This TLV is identified as 241.TBA1.TBA7 when included in the
@@ -669,6 +708,10 @@ CoA-Request CoA-ACK CoA-NACK #   Attribute
       <?rfc include='reference.RFC.2868'?>
 
       <?rfc include='reference.RFC.6614'?>
+
+      <?rfc include='reference.RFC.4861'?>
+
+      <?rfc include='reference.RFC.2132'?>
     </references>
   </back>
 </rfc>
