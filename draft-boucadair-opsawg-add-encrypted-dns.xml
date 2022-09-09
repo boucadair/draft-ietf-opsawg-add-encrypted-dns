@@ -284,7 +284,8 @@
 
         <t>The IPv6-Encrypted-DNS Attribute includes the authentication domain
         name, a list of IPv6 addresses, and a set of service parameters of an
-        encrypted DNS resolver <xref target="I-D.ietf-add-dnr"></xref>.</t>
+        encrypted DNS resolver (Section 3.1.9 of <xref
+        target="I-D.ietf-add-dnr"></xref>).</t>
 
         <t>Because multiple IPv6-Encrypted-DNS Attributes may be provisioned
         to a requesting host, multiple instances of the IPv6-Encrypted-DNS
@@ -362,7 +363,8 @@
 
         <t>The IPv4-Encrypted-DNS Attribute includes the authentication domain
         name, a list of IPv4 addresses, and a set of service parameters of an
-        encrypted DNS resolver <xref target="I-D.ietf-add-dnr"></xref>.</t>
+        encrypted DNS resolver (Section 3.1.9 of <xref
+        target="I-D.ietf-add-dnr"></xref>).</t>
 
         <t>Because multiple IPv4-Encrypted-DNS attributes may be provisioned
         to a requesting host, multiple instances of the IPv4-Encrypted-DNS
@@ -432,7 +434,7 @@
 
       <section anchor="tlv" title="RADIUS TLVs for Encrypted DNS">
         <t>The TLVs defined in the following subsections use the format
-        defined in <xref target="RFC6929"></xref>. </t>
+        defined in <xref target="RFC6929"></xref>.</t>
 
         <t>These TLVs have the same name and number when encapsulated in any
         of the parent attributes defined in Sections <xref format="counter"
@@ -523,26 +525,11 @@
           <t>TLV-Value<list style="empty">
               <t>Specifies a set of service parameters that are encoded
               following the rules in Section 2.1 of <xref
-              target="I-D.ietf-dnsop-svcb-https"></xref>. At least the
-              following service parameters are RECOMMENDED to be supported by
-              an implementation:<list style="hanging">
-                  <t hangText="alpn:">Used to indicate the set of supported
-                  protocols (Section 7.1 of <xref
-                  target="I-D.ietf-dnsop-svcb-https"></xref>).</t>
-
-                  <t hangText="port:">Used to indicate the target port number
-                  for the encrypted DNS connection (Section 7.2 of <xref
-                  target="I-D.ietf-dnsop-svcb-https"></xref>).</t>
-
-                  <t hangText="ech:">Used to enable Encrypted ClientHello
-                  (ECH) (Section 7.3 of <xref
-                  target="I-D.ietf-dnsop-svcb-https"></xref>).</t>
-
-                  <t hangText="dohpath:">Used to supply a relative DoH URI
-                  Template (Section 5.1 of <xref
-                  target="I-D.ietf-add-svcb-dns"></xref>).</t>
-                </list><vspace blankLines="1" />The service parameters MUST
-              include at least "alpn" SvcParam (<xref section="4.1"
+              target="I-D.ietf-dnsop-svcb-https"></xref>. Section 3.1.5 of
+              <xref target="I-D.ietf-add-dnr"></xref> lists a set of service
+              parameters that are recommended to be supported by
+              implementations. <vspace blankLines="1" />The service parameters
+              MUST include at least "alpn" SvcParam (<xref section="4.1"
               target="I-D.ietf-add-svcb-dns"></xref>). The service parameters
               MUST NOT include "ipv4hint" or "ipv6hint" SvcParams as they are
               superseded by the included IP addresses.</t>
@@ -594,7 +581,7 @@
       target="RFC6614"></xref>.</t>
 
       <t>Security considerations (including traffic theft) are discussed in
-      <xref target="I-D.ietf-add-dnr"></xref>.</t>
+      Section 7 of <xref target="I-D.ietf-add-dnr"></xref>.</t>
     </section>
 
     <section title="Table of Attributes">

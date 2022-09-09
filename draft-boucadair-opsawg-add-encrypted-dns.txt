@@ -5,8 +5,8 @@
 opsawg                                                      M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: 9 March 2023                                              Nokia
-                                                        5 September 2022
+Expires: 13 March 2023                                             Nokia
+                                                        9 September 2022
 
 
                   RADIUS Extensions for Encrypted DNS
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 March 2023.
+   This Internet-Draft will expire on 13 March 2023.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair & Reddy         Expires 9 March 2023                  [Page 1]
+Boucadair & Reddy         Expires 13 March 2023                 [Page 1]
 
 Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
@@ -73,13 +73,13 @@ Table of Contents
        3.3.5.  Encrypted-DNS-SvcPriority TLV . . . . . . . . . . . .  11
    4.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
    5.  Table of Attributes . . . . . . . . . . . . . . . . . . . . .  12
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
-     6.1.  New RADIUS Attributes . . . . . . . . . . . . . . . . . .  13
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
+     6.1.  New RADIUS Attributes . . . . . . . . . . . . . . . . . .  12
      6.2.  New RADIUS TLVs . . . . . . . . . . . . . . . . . . . . .  13
    7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  13
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  15
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  14
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  16
 
 1.  Introduction
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair & Reddy         Expires 9 March 2023                  [Page 2]
+Boucadair & Reddy         Expires 13 March 2023                 [Page 2]
 
 Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
@@ -165,7 +165,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
 
 
-Boucadair & Reddy         Expires 9 March 2023                  [Page 3]
+Boucadair & Reddy         Expires 13 March 2023                 [Page 3]
 
 Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
@@ -221,7 +221,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
 
 
-Boucadair & Reddy         Expires 9 March 2023                  [Page 4]
+Boucadair & Reddy         Expires 13 March 2023                 [Page 4]
 
 Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
@@ -277,7 +277,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
 
 
-Boucadair & Reddy         Expires 9 March 2023                  [Page 5]
+Boucadair & Reddy         Expires 13 March 2023                 [Page 5]
 
 Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
@@ -293,7 +293,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
    The IPv6-Encrypted-DNS Attribute includes the authentication domain
    name, a list of IPv6 addresses, and a set of service parameters of an
-   encrypted DNS resolver [I-D.ietf-add-dnr].
+   encrypted DNS resolver (Section 3.1.9 of [I-D.ietf-add-dnr]).
 
    Because multiple IPv6-Encrypted-DNS Attributes may be provisioned to
    a requesting host, multiple instances of the IPv6-Encrypted-DNS
@@ -333,7 +333,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
 
 
-Boucadair & Reddy         Expires 9 March 2023                  [Page 6]
+Boucadair & Reddy         Expires 13 March 2023                 [Page 6]
 
 Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
@@ -374,7 +374,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
    The IPv4-Encrypted-DNS Attribute includes the authentication domain
    name, a list of IPv4 addresses, and a set of service parameters of an
-   encrypted DNS resolver [I-D.ietf-add-dnr].
+   encrypted DNS resolver (Section 3.1.9 of [I-D.ietf-add-dnr]).
 
    Because multiple IPv4-Encrypted-DNS attributes may be provisioned to
    a requesting host, multiple instances of the IPv4-Encrypted-DNS
@@ -389,7 +389,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
 
 
-Boucadair & Reddy         Expires 9 March 2023                  [Page 7]
+Boucadair & Reddy         Expires 13 March 2023                 [Page 7]
 
 Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
@@ -445,7 +445,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
 
 
-Boucadair & Reddy         Expires 9 March 2023                  [Page 8]
+Boucadair & Reddy         Expires 13 March 2023                 [Page 8]
 
 Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
@@ -501,7 +501,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
 
 
-Boucadair & Reddy         Expires 9 March 2023                  [Page 9]
+Boucadair & Reddy         Expires 13 March 2023                 [Page 9]
 
 Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
@@ -557,7 +557,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
 
 
-Boucadair & Reddy         Expires 9 March 2023                 [Page 10]
+Boucadair & Reddy         Expires 13 March 2023                [Page 10]
 
 Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
@@ -580,21 +580,10 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
    TLV-Value
 
       Specifies a set of service parameters that are encoded following
-      the rules in Section 2.1 of [I-D.ietf-dnsop-svcb-https].  At least
-      the following service parameters are RECOMMENDED to be supported
-      by an implementation:
-
-      alpn:  Used to indicate the set of supported protocols
-         (Section 7.1 of [I-D.ietf-dnsop-svcb-https]).
-
-      port:  Used to indicate the target port number for the encrypted
-         DNS connection (Section 7.2 of [I-D.ietf-dnsop-svcb-https]).
-
-      ech:  Used to enable Encrypted ClientHello (ECH) (Section 7.3 of
-         [I-D.ietf-dnsop-svcb-https]).
-
-      dohpath:  Used to supply a relative DoH URI Template (Section 5.1
-         of [I-D.ietf-add-svcb-dns]).
+      the rules in Section 2.1 of [I-D.ietf-dnsop-svcb-https].
+      Section 3.1.5 of [I-D.ietf-add-dnr] lists a set of service
+      parameters that are recommended to be supported by
+      implementations.
 
       The service parameters MUST include at least "alpn" SvcParam
       (Section 4.1 of [I-D.ietf-add-svcb-dns]).  The service parameters
@@ -611,13 +600,6 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
       TBA7 (see Section 6.2).
 
-
-
-Boucadair & Reddy         Expires 9 March 2023                 [Page 11]
-
-Internet-Draft          RADIUS for Encrypted DNS          September 2022
-
-
    TLV-Length
 
       Six octets.
@@ -628,6 +610,13 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
       of [RFC8044]).
 
    TLV-Value
+
+
+
+Boucadair & Reddy         Expires 13 March 2023                [Page 11]
+
+Internet-Draft          RADIUS for Encrypted DNS          September 2022
+
 
       Specifies the priority (unsigned16) of this *-Encrypted-DNS
       instance compared to other instances, right justified, and the
@@ -649,7 +638,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
    [RFC6614].
 
    Security considerations (including traffic theft) are discussed in
-   [I-D.ietf-add-dnr].
+   Section 7 of [I-D.ietf-add-dnr].
 
 5.  Table of Attributes
 
@@ -667,13 +656,6 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
    The following table defines the meaning of the above table entries:
 
-
-
-Boucadair & Reddy         Expires 9 March 2023                 [Page 12]
-
-Internet-Draft          RADIUS for Encrypted DNS          September 2022
-
-
    0  This attribute MUST NOT be present in packet.
    0+ Zero or more instances of this attribute MAY be present in packet.
 
@@ -684,6 +666,13 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
    IANA is requested to assign two new RADIUS attribute types from the
    IANA registry "Radius Attribute Types" located at
    http://www.iana.org/assignments/radius-types:
+
+
+
+Boucadair & Reddy         Expires 13 March 2023                [Page 12]
+
+Internet-Draft          RADIUS for Encrypted DNS          September 2022
+
 
       IPv6-Encrypted-DNS (241.TBA1)
 
@@ -720,16 +709,6 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 
 8.1.  Normative References
 
-
-
-
-
-
-Boucadair & Reddy         Expires 9 March 2023                 [Page 13]
-
-Internet-Draft          RADIUS for Encrypted DNS          September 2022
-
-
    [I-D.ietf-add-dnr]
               Boucadair, M., Reddy, T., Wing, D., Cook, N., and T.
               Jensen, "DHCP and Router Advertisement Options for the
@@ -743,6 +722,13 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
               Work in Progress, Internet-Draft, draft-ietf-add-svcb-dns-
               07, 11 August 2022, <https://www.ietf.org/archive/id/
               draft-ietf-add-svcb-dns-07.txt>.
+
+
+
+Boucadair & Reddy         Expires 13 March 2023                [Page 13]
+
+Internet-Draft          RADIUS for Encrypted DNS          September 2022
+
 
    [I-D.ietf-dnsop-svcb-https]
               Schwartz, B., Bishop, M., and E. Nygren, "Service binding
@@ -776,16 +762,6 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
               DOI 10.17487/RFC6929, April 2013,
               <https://www.rfc-editor.org/info/rfc6929>.
 
-
-
-
-
-
-Boucadair & Reddy         Expires 9 March 2023                 [Page 14]
-
-Internet-Draft          RADIUS for Encrypted DNS          September 2022
-
-
    [RFC8044]  DeKok, A., "Data Types in RADIUS", RFC 8044,
               DOI 10.17487/RFC8044, January 2017,
               <https://www.rfc-editor.org/info/rfc8044>.
@@ -801,6 +777,14 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
               <https://www.rfc-editor.org/info/rfc8415>.
 
 8.2.  Informative References
+
+
+
+
+Boucadair & Reddy         Expires 13 March 2023                [Page 14]
+
+Internet-Draft          RADIUS for Encrypted DNS          September 2022
+
 
    [RFC2132]  Alexander, S. and R. Droms, "DHCP Options and BOOTP Vendor
               Extensions", RFC 2132, DOI 10.17487/RFC2132, March 1997,
@@ -833,15 +817,6 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
               RFC 6614, DOI 10.17487/RFC6614, May 2012,
               <https://www.rfc-editor.org/info/rfc6614>.
 
-
-
-
-
-Boucadair & Reddy         Expires 9 March 2023                 [Page 15]
-
-Internet-Draft          RADIUS for Encrypted DNS          September 2022
-
-
    [RFC6911]  Dec, W., Ed., Sarikaya, B., Zorn, G., Ed., Miles, D., and
               B. Lourdelet, "RADIUS Attributes for IPv6 Access
               Networks", RFC 6911, DOI 10.17487/RFC6911, April 2013,
@@ -859,6 +834,13 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
    [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
               <https://www.rfc-editor.org/info/rfc8484>.
+
+
+
+Boucadair & Reddy         Expires 13 March 2023                [Page 15]
+
+Internet-Draft          RADIUS for Encrypted DNS          September 2022
+
 
    [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
@@ -893,4 +875,22 @@ Authors' Addresses
 
 
 
-Boucadair & Reddy         Expires 9 March 2023                 [Page 16]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair & Reddy         Expires 13 March 2023                [Page 16]
