@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-boucadair-opsawg-add-encrypted-dns-06"
+<rfc category="std" docName="draft-boucadair-opsawg-add-encrypted-dns-07"
      ipr="trust200902">
   <front>
     <title abbrev="RADIUS for Encrypted DNS">RADIUS Extensions for Encrypted
@@ -472,7 +472,7 @@
             </list></t>
 
           <t>TLV-Length<list style="empty">
-              <t>18</t>
+              <t>Eighteen octets.</t>
             </list>Data Type<list style="empty">
               <t>The Encrypted-DNS-IPv6-Address TLV is of type ip6addr
               (Section 3.9 of <xref target="RFC8044"></xref>).</t>
@@ -480,7 +480,8 @@
               <t>This field includes an IPv6 address (128 bits) of the
               encrypted DNS resolver. <vspace blankLines="1" />The
               Encrypted-DNS-IPv6-Address attribute MUST NOT include multicast
-              and host loopback addresses <xref target="RFC6890"></xref>.</t>
+              (Section 2.7 of <xref target="RFC4291"></xref>) and loopback
+              addresses <xref target="RFC6890"></xref>.</t>
             </list>This TLV is identified as 241.TBA1.TBA4 as part of the
           IPv6-Encrypted-DNS Attribute (<xref target="v6"></xref>).</t>
         </section>
@@ -491,7 +492,7 @@
             </list></t>
 
           <t>TLV-Length<list style="empty">
-              <t>6</t>
+              <t>Six octets.</t>
             </list></t>
 
           <t>Data Type<list style="empty">
@@ -501,7 +502,8 @@
               <t>This field includes an IPv4 address (32 bits) of the
               encrypted DNS resolver. <vspace blankLines="1" />The
               Encrypted-DNS-IPv4-Address attribute MUST NOT include multicast
-              and host loopback addresses.</t>
+              (Section 4 of <xref target="RFC1112"></xref>) and loopback
+              addresses <xref target="RFC6890"></xref>.</t>
             </list></t>
 
           <t>This TLV is identified as 241.TBA1.TBA5 as part of the
@@ -643,8 +645,8 @@ CoA-Request CoA-ACK CoA-NACK #   Attribute
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>Thanks to Christian Jacquenet, Neil Cook, and Alan Dekok for the
-      review and suggestions.</t>
+      <t>Thanks to Christian Jacquenet, Neil Cook, Alan Dekok, and Joe Clarke
+      for the review and suggestions.</t>
 
       <t>Thanks to Ben Schwartz for the comments.</t>
     </section>
@@ -655,6 +657,10 @@ CoA-Request CoA-ACK CoA-NACK #   Attribute
       <?rfc include="reference.RFC.2119"?>
 
       <?rfc include='reference.RFC.6890'?>
+
+      <?rfc include='reference.RFC.4291'?>
+
+      <?rfc include='reference.RFC.1112'?>
 
       <?rfc include='reference.RFC.2865'?>
 
