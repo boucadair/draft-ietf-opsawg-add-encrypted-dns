@@ -104,11 +104,12 @@
       ISPs deploy dedicated mechanisms to advertise a list of DNS Recursive
       DNS server(s) to their customers (e.g., DHCP <xref
       target="RFC2132"></xref> <xref target="RFC8415"></xref>, IPv6 Router
-      Advertisement <xref target="RFC4861"></xref>). The information used to
-      populate DHCP messages and/or IPv6 Router Advertisements relies upon
-      specific Remote Authentication Dial-In User Service (RADIUS) <xref
-      target="RFC2865"></xref> attributes, such as the DNS-Server-IPv6-Address
-      Attribute specified in <xref target="RFC6911"></xref>.</t>
+      Advertisement <xref target="RFC4861"></xref>). Typically, the
+      information used to populate DHCP messages and/or IPv6 Router
+      Advertisements relies upon specific Remote Authentication Dial-In User
+      Service (RADIUS) <xref target="RFC2865"></xref> attributes, such as the
+      DNS-Server-IPv6-Address Attribute specified in <xref
+      target="RFC6911"></xref>.</t>
 
       <t>With the advent of Encrypted DNS (e.g., DNS-over-HTTPS (DoH) <xref
       target="RFC8484"></xref>, DNS-over-TLS (DoT) <xref
@@ -172,16 +173,15 @@
       this session, and which include the Encrypted DNS information. The
       content of the IPv6-Encrypted-DNS Attribute is then used by the NAS to
       complete the DHCPv6 procedure that the CPE initiated to retrieve
-      information about the encrypted DNS service to use. The procedure
-      defined in <xref target="I-D.ietf-add-dnr"></xref> is thus followed
-      between the DHCPv6 client and the DHCPv6 server. The same procedure is
-      followed between the DHCPv6 client on endpoints serviced by the CPE and
-      the DHCPv6 server on CPE.</t>
+      information about the encrypted DNS service to use. The Discovery of
+      Network-designated Resolvers (DNR) procedure defined in <xref
+      target="I-D.ietf-add-dnr"></xref> is then followed between the DHCPv6
+      client and the DHCPv6 server. </t>
 
       <t>Upon change of the any Encrypted DNS-related information (e.g., ADN,
       IPv6 address), the RADIUS server sends a RADIUS CoA message <xref
       target="RFC5176"></xref> that carries the RADIUS IPv6-Encrypted-DNS
-      Attributed to the NAS. Once that message is accepted by the NAS, it
+      Attributes to the NAS. Once that message is accepted by the NAS, it
       replies with a RADIUS CoA ACK message. The NAS replaces the old
       encrypted DNS resolver information with the new one and sends a DHCPv6
       Reconfigure message to cause the DHCPv6 client to initiate a Renew/Reply
@@ -217,7 +217,7 @@
         </figure></t>
 
       <t>Other deployment scenarios can be envisaged, such as returning
-      customized service parameters (e.g., different DoH URI templates) as a
+      customized service parameters (e.g., different DoH URI Templates) as a
       function of the service/policies/preferences that are set by a network
       administrator. How an administrator indicates its
       service/policies/preferences to an AAA server is out of scope.</t>
@@ -506,7 +506,7 @@
               addresses <xref target="RFC6890"></xref>.</t>
             </list></t>
 
-          <t>This TLV is identified as 241.TBA1.TBA5 as part of the
+          <t>This TLV is identified as 241.TBA2.TBA5 as part of the
           IPv4-Encrypted-DNS Attribute (<xref target="v4"></xref>).</t>
         </section>
 
@@ -598,7 +598,7 @@ Request Accept  Reject             Request
 
 CoA-Request CoA-ACK CoA-NACK #   Attribute
   0+          0       0      TBA1 IPv6-Encrypted-DNS
-  0+          0       0      TBA1 IPv4-Encrypted-DNS
+  0+          0       0      TBA2 IPv4-Encrypted-DNS
 ]]></artwork>
         </figure></t>
 
@@ -613,12 +613,8 @@ CoA-Request CoA-ACK CoA-NACK #   Attribute
     <section anchor="IANA" title="IANA Considerations">
       <section anchor="IANA-Att" title="New RADIUS Attributes">
         <t>IANA is requested to assign two new RADIUS attribute types from the
-        IANA registry "Radius Attribute Types" located at
-        http://www.iana.org/assignments/radius-types:<list style="empty">
-            <t>IPv6-Encrypted-DNS (241.TBA1)</t>
-
-            <t>IPv4-Encrypted-DNS (241.TBA2)</t>
-          </list><figure>
+        IANA registry "Radius Attribute Types" <xref
+        target="IANA"></xref>:<figure>
             <artwork><![CDATA[   Type      Description          Data Type   Reference
    --------  ------------------   ---------   -------------
    241.TBA1  IPv6-Encrypted-DNS   tlv         This-Document
@@ -628,25 +624,32 @@ CoA-Request CoA-ACK CoA-NACK #   Attribute
       </section>
 
       <section anchor="IANA-TLV" title="New RADIUS TLVs">
-        <t>IANA is requested to create a new registry called "RADIUS Encrypted
-        DNS TLVs". The registry is initially populated as follows:<figure>
+        <t>IANA is requested to create a new subregistry called "RADIUS
+        Encrypted DNS TLVs" under the "Radius Attribute Types" registry <xref
+        target="RADIUS-Types"></xref>. </t>
+
+        <t>The registration procedure for this subregistry is "Standards
+        Action" as defined in (Section 4.9 of <xref
+        target="RFC8126"></xref>).</t>
+
+        <t>The subregistry is initially populated as follows:<figure>
             <artwork><![CDATA[Value    Description                  Data Type    Reference
 -----    -------------------------    ---------    -------------
   0      Reserved
-  1      Encrypted-DNS-ADN            text         Section 3.3.1
-  2      Encrypted-DNS-IPv6-Address   ipv6addr     Section 3.3.2
-  3      Encrypted-DNS-IPv4-Address   ipv4addr     Section 3.3.3
-  4      Encrypted-DNS-SvcParams      string       Section 3.3.4
-  5      Encrypted-DNS-SvcPriority    integer      Section 3.3.5
-  6-255  Unassigned
+TBA3     Encrypted-DNS-ADN            text         Section 3.3.1
+TBA4     Encrypted-DNS-IPv6-Address   ipv6addr     Section 3.3.2
+TBA5     Encrypted-DNS-IPv4-Address   ipv4addr     Section 3.3.3
+TBA6     Encrypted-DNS-SvcParams      string       Section 3.3.4
+TBA7     Encrypted-DNS-SvcPriority    integer      Section 3.3.5
+6-255    Unassigned
 ]]></artwork>
           </figure></t>
       </section>
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>Thanks to Christian Jacquenet, Neil Cook, Alan Dekok, and Joe Clarke
-      for the review and suggestions.</t>
+      <t>Thanks to Christian Jacquenet, Neil Cook, Alan Dekok, Joe Clarke, Qin
+      Wu, Dirk von-Hugo, and Tom Petch for the review and suggestions.</t>
 
       <t>Thanks to Ben Schwartz for the comments.</t>
     </section>
@@ -679,6 +682,8 @@ CoA-Request CoA-ACK CoA-NACK #   Attribute
       <?rfc include='reference.RFC.6929'?>
 
       <?rfc include='reference.RFC.8415'?>
+
+      <?rfc include='reference.RFC.8126'?>
     </references>
 
     <references title="Informative References">
@@ -705,6 +710,19 @@ CoA-Request CoA-ACK CoA-NACK #   Attribute
       <?rfc include='reference.RFC.4861'?>
 
       <?rfc include='reference.RFC.2132'?>
+
+      <reference anchor="RADIUS-Types"
+                 target="http://www.iana.org/assignments/radius-types">
+        <front>
+          <title>RADIUS Types</title>
+
+          <author>
+            <organization>IANA</organization>
+          </author>
+
+          <date />
+        </front>
+      </reference>
     </references>
   </back>
 </rfc>
