@@ -86,9 +86,9 @@ Table of Contents
 
    In the context of broadband services, Internet Service Providers
    (ISPs) usually provide DNS resolvers to their customers.  To that
-   aim, ISPs deploy dedicated mechanisms to advertise a list of DNS
-   recursive server(s) to their customers (e.g., DHCP [RFC2132]
-   [RFC8415], IPv6 Router Advertisement [RFC4861]).  Typically, the
+   aim, ISPs deploy dedicated mechanisms (e.g., DHCP [RFC2132]
+   [RFC8415], IPv6 Router Advertisement [RFC4861])) to advertise a list
+   of DNS recursive servers to their customers.  Typically, the
    information used to populate DHCP messages and/or IPv6 Router
    Advertisements relies upon specific Remote Authentication Dial-In
    User Service (RADIUS) [RFC2865] attributes, such as the DNS-Server-
@@ -175,15 +175,15 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
    defined in [I-D.ietf-add-dnr] is then followed between the DHCPv6
    client and the DHCPv6 server.
 
-   Upon change of the any Encrypted DNS-related information (e.g.,
-   Authentication Domain Name (ADN), IPv6 address), the RADIUS server
-   sends a RADIUS Change-of-Authorization (CoA) message [RFC5176] that
-   carries the RADIUS IPv6-Encrypted-DNS Attributes to the NAS.  Once
-   that message is accepted by the NAS, it replies with a RADIUS CoA ACK
-   message.  The NAS replaces the old encrypted DNS resolver information
-   with the new one and sends a DHCPv6 Reconfigure message to cause the
-   DHCPv6 client to initiate a Renew/Reply message exchange with the
-   DHCPv6 server.
+   Should any encrypted DNS-related information (e.g., Authentication
+   Domain Name (ADN), IPv6 address) change, the RADIUS server sends a
+   RADIUS Change-of-Authorization (CoA) message [RFC5176] that carries
+   the RADIUS IPv6-Encrypted-DNS Attributes to the NAS.  Once that
+   message is received and validated by the NAS, it replies with a
+   RADIUS CoA ACK message.  The NAS replaces the old encrypted DNS
+   resolver information with the new one and sends a DHCPv6 Reconfigure
+   message which leads the DHCPv6 client to initiate a Renew/Reply
+   message exchange with the DHCPv6 server.
 
    Figure 2 shows another example where a CPE is provided with an
    encrypted DNS resolver, but the CPE uses DHCPv4 to retrieve its
