@@ -101,15 +101,14 @@
     <section title="Introduction">
       <t>In the context of broadband services, Internet Service Providers
       (ISPs) usually provide DNS resolvers to their customers. To that aim,
-      ISPs deploy dedicated mechanisms to advertise a list of DNS Recursive
-      DNS server(s) to their customers (e.g., DHCP <xref
-      target="RFC2132"></xref> <xref target="RFC8415"></xref>, IPv6 Router
-      Advertisement <xref target="RFC4861"></xref>). Typically, the
-      information used to populate DHCP messages and/or IPv6 Router
-      Advertisements relies upon specific Remote Authentication Dial-In User
-      Service (RADIUS) <xref target="RFC2865"></xref> attributes, such as the
-      DNS-Server-IPv6-Address Attribute specified in <xref
-      target="RFC6911"></xref>.</t>
+      ISPs deploy dedicated mechanisms to advertise a list of DNS recursive
+      server(s) to their customers (e.g., DHCP <xref target="RFC2132"></xref>
+      <xref target="RFC8415"></xref>, IPv6 Router Advertisement <xref
+      target="RFC4861"></xref>). Typically, the information used to populate
+      DHCP messages and/or IPv6 Router Advertisements relies upon specific
+      Remote Authentication Dial-In User Service (RADIUS) <xref
+      target="RFC2865"></xref> attributes, such as the DNS-Server-IPv6-Address
+      Attribute specified in <xref target="RFC6911"></xref>.</t>
 
       <t>With the advent of Encrypted DNS (e.g., DNS-over-HTTPS (DoH) <xref
       target="RFC8484"></xref>, DNS-over-TLS (DoT) <xref
@@ -178,8 +177,9 @@
       target="I-D.ietf-add-dnr"></xref> is then followed between the DHCPv6
       client and the DHCPv6 server. </t>
 
-      <t>Upon change of the any Encrypted DNS-related information (e.g., ADN,
-      IPv6 address), the RADIUS server sends a RADIUS CoA message <xref
+      <t>Upon change of the any Encrypted DNS-related information (e.g.,
+      Authentication Domain Name (ADN), IPv6 address), the RADIUS server sends
+      a RADIUS Change-of-Authorization (CoA) message <xref
       target="RFC5176"></xref> that carries the RADIUS IPv6-Encrypted-DNS
       Attributes to the NAS. Once that message is accepted by the NAS, it
       replies with a RADIUS CoA ACK message. The NAS replaces the old
@@ -434,7 +434,7 @@
 
       <section anchor="tlv" title="RADIUS TLVs for Encrypted DNS">
         <t>The TLVs defined in the following subsections use the format
-        defined in <xref target="RFC6929"></xref>.</t>
+        defined in Section 2.3 of <xref target="RFC6929"></xref>.</t>
 
         <t>These TLVs have the same name and number when encapsulated in any
         of the parent attributes defined in Sections <xref format="counter"
@@ -614,7 +614,7 @@ CoA-Request CoA-ACK CoA-NACK #   Attribute
       <section anchor="IANA-Att" title="New RADIUS Attributes">
         <t>IANA is requested to assign two new RADIUS attribute types from the
         IANA registry "Radius Attribute Types" <xref
-        target="IANA"></xref>:<figure>
+        target="RADIUS-Types"></xref>:<figure>
             <artwork><![CDATA[   Type      Description          Data Type   Reference
    --------  ------------------   ---------   -------------
    241.TBA1  IPv6-Encrypted-DNS   tlv         This-Document
@@ -643,7 +643,10 @@ TBA6     Encrypted-DNS-SvcParams      string       Section 3.3.4
 TBA7     Encrypted-DNS-SvcPriority    integer      Section 3.3.5
 6-255    Unassigned
 ]]></artwork>
-          </figure></t>
+          </figure><list style="empty">
+            <t>Note to the RFC Editor: Please replace TBA3-TBA7 with the
+            corresponding values assigned from the 1-5 range. </t>
+          </list></t>
       </section>
     </section>
 

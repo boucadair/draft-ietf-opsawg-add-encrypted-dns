@@ -87,7 +87,7 @@ Table of Contents
    In the context of broadband services, Internet Service Providers
    (ISPs) usually provide DNS resolvers to their customers.  To that
    aim, ISPs deploy dedicated mechanisms to advertise a list of DNS
-   Recursive DNS server(s) to their customers (e.g., DHCP [RFC2132]
+   recursive server(s) to their customers (e.g., DHCP [RFC2132]
    [RFC8415], IPv6 Router Advertisement [RFC4861]).  Typically, the
    information used to populate DHCP messages and/or IPv6 Router
    Advertisements relies upon specific Remote Authentication Dial-In
@@ -175,14 +175,15 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
    defined in [I-D.ietf-add-dnr] is then followed between the DHCPv6
    client and the DHCPv6 server.
 
-   Upon change of the any Encrypted DNS-related information (e.g., ADN,
-   IPv6 address), the RADIUS server sends a RADIUS CoA message [RFC5176]
-   that carries the RADIUS IPv6-Encrypted-DNS Attributes to the NAS.
-   Once that message is accepted by the NAS, it replies with a RADIUS
-   CoA ACK message.  The NAS replaces the old encrypted DNS resolver
-   information with the new one and sends a DHCPv6 Reconfigure message
-   to cause the DHCPv6 client to initiate a Renew/Reply message exchange
-   with the DHCPv6 server.
+   Upon change of the any Encrypted DNS-related information (e.g.,
+   Authentication Domain Name (ADN), IPv6 address), the RADIUS server
+   sends a RADIUS Change-of-Authorization (CoA) message [RFC5176] that
+   carries the RADIUS IPv6-Encrypted-DNS Attributes to the NAS.  Once
+   that message is accepted by the NAS, it replies with a RADIUS CoA ACK
+   message.  The NAS replaces the old encrypted DNS resolver information
+   with the new one and sends a DHCPv6 Reconfigure message to cause the
+   DHCPv6 client to initiate a Renew/Reply message exchange with the
+   DHCPv6 server.
 
    Figure 2 shows another example where a CPE is provided with an
    encrypted DNS resolver, but the CPE uses DHCPv4 to retrieve its
@@ -217,7 +218,6 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
    a function of the service/policies/preferences that are set by a
    network administrator.  How an administrator indicates its
    service/policies/preferences to an AAA server is out of scope.
-
 
 
 
@@ -460,7 +460,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 3.3.  RADIUS TLVs for Encrypted DNS
 
    The TLVs defined in the following subsections use the format defined
-   in [RFC6929].
+   in Section 2.3 of [RFC6929].
 
    These TLVs have the same name and number when encapsulated in any of
    the parent attributes defined in Sections 3.1 and 3.2.
@@ -664,7 +664,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
 6.1.  New RADIUS Attributes
 
    IANA is requested to assign two new RADIUS attribute types from the
-   IANA registry "Radius Attribute Types" Section 6:
+   IANA registry "Radius Attribute Types" [RADIUS-Types]:
 
 
 
@@ -700,6 +700,9 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
    TBA7     Encrypted-DNS-SvcPriority    integer      Section 3.3.5
    6-255    Unassigned
 
+      Note to the RFC Editor: Please replace TBA3-TBA7 with the
+      corresponding values assigned from the 1-5 range.
+
 7.  Acknowledgements
 
    Thanks to Christian Jacquenet, Neil Cook, Alan Dekok, Joe Clarke, Qin
@@ -718,9 +721,6 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
               Progress, Internet-Draft, draft-ietf-add-dnr-13, 13 August
               2022, <https://www.ietf.org/archive/id/draft-ietf-add-dnr-
               13.txt>.
-
-
-
 
 
 
