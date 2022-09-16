@@ -103,10 +103,10 @@
       (ISPs) usually provide DNS resolvers to their customers. To that aim,
       ISPs deploy dedicated mechanisms (e.g., DHCP <xref
       target="RFC2132"></xref> <xref target="RFC8415"></xref>, IPv6 Router
-      Advertisement <xref target="RFC4861"></xref>)) to advertise a list of
-      DNS recursive servers to their customers. Typically, the information
-      used to populate DHCP messages and/or IPv6 Router Advertisements relies
-      upon specific Remote Authentication Dial-In User Service (RADIUS) <xref
+      Advertisement <xref target="RFC4861"></xref>) to advertise a list of DNS
+      recursive servers to their customers. Typically, the information used to
+      populate DHCP messages and/or IPv6 Router Advertisements relies upon
+      specific Remote Authentication Dial-In User Service (RADIUS) <xref
       target="RFC2865"></xref> attributes, such as the DNS-Server-IPv6-Address
       Attribute specified in <xref target="RFC6911"></xref>.</t>
 

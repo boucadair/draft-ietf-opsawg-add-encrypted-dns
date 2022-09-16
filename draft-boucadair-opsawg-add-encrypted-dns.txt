@@ -87,7 +87,7 @@ Table of Contents
    In the context of broadband services, Internet Service Providers
    (ISPs) usually provide DNS resolvers to their customers.  To that
    aim, ISPs deploy dedicated mechanisms (e.g., DHCP [RFC2132]
-   [RFC8415], IPv6 Router Advertisement [RFC4861])) to advertise a list
+   [RFC8415], IPv6 Router Advertisement [RFC4861]) to advertise a list
    of DNS recursive servers to their customers.  Typically, the
    information used to populate DHCP messages and/or IPv6 Router
    Advertisements relies upon specific Remote Authentication Dial-In
