@@ -110,11 +110,11 @@
       target="RFC2865"></xref> attributes, such as the DNS-Server-IPv6-Address
       Attribute specified in <xref target="RFC6911"></xref>.</t>
 
-      <t>With the advent of Encrypted DNS (e.g., DNS-over-HTTPS (DoH) <xref
+      <t>With the advent of encrypted DNS (e.g., DNS-over-HTTPS (DoH) <xref
       target="RFC8484"></xref>, DNS-over-TLS (DoT) <xref
       target="RFC7858"></xref>, or DNS-over-QUIC (DoQ) <xref
       target="RFC9250"></xref>), additional means are required to provision
-      hosts with network-designated Encrypted DNS. To fill that void, <xref
+      hosts with network-designated encrypted DNS. To fill that void, <xref
       target="I-D.ietf-add-dnr"></xref> leverages existing protocols such as
       DHCP and IPv6 Router Advertisement to provide hosts with the required
       information to connect to an encrypted DNS resolver. However, there are
@@ -169,13 +169,13 @@
       it replies with an Access-Accept message (possibly after having sent a
       RADIUS Access-Challenge message and assuming the CPE is entitled to
       connect to the network) that carries a list of parameters to be used for
-      this session, and which include the Encrypted DNS information. The
+      this session, and which include the encrypted DNS information. The
       content of the IPv6-Encrypted-DNS Attribute is then used by the NAS to
       complete the DHCPv6 procedure that the CPE initiated to retrieve
       information about the encrypted DNS service to use. The Discovery of
       Network-designated Resolvers (DNR) procedure defined in <xref
       target="I-D.ietf-add-dnr"></xref> is then followed between the DHCPv6
-      client and the DHCPv6 server. </t>
+      client and the DHCPv6 server.</t>
 
       <t>Should any encrypted DNS-related information (e.g., Authentication
       Domain Name (ADN), IPv6 address) change, the RADIUS server sends a
@@ -186,6 +186,12 @@
       old encrypted DNS resolver information with the new one and sends a
       DHCPv6 Reconfigure message which leads the DHCPv6 client to initiate a
       Renew/Reply message exchange with the DHCPv6 server.</t>
+
+      <t>In deployments where the NAS behaves as a DHCPv6 relay agent, the
+      procedure discussed in Section 3 of <xref target="RFC7037"></xref> can
+      be followed. To that aim, <xref target="urd"></xref> updates the
+      registry of RADIUS Attributes permitted in the DHCPv6 RADIUS Option
+      <xref target="rd"></xref>.</t>
 
       <t><xref target="ex2"></xref> shows another example where a CPE is
       provided with an encrypted DNS resolver, but the CPE uses DHCPv4 to
@@ -243,6 +249,10 @@
           <t hangText="Encrypted DNS:">refers to a scheme where DNS exchanges
           are transported over an encrypted channel. Examples of encrypted DNS
           are DoT, DoH, and DoQ.</t>
+
+          <t hangText="Encrypted DNS resolver:">refers to a resolver (Section
+          6 of <xref target="RFC8499"></xref>) that supports encrypted
+          DNS.</t>
 
           <t hangText="*-Encrypted-DNS:">refers to IPv6-Encrypted-DNS and
           IPv4-Encrypted-DNS Attributes.</t>
@@ -614,45 +624,153 @@ CoA-Request CoA-ACK CoA-NACK #   Attribute
       <section anchor="IANA-Att" title="New RADIUS Attributes">
         <t>IANA is requested to assign two new RADIUS attribute types from the
         IANA registry "Radius Attribute Types" <xref
-        target="RADIUS-Types"></xref>:<figure>
-            <artwork><![CDATA[   Type      Description          Data Type   Reference
-   --------  ------------------   ---------   -------------
-   241.TBA1  IPv6-Encrypted-DNS   tlv         This-Document
-   241.TBA2  IPv4-Encrypted-DNS   tlv         This-Document
-]]></artwork>
-          </figure></t>
+        target="RADIUS-Types"></xref>:</t>
+
+        <t></t>
+
+        <texttable anchor="ra" style="headers"
+                   title="Encrypted DNS RADIUS Attributes">
+          <ttcol>Value</ttcol>
+
+          <ttcol>Description</ttcol>
+
+          <ttcol>Data Type</ttcol>
+
+          <ttcol>Reference</ttcol>
+
+          <c>241.TBA1</c>
+
+          <c>IPv6-Encrypted-DNS</c>
+
+          <c>tlv</c>
+
+          <c>[This-Document]</c>
+
+          <c>241.TBA2</c>
+
+          <c>IPv4-Encrypted-DNS</c>
+
+          <c>tlv</c>
+
+          <c>[This-Document]</c>
+        </texttable>
+
+        <t></t>
       </section>
 
-      <section anchor="IANA-TLV" title="New RADIUS TLVs">
+      <section anchor="IANA-TLV" title="RADIUS Encrypted DNS TLVs">
         <t>IANA is requested to create a new subregistry called "RADIUS
         Encrypted DNS TLVs" under the "Radius Attribute Types" registry <xref
-        target="RADIUS-Types"></xref>. </t>
+        target="RADIUS-Types"></xref>.</t>
 
         <t>The registration procedure for this subregistry is "Standards
         Action" as defined in (Section 4.9 of <xref
         target="RFC8126"></xref>).</t>
 
-        <t>The subregistry is initially populated as follows:<figure>
-            <artwork><![CDATA[Value    Description                  Data Type    Reference
------    -------------------------    ---------    -------------
-  0      Reserved
-TBA3     Encrypted-DNS-ADN            text         Section 3.3.1
-TBA4     Encrypted-DNS-IPv6-Address   ipv6addr     Section 3.3.2
-TBA5     Encrypted-DNS-IPv4-Address   ipv4addr     Section 3.3.3
-TBA6     Encrypted-DNS-SvcParams      string       Section 3.3.4
-TBA7     Encrypted-DNS-SvcPriority    integer      Section 3.3.5
-6-255    Unassigned
-]]></artwork>
-          </figure><list style="empty">
+        <t>The subregistry is initially populated as follows:<list
+            style="empty">
             <t>Note to the RFC Editor: Please replace TBA3-TBA7 with the
-            corresponding values assigned from the 1-5 range. </t>
+            corresponding values assigned from the 1-5 range.</t>
           </list></t>
+
+        <texttable anchor="tlvs" style="headers"
+                   title="Initial RADIUS Encrypted DNS TLVs">
+          <ttcol>Value</ttcol>
+
+          <ttcol>Description</ttcol>
+
+          <ttcol>Data Type</ttcol>
+
+          <ttcol>Reference</ttcol>
+
+          <c>0</c>
+
+          <c>Reserved</c>
+
+          <c></c>
+
+          <c>[This-Document]</c>
+
+          <c>TBA3</c>
+
+          <c>Encrypted-DNS-ADN</c>
+
+          <c>text</c>
+
+          <c>[This-Document, Section 3.3.1]</c>
+
+          <c>TBA4</c>
+
+          <c>Encrypted-DNS-IPv6-Address</c>
+
+          <c>ipv6addr</c>
+
+          <c>[This-Document, Section 3.3.2]</c>
+
+          <c>TBA5</c>
+
+          <c>Encrypted-DNS-IPv4-Address</c>
+
+          <c>ipv4addr</c>
+
+          <c>[This-Document, Section 3.3.3]</c>
+
+          <c>TBA6</c>
+
+          <c>Encrypted-DNS-SvcParams</c>
+
+          <c>string</c>
+
+          <c>[This-Document, Section 3.3.4]</c>
+
+          <c>TBA7</c>
+
+          <c>Encrypted-DNS-SvcPriority</c>
+
+          <c>integer</c>
+
+          <c>[This-Document, Section 3.3.5]</c>
+
+          <c>6-255</c>
+
+          <c>Unassigned</c>
+
+          <c></c>
+
+          <c></c>
+        </texttable>
+      </section>
+
+      <section anchor="urd"
+               title="New RADIUS Attribute Permitted in DHCPv6 RADIUS Option">
+        <t>IANA is requested to add the following entry to the "RADIUS
+        Attributes Permitted in DHCPv6 RADIUS Option" subregistry in the
+        "Dynamic Host Configuration Protocol for IPv6 (DHCPv6)" registry <xref
+        target="DHCP-RADIUS"></xref>:</t>
+
+        <texttable anchor="rd" style="headers"
+                   title="New RADIUS Attribute Permitted in DHCPv6 RADIUS Option">
+          <ttcol>Type Code</ttcol>
+
+          <ttcol>Attribute</ttcol>
+
+          <ttcol>Reference</ttcol>
+
+          <c>241.TBA1</c>
+
+          <c>IPv6-Encrypted-DNS</c>
+
+          <c>[This-Document]</c>
+        </texttable>
+
+        <t></t>
       </section>
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>Thanks to Christian Jacquenet, Neil Cook, Alan Dekok, Joe Clarke, Qin
-      Wu, Dirk von-Hugo, and Tom Petch for the review and suggestions.</t>
+      Wu, Dirk von-Hugo, Tom Petch, and Chongfeng Xie for the review and
+      suggestions.</t>
 
       <t>Thanks to Ben Schwartz for the comments.</t>
     </section>
@@ -698,8 +816,6 @@ TBA7     Encrypted-DNS-SvcPriority    integer      Section 3.3.5
 
       <?rfc include='reference.RFC.4014'?>
 
-      <?rfc include='reference.RFC.7037'?>
-
       <?rfc include='reference.RFC.8484'?>
 
       <?rfc include='reference.RFC.7858'?>
@@ -714,10 +830,25 @@ TBA7     Encrypted-DNS-SvcPriority    integer      Section 3.3.5
 
       <?rfc include='reference.RFC.2132'?>
 
+      <?rfc include='reference.RFC.7037'?>
+
       <reference anchor="RADIUS-Types"
                  target="http://www.iana.org/assignments/radius-types">
         <front>
           <title>RADIUS Types</title>
+
+          <author>
+            <organization>IANA</organization>
+          </author>
+
+          <date />
+        </front>
+      </reference>
+
+      <reference anchor="DHCP-RADIUS"
+                 target="https://www.iana.org/assignments/dhcpv6-parameters/dhcpv6-parameters.xhtml">
+        <front>
+          <title>Dynamic Host Configuration Protocol for IPv6 (DHCPv6)</title>
 
           <author>
             <organization>IANA</organization>
