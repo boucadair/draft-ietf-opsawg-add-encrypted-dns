@@ -188,7 +188,7 @@ Internet-Draft          RADIUS for Encrypted DNS          September 2022
    In deployments where the NAS behaves as a DHCPv6 relay agent, the
    procedure discussed in Section 3 of [RFC7037] can be followed.  To
    that aim, Section 6.3 updates the registry of RADIUS Attributes
-   permitted in the DHCPv6 RADIUS Option Table 3.
+   permitted in the DHCPv6 RADIUS Option ([DHCP-RADIUS]).
 
    Figure 2 shows another example where a CPE is provided with an
    encrypted DNS resolver, but the CPE uses DHCPv4 to retrieve its
