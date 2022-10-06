@@ -905,7 +905,7 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
         <c>IPv4 Address(es)</c>
 
-        <c>One or multiple Encrypted-DNS-IPv6-Address</c>
+        <c>One or multiple Encrypted-DNS-IPv4-Address</c>
 
         <c>Service Parameters (SvcParams)</c>
 

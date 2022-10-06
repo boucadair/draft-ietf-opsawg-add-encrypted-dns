@@ -992,7 +992,7 @@ Appendix A.  DNR to RADIUS Field Mappings
         | authentication-domain-name | Encrypted-DNS-ADN          |
         +----------------------------+----------------------------+
         | IPv4 Address(es)           | One or multiple Encrypted- |
-        |                            | DNS-IPv6-Address           |
+        |                            | DNS-IPv4-Address           |
         +----------------------------+----------------------------+
         | Service Parameters         | Encrypted-DNS-SvcParams    |
         | (SvcParams)                |                            |
