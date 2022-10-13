@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-ietf-opsawg-add-encrypted-dns-02"
+<rfc category="std" docName="draft-ietf-opsawg-add-encrypted-dns-03"
      ipr="trust200902">
   <front>
     <title abbrev="RADIUS for Encrypted DNS">RADIUS Extensions for Encrypted
@@ -175,7 +175,8 @@
       information about the encrypted DNS service to use. The Discovery of
       Network-designated Resolvers (DNR) procedure defined in <xref
       target="I-D.ietf-add-dnr"></xref> is then followed between the DHCPv6
-      client and the DHCPv6 server.</t>
+      client and the DHCPv6 server. <xref target="mapping"></xref> describes
+      the DNR to RADIUS field mappings.</t>
 
       <t>Should any encrypted DNS-related information (e.g., Authentication
       Domain Name (ADN), IPv6 address) change, the RADIUS server sends a
@@ -185,8 +186,7 @@
       the NAS, it replies with a RADIUS CoA ACK message. The NAS replaces the
       old encrypted DNS resolver information with the new one and sends a
       DHCPv6 Reconfigure message which leads the DHCPv6 client to initiate a
-      Renew/Reply message exchange with the DHCPv6 server. <xref
-      target="mapping"></xref> describes the DNR to RADIUS field mappings.</t>
+      Renew/Reply message exchange with the DHCPv6 server.</t>
 
       <t>In deployments where the NAS behaves as a DHCPv6 relay agent, the
       procedure discussed in <xref section="3" target="RFC7037"></xref> can be
@@ -267,9 +267,12 @@
 
     <section anchor="att" title="Encrypted DNS RADIUS Attributes">
       <t>Both IPv6-Encrypted-DNS and IPv4-Encrypted-DNS have the same format
-      shown in <xref target="attr-format"></xref>. The description of the
+      shown in <xref target="attr-format"></xref>. These attributes uses the
+      "Long Extended Type" format (<xref section="2.2"
+      target="RFC6929"></xref>) in order to permit the transport of attributes
+      encapsulating more than 253 octets of data. The description of the
       fields is provided in Sections <xref format="counter"
-      target="v6"></xref> and <xref format="counter" target="v4"></xref>.</t>
+      target="v6"></xref> and <xref format="counter" target="v4"></xref>. </t>
 
       <t>These attributes and their embedded TLVs (<xref target="tlv"></xref>)
       are defined with globally unique names. The definition of the attributes
@@ -281,8 +284,11 @@
           <artwork><![CDATA[    0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |      Type     |     Length    | Extended-Type |    Value ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+]]></artwork>
+   |     Type      |    Length     | Extended-Type |M|  Reserved   |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Value ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+]]></artwork>
         </figure></t>
 
       <t>The value fields of *-Encrypted-DNS and Encrypted-DNS-* Attributes
@@ -322,7 +328,7 @@
         <t>The IPv6-Encrypted-DNS Attribute is structured as follows:</t>
 
         <t>Type<list style="empty">
-            <t>241</t>
+            <t>245</t>
           </list></t>
 
         <t>Length<list style="empty">
@@ -353,9 +359,11 @@
                 considered.</t>
 
                 <t hangText="Encrypted-DNS-SvcParams TLV:">The
-                IPv6-Encrypted-DNS Attribute SHOULD include one instance of
-                Encrypted-DNS-SvcParams TLV (<xref
-                target="svcparams"></xref>).</t>
+                IPv6-Encrypted-DNS Attribute SHOULD include one or multiple
+                instances of Encrypted-DNS-SvcParams TLV (<xref
+                target="svcparams"></xref>). If multiple instances are
+                included, each of these instances MUST include self-contained
+                SvcParams. </t>
 
                 <t hangText="Encrypted-DNS-SvcPriority TLV:">The
                 IPv6-Encrypted-DNS Attribute SHOULD include one instance of
@@ -365,7 +373,7 @@
           </list></t>
 
         <t>The IPv6-Encrypted-DNS Attribute is associated with the following
-        identifier: 241.TBA1.</t>
+        identifier: 245.TBA1.</t>
       </section>
 
       <section anchor="v4" title="IPv4-Encrypted-DNS Attribute">
@@ -401,7 +409,7 @@
         <t>The IPv4-Encrypted-DNS Attribute is structured as follows:</t>
 
         <t>Type<list style="empty">
-            <t>241</t>
+            <t>245</t>
           </list></t>
 
         <t>Length<list style="empty">
@@ -430,9 +438,11 @@
                 TLV is returned) can be considered.</t>
 
                 <t hangText="Encrypted-DNS-SvcParams TLV:">The
-                IPv4-Encrypted-DNS Attribute SHOULD include one instance of
-                Encrypted-DNS-SvcParams TLV (<xref
-                target="svcparams"></xref>).</t>
+                IPv4-Encrypted-DNS Attribute SHOULD include one or multiple
+                instances of Encrypted-DNS-SvcParams TLV (<xref
+                target="svcparams"></xref>). If multiple instances are
+                included, each of these instances MUST include self-contained
+                SvcParams. </t>
 
                 <t hangText="Encrypted-DNS-SvcPriority TLV:">The
                 IPv4-Encrypted-DNS Attribute SHOULD include one instance of
@@ -440,7 +450,7 @@
                 target="svcprio"></xref>).</t>
               </list></t>
           </list>The IPv4-Encrypted-DNS Attribute is associated with the
-        following identifier: 241.TBA2.</t>
+        following identifier: 245.TBA2.</t>
       </section>
 
       <section anchor="tlv" title="RADIUS TLVs for Encrypted DNS">
@@ -471,9 +481,9 @@
               <xref section="10" target="RFC8415"></xref>.</t>
             </list></t>
 
-          <t>This TLV is identified as 241.TBA1.TBA3 when included in the
+          <t>This TLV is identified as 245.TBA1.TBA3 when included in the
           IPv6-Encrypted-DNS Attribute (<xref target="v6"></xref>) and as
-          241.TBA2.TBA3 when included in the IPv4-Encrypted-DNS Attribute
+          245.TBA2.TBA3 when included in the IPv4-Encrypted-DNS Attribute
           (<xref target="v4"></xref>).</t>
         </section>
 
@@ -493,7 +503,7 @@
               Encrypted-DNS-IPv6-Address attribute MUST NOT include multicast
               (<xref section="2.7" target="RFC4291"></xref>) and loopback
               addresses <xref target="RFC6890"></xref>.</t>
-            </list>This TLV is identified as 241.TBA1.TBA4 as part of the
+            </list>This TLV is identified as 245.TBA1.TBA4 as part of the
           IPv6-Encrypted-DNS Attribute (<xref target="v6"></xref>).</t>
         </section>
 
@@ -517,7 +527,7 @@
               addresses <xref target="RFC6890"></xref>.</t>
             </list></t>
 
-          <t>This TLV is identified as 241.TBA2.TBA5 as part of the
+          <t>This TLV is identified as 245.TBA2.TBA5 as part of the
           IPv4-Encrypted-DNS Attribute (<xref target="v4"></xref>).</t>
         </section>
 
@@ -545,12 +555,12 @@
               MUST include at least "alpn" SvcParam (<xref section="4.1"
               target="I-D.ietf-add-svcb-dns"></xref>). The service parameters
               MUST NOT include "ipv4hint" or "ipv6hint" SvcParams as they are
-              superseded by the included IP addresses.</t>
+              superseded by the included IP addresses. </t>
             </list></t>
 
-          <t>This TLV is identified as 241.TBA1.TBA6 when included in the
+          <t>This TLV is identified as 245.TBA1.TBA6 when included in the
           IPv6-Encrypted-DNS Attribute (<xref target="v6"></xref>) and as
-          241.TBA2.TBA6 when included in the IPv4-Encrypted-DNS Attribute
+          245.TBA2.TBA6 when included in the IPv4-Encrypted-DNS Attribute
           (<xref target="v4"></xref>).</t>
         </section>
 
@@ -576,9 +586,9 @@
               section="2.4.1" target="I-D.ietf-dnsop-svcb-https"></xref>.</t>
             </list></t>
 
-          <t>This TLV is identified as 241.TBA1.TBA7 when included in the
+          <t>This TLV is identified as 245.TBA1.TBA7 when included in the
           IPv6-Encrypted-DNS Attribute (<xref target="v6"></xref>) and as
-          241.TBA2.TBA7 when included in the IPv4-Encrypted-DNS Attribute
+          245.TBA2.TBA7 when included in the IPv4-Encrypted-DNS Attribute
           (<xref target="v4"></xref>).</t>
         </section>
       </section>
@@ -604,12 +614,12 @@
       <t><figure>
           <artwork><![CDATA[Access- Access- Access-  Challenge Acct.    #        Attribute
 Request Accept  Reject             Request 
- 0+      0+      0        0         0+      241.TBA1 IPv6-Encrypted-DNS
- 0+      0+      0        0         0+      241.TBA2 IPv4-Encrypted-DNS
+ 0+      0+      0        0         0+      245.TBA1 IPv6-Encrypted-DNS
+ 0+      0+      0        0         0+      245.TBA2 IPv4-Encrypted-DNS
 
 CoA-Request CoA-ACK CoA-NACK #        Attribute
-  0+          0       0      241.TBA1 IPv6-Encrypted-DNS
-  0+          0       0      241.TBA2 IPv4-Encrypted-DNS
+  0+          0       0      245.TBA1 IPv6-Encrypted-DNS
+  0+          0       0      245.TBA2 IPv4-Encrypted-DNS
 ]]></artwork>
         </figure></t>
 
@@ -639,7 +649,7 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
           <ttcol>Reference</ttcol>
 
-          <c>241.TBA1</c>
+          <c>245.TBA1</c>
 
           <c>IPv6-Encrypted-DNS</c>
 
@@ -647,7 +657,7 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
           <c>This-Document</c>
 
-          <c>241.TBA2</c>
+          <c>245.TBA2</c>
 
           <c>IPv4-Encrypted-DNS</c>
 
@@ -757,7 +767,7 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
           <ttcol>Reference</ttcol>
 
-          <c>241.TBA1</c>
+          <c>245.TBA1</c>
 
           <c>IPv6-Encrypted-DNS</c>
 
@@ -863,7 +873,7 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
     <section anchor="mapping" title="DNR to RADIUS Field Mappings">
       <t>Each IPv6-Encrypted-DNS Attribute is mapped to an IPv6 DNR instance
       (i.e., OPTION_V6_DNR(144) or IPv6 Neighbor Discovery Option(144)) as
-      follows:</t>
+      shown in <xref target="map1"></xref>.</t>
 
       <texttable anchor="map1" title="IPv6 DNR-RADIUS Field Mapping">
         <ttcol>DNR Field</ttcol>
@@ -884,11 +894,12 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
         <c>Service Parameters (SvcParams)</c>
 
-        <c>Encrypted-DNS-SvcParams</c>
+        <c>One or multiple whitespace-separated Encrypted-DNS-SvcParams. </c>
       </texttable>
 
       <t>Likewise, each IPv4-Encrypted-DNS Attribute is mapped to an IPv4 DNR
-      instance (i.e., OPTION_V4_DNR(162)) as follows:</t>
+      instance (i.e., OPTION_V4_DNR(162)) as shown in <xref
+      target="map2"></xref>.</t>
 
       <texttable anchor="map2" title="IPv4 DNR-RADIUS Field Mapping">
         <ttcol>DNR Field</ttcol>
@@ -909,7 +920,7 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
         <c>Service Parameters (SvcParams)</c>
 
-        <c>Encrypted-DNS-SvcParams</c>
+        <c>One or multiple whitespace-separated Encrypted-DNS-SvcParams</c>
       </texttable>
 
       <t>ADN Length, Addr Length, and SvcParams Length fields are set as a
