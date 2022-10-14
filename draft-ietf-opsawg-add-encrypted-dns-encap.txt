@@ -133,10 +133,10 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    [RFC6158].
 
    The mechanism specified in this document is a generic mechanism and
-   might be employed in network scenarios where the DHCPv6 server and
-   the RADIUS client are located in the same device.  The new attributes
-   can also be used in deployments that rely upon the mechanisms defined
-   in [RFC4014] or [RFC7037], which allow a DHCP relay agent that is
+   might be employed in network scenarios where the DHCP server and the
+   RADIUS client are located in the same device.  The new attributes can
+   also be used in deployments that rely upon the mechanisms defined in
+   [RFC4014] or [RFC7037], which allow a DHCP relay agent that is
    collocated with a RADIUS client to pass attributes obtained from a
    RADIUS server to a DHCP server.
 
@@ -191,8 +191,8 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    of data.  DHCP options that can be included in the DHCP*-Options
    RADIUS attributes are limited by the maximum packet size of 4096
    bytes.  In order to accommodate deployments with large options,
-   implementations are RECOMMENDED to support a maximum packet size up
-   to 65535 bytes.
+   implementations are RECOMMENDED to support a packet size up to 65535
+   bytes.
 
    The value fields of DHCPv4-Options and DHCPv6-Options Attributes are
    encoded in clear and not encrypted as, for example, Tunnel-Password
