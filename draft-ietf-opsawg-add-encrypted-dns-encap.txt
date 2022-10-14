@@ -136,14 +136,14 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    might be employed in network scenarios where the DHCPv6 server and
    the RADIUS client are located in the same device.  The new attributes
    can also be used in deployments that rely upon the mechanisms defined
-   in [RFC4014] or [RFC7037], which allows a DHCP relay agent that is
+   in [RFC4014] or [RFC7037], which allow a DHCP relay agent that is
    collocated with a RADIUS client to pass attributes obtained from a
    RADIUS server to a DHCP server.
 
    This document adheres to [RFC8044] for defining the new attributes.
 
    A sample deployment usage of the DHCPv6-Options and DHCPv4-Options
-   RADIUS Attributes is described in Section 4.
+   RADIUS attributes is described in Section 4.
 
 2.  Terminology
 
@@ -173,30 +173,30 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    Encrypted DNS resolver:  refers to a resolver (Section 6 of
       [RFC8499]) that supports encrypted DNS.
 
-   DHCP*-Options:  refers to DHCPv4-Options and DHCPv6-Options RADIUS
+   DHCP*-Options:  refers to DHCPv4-Options and DHCPv6-Options
       Attributes (Section 3).
 
 3.  DHCP Options RADIUS Attributes
 
-   This section specifies two new RADIUS Attributes for RADIUS clients
+   This section specifies two new RADIUS attributes for RADIUS clients
    and servers to exchange DHCP-encoded data.  This data is then used to
    feed the DHCP procedure between a DHCP client and a DHCP server.
 
-   Both DHCPv4-Options and DHCPv6-Options RADIUS Attributes use the
-   "Long Extended Type" format (Section 2.2 of [RFC6929]).  The
-   description of the fields is provided in Sections 3.1 and 3.2.
+   Both DHCPv4-Options and DHCPv6-Options Attributes use the "Long
+   Extended Type" format (Section 2.2 of [RFC6929]).  The description of
+   the fields is provided in Sections 3.1 and 3.2.
 
    These attributes use the "Long Extended Type" format in order to
    permit the transport of attributes encapsulating more than 253 octets
    of data.  DHCP options that can be included in the DHCP*-Options
-   RADIUS Attributes are limited by the maximum packet size of 4096
+   RADIUS attributes are limited by the maximum packet size of 4096
    bytes.  In order to accommodate deployments with large options,
    implementations are RECOMMENDED to support a maximum packet size up
    to 65535 bytes.
 
-   The value fields of DHCPv4-Options and DHCPv6-Options RADIUS
-   Attributes are encoded in clear and not encrypted as, for example,
-   Tunnel-Password Attribute [RFC2868].
+   The value fields of DHCPv4-Options and DHCPv6-Options Attributes are
+   encoded in clear and not encrypted as, for example, Tunnel-Password
+   Attribute [RFC2868].
 
    RADIUS implementations may support a configuration parameter to
    control the DHCP options that can be included in a DHCP*-Options
@@ -325,8 +325,8 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    instance, in Section 2 of [RFC6911].  For illustration purposes,
    Figure 1 shows an example where a Customer Premises Equipment (CPE)
    is provided with an encrypted DNS resolver.  This example assumes
-   that the NAS embeds both RADIUS client and DHCPv6 server
-   capabilities.
+   that the Network Access Server (NAS) embeds both RADIUS client and
+   DHCPv6 server capabilities.
 
 
 
@@ -370,7 +370,7 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    to be used for this session, and which include the encrypted DNS
    information.  Such an information is encoded as OPTION_V6_DNR
    instances ([I-D.ietf-add-dnr]) in the DHCPv6-Options RADIUS
-   Attribute.  These instances are then used by the NAS to complete the
+   attribute.  These instances are then used by the NAS to complete the
    DHCPv6 procedure that the CPE initiated to retrieve information about
    the encrypted DNS service to use.  The Discovery of Network-
    designated Resolvers (DNR) procedure defined in [I-D.ietf-add-dnr] is
@@ -381,11 +381,11 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    RADIUS Change-of-Authorization (CoA) message [RFC5176] that carries
    the RADIUS DHCPv6 Attribute with the updated OPTION_V6_DNR
    information to the NAS.  Once that message is received and validated
-   by the NAS, it replies with a RADIUS CoA ACK message.  The Network
-   Access Server (NAS) replaces the old encrypted DNS resolver
-   information with the new one and sends a DHCPv6 Reconfigure message
-   which leads the DHCPv6 client to initiate a Renew/Reply message
-   exchange with the DHCPv6 server.
+   by the NAS, it replies with a RADIUS CoA ACK message.  The NAS
+   replaces the old encrypted DNS resolver information with the new one
+   and sends a DHCPv6 Reconfigure message which leads the DHCPv6 client
+   to initiate a Renew/Reply message exchange with the DHCPv6 server.
+
 
 
 
