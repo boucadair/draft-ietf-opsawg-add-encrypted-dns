@@ -310,7 +310,7 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
 
    Extended-Type
 
-      TBA1 (see Section 7.1).
+      TBA2 (see Section 7.1).
 
    Value
 
@@ -484,9 +484,9 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
          +==========+================+===========+===============+
          | Value    | Description    | Data Type | Reference     |
          +==========+================+===========+===============+
-         | 245.TBA1 | DHCPv6-Options | tlv       | This-Document |
+         | 245.TBA1 | DHCPv6-Options | string    | This-Document |
          +----------+----------------+-----------+---------------+
-         | 245.TBA2 | DHCPv4-Options | tlv       | This-Document |
+         | 245.TBA2 | DHCPv4-Options | string    | This-Document |
          +----------+----------------+-----------+---------------+
 
                   Table 1: Encrypted DNS RADIUS Attributes
