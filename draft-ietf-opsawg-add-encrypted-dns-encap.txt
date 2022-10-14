@@ -19,7 +19,7 @@ Abstract
    specification was initially motivated by the configuration of
    encrypted DNS resolvers, the specification is generic and can be
    applicable to any service that relies upon DHCP.  Both DHCPv4 and
-   DHCPv6 are covered.
+   DHCPv6 configured services are covered.
 
 Status of This Memo
 
@@ -72,19 +72,19 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  DHCP Options RADIUS Attributes  . . . . . . . . . . . . . . .   4
-     3.1.  DHCPv6-Options Attribute  . . . . . . . . . . . . . . . .   4
-     3.2.  DHCPv4-Options Attribute  . . . . . . . . . . . . . . . .   5
-   4.  Applicability to Encrypted DNS  . . . . . . . . . . . . . . .   6
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
+     3.1.  DHCPv6-Options Attribute  . . . . . . . . . . . . . . . .   5
+     3.2.  DHCPv4-Options Attribute  . . . . . . . . . . . . . . . .   6
+   4.  Applicability to Encrypted DNS Provisioning . . . . . . . . .   7
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
    6.  Table of Attributes . . . . . . . . . . . . . . . . . . . . .   9
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
      7.1.  New RADIUS Attributes . . . . . . . . . . . . . . . . . .   9
-     7.2.  New RADIUS Attribute Permitted in DHCPv6 RADIUS Option  .   9
+     7.2.  New RADIUS Attribute Permitted in DHCPv6 RADIUS Option  .  10
    8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  10
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  11
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  13
 
 1.  Introduction
 
@@ -132,10 +132,13 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    contexts while taking into account the constraints in Section 3.4 of
    [RFC6158].
 
-   These attributes can also be used in deployments that rely upon the
-   mechanisms defined in [RFC4014] or [RFC7037], which allows a Network
-   Access Server (NAS) to pass attributes obtained from a RADIUS server
-   to a DHCP server.
+   The mechanism specified in this document is a generic mechanism and
+   might be employed in network scenarios where the DHCPv6 server and
+   the RADIUS client are located in the same device.  The new attributes
+   can also be used in deployments that rely upon the mechanisms defined
+   in [RFC4014] or [RFC7037], which allows a DHCP relay agent that is
+   collocated with a RADIUS client to pass attributes obtained from a
+   RADIUS server to a DHCP server.
 
    This document adheres to [RFC8044] for defining the new attributes.
 
@@ -159,9 +162,6 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
       are DoT, DoH, and DoQ.
 
    Encrypted DNS resolver:  refers to a resolver (Section 6 of
-      [RFC8499]) that supports encrypted DNS.
-
-   DHCP*-Options:  refers to DHCPv4-Options and DHCPv6-Options RADIUS
 
 
 
@@ -170,6 +170,9 @@ Boucadair & Reddy         Expires 17 April 2023                 [Page 3]
 Internet-Draft             RADIUS DHCP-Options              October 2022
 
 
+      [RFC8499]) that supports encrypted DNS.
+
+   DHCP*-Options:  refers to DHCPv4-Options and DHCPv6-Options RADIUS
       Attributes (Section 3).
 
 3.  DHCP Options RADIUS Attributes
@@ -212,10 +215,7 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    control the DHCP options that can be included in a DHCP*-Options
    RADIUS attributes.
 
-3.1.  DHCPv6-Options Attribute
 
-   This attribute is of type "tlv" as defined in Section 2.3 of
-   [RFC6929].
 
 
 
@@ -225,6 +225,11 @@ Boucadair & Reddy         Expires 17 April 2023                 [Page 4]
 
 Internet-Draft             RADIUS DHCP-Options              October 2022
 
+
+3.1.  DHCPv6-Options Attribute
+
+   This attribute is of type "tlv" as defined in Section 2.3 of
+   [RFC6929].
 
    The DHCPv6-Options Attribute MAY appear in a RADIUS Access-Accept
    packet.  It MAY also appear in a RADIUS Access-Request packet as a
@@ -266,11 +271,6 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    The DHCPv6-Options Attribute is associated with the following
    identifier: 245.TBA1.
 
-3.2.  DHCPv4-Options Attribute
-
-   This attribute is of type "tlv" as defined in Section 2.3 of
-   [RFC6929].
-
 
 
 
@@ -281,6 +281,11 @@ Boucadair & Reddy         Expires 17 April 2023                 [Page 5]
 
 Internet-Draft             RADIUS DHCP-Options              October 2022
 
+
+3.2.  DHCPv4-Options Attribute
+
+   This attribute is of type "tlv" as defined in Section 2.3 of
+   [RFC6929].
 
    The DHCPv4-Options Attribute MAY appear in a RADIUS Access-Accept
    packet.  It MAY also appear in a RADIUS Access-Request packet as a
@@ -319,14 +324,9 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    The DHCPv4-Options Attribute is associated with the following
    identifier: 245.TBA2.
 
-4.  Applicability to Encrypted DNS
 
-   Typical deployment scenarios are similar to those described, for
-   instance, in Section 2 of [RFC6911].  For illustration purposes,
-   Figure 2 shows an example where a Customer Premises Equipment (CPE)
-   is provided with an encrypted DNS resolver.  This example assumes
-   that the NAS embeds both RADIUS client and DHCPv6 server
-   capabilities.
+
+
 
 
 
@@ -338,6 +338,15 @@ Boucadair & Reddy         Expires 17 April 2023                 [Page 6]
 Internet-Draft             RADIUS DHCP-Options              October 2022
 
 
+4.  Applicability to Encrypted DNS Provisioning
+
+   Typical deployment scenarios are similar to those described, for
+   instance, in Section 2 of [RFC6911].  For illustration purposes,
+   Figure 2 shows an example where a Customer Premises Equipment (CPE)
+   is provided with an encrypted DNS resolver.  This example assumes
+   that the NAS embeds both RADIUS client and DHCPv6 server
+   capabilities.
+
    +-------------+           +-------------+             +-------+
    |     CPE     |           |     NAS     |             |  AAA  |
    |DHCPv6 client|           |DHCPv6 server|             |Server |
@@ -348,7 +357,7 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
           |                         |                        |
           |                         |<----Access-Accept------o
           |                         |     DHCPv6-Options     |
-          |<--DHCPv6 Advertisement--o    (OPTION_V6_DNR)     |
+          |<----DHCPv6 Advertise----o    (OPTION_V6_DNR)     |
           |     (OPTION_V6_DNR)     |                        |
           |                         |                        |
           o-----DHCPv6 Request----->|                        |
@@ -368,23 +377,14 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    having sent a RADIUS Access-Challenge message and assuming the CPE is
    entitled to connect to the network) that carries a list of parameters
    to be used for this session, and which include the encrypted DNS
-   information.  Such an informaiton is encoded as OPTION_V6_DNR option
-   in the DHCPv6-Options RADIUS Attribute.  The OPTION_V6_DNR option is
-   then used by the NAS to complete the DHCPv6 procedure that the CPE
-   initiated to retrieve information about the encrypted DNS service to
-   use.  The Discovery of Network-designated Resolvers (DNR) procedure
-   defined in [I-D.ietf-add-dnr] is then followed between the DHCPv6
-   client and the DHCPv6 server.
+   information.  Such an information is encoded as OPTION_V6_DNR
+   instances ([I-D.ietf-add-dnr]) in the DHCPv6-Options RADIUS
+   Attribute.  These instances are then used by the NAS to complete the
+   DHCPv6 procedure that the CPE initiated to retrieve information about
+   the encrypted DNS service to use.  The Discovery of Network-
+   designated Resolvers (DNR) procedure defined in [I-D.ietf-add-dnr] is
+   then followed between the DHCPv6 client and the DHCPv6 server.
 
-   Should any encrypted DNS-related information (e.g., Authentication
-   Domain Name (ADN), IPv6 address) change, the RADIUS server sends a
-   RADIUS Change-of-Authorization (CoA) message [RFC5176] that carries
-   the RADIUS DHCPv6 Attribute with the updated OPTION_V6_DNR
-   information to the NAS.  Once that message is received and validated
-   by the NAS, it replies with a RADIUS CoA ACK message.  The NAS
-   replaces the old encrypted DNS resolver information with the new one
-   and sends a DHCPv6 Reconfigure message which leads the DHCPv6 client
-   to initiate a Renew/Reply message exchange with the DHCPv6 server.
 
 
 
@@ -393,6 +393,17 @@ Boucadair & Reddy         Expires 17 April 2023                 [Page 7]
 
 Internet-Draft             RADIUS DHCP-Options              October 2022
 
+
+   Should any encrypted DNS-related information (e.g., Authentication
+   Domain Name (ADN), IPv6 address) change, the RADIUS server sends a
+   RADIUS Change-of-Authorization (CoA) message [RFC5176] that carries
+   the RADIUS DHCPv6 Attribute with the updated OPTION_V6_DNR
+   information to the NAS.  Once that message is received and validated
+   by the NAS, it replies with a RADIUS CoA ACK message.  The Network
+   Access Server (NAS) replaces the old encrypted DNS resolver
+   information with the new one and sends a DHCPv6 Reconfigure message
+   which leads the DHCPv6 client to initiate a Renew/Reply message
+   exchange with the DHCPv6 server.
 
    In deployments where the NAS behaves as a DHCPv6 relay agent, the
    procedure discussed in Section 3 of [RFC7037] can be followed.  To
@@ -427,6 +438,18 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
 
          Figure 3: An Example of RADIUS IPv4 Encrypted DNS Exchange
 
+
+
+
+
+
+
+
+Boucadair & Reddy         Expires 17 April 2023                 [Page 8]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
+
    Other deployment scenarios can be envisaged, such as returning
    customized service parameters (e.g., different DoH URI Templates) as
    a function of the service/policies/preferences that are set by a
@@ -441,14 +464,6 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    place between the RADIUS client and server with communication
    optionally secured by IPsec or Transport Layer Security (TLS)
    [RFC6614].
-
-
-
-
-Boucadair & Reddy         Expires 17 April 2023                 [Page 8]
-
-Internet-Draft             RADIUS DHCP-Options              October 2022
-
 
    Security considerations specific to the DHCP options that are carried
    in RADIUS are discussed in relevant documents that specify these
@@ -481,6 +496,16 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    IANA is requested to assign two new RADIUS attribute types from the
    IANA registry "Radius Attribute Types" [RADIUS-Types]:
 
+
+
+
+
+
+Boucadair & Reddy         Expires 17 April 2023                 [Page 9]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
+
          +==========+================+===========+===============+
          | Value    | Description    | Data Type | Reference     |
          +==========+================+===========+===============+
@@ -498,13 +523,6 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    Attributes Permitted in DHCPv6 RADIUS Option" subregistry in the
    "Dynamic Host Configuration Protocol for IPv6 (DHCPv6)" registry
    [DHCP-RADIUS]:
-
-
-
-Boucadair & Reddy         Expires 17 April 2023                 [Page 9]
-
-Internet-Draft             RADIUS DHCP-Options              October 2022
-
 
               +===========+================+===============+
               | Type Code | Attribute      | Reference     |
@@ -533,6 +551,17 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+
+
+
+
+
+
+Boucadair & Reddy         Expires 17 April 2023                [Page 10]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
+
    [RFC2865]  Rigney, C., Willens, S., Rubens, A., and W. Simpson,
               "Remote Authentication Dial In User Service (RADIUS)",
               RFC 2865, DOI 10.17487/RFC2865, June 2000,
@@ -554,13 +583,6 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-
-
-Boucadair & Reddy         Expires 17 April 2023                [Page 10]
-
-Internet-Draft             RADIUS DHCP-Options              October 2022
-
 
    [RFC8415]  Mrugalski, T., Siodelski, M., Volz, B., Yourtchenko, A.,
               Richardson, M., Jiang, S., Lemon, T., and T. Winters,
@@ -587,6 +609,15 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
               IANA, "RADIUS Types",
               <http://www.iana.org/assignments/radius-types>.
 
+
+
+
+
+Boucadair & Reddy         Expires 17 April 2023                [Page 11]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
+
    [RFC2132]  Alexander, S. and R. Droms, "DHCP Options and BOOTP Vendor
               Extensions", RFC 2132, DOI 10.17487/RFC2132, March 1997,
               <https://www.rfc-editor.org/info/rfc2132>.
@@ -606,17 +637,6 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
               "Neighbor Discovery for IP version 6 (IPv6)", RFC 4861,
               DOI 10.17487/RFC4861, September 2007,
               <https://www.rfc-editor.org/info/rfc4861>.
-
-
-
-
-
-
-
-Boucadair & Reddy         Expires 17 April 2023                [Page 11]
-
-Internet-Draft             RADIUS DHCP-Options              October 2022
-
 
    [RFC5176]  Chiba, M., Dommety, G., Eklund, M., Mitton, D., and B.
               Aboba, "Dynamic Authorization Extensions to Remote
@@ -643,6 +663,17 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
               BCP 187, RFC 7227, DOI 10.17487/RFC7227, May 2014,
               <https://www.rfc-editor.org/info/rfc7227>.
 
+
+
+
+
+
+
+Boucadair & Reddy         Expires 17 April 2023                [Page 12]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
+
    [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
               and P. Hoffman, "Specification for DNS over Transport
               Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
@@ -663,17 +694,6 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
 
 Authors' Addresses
 
-
-
-
-
-
-
-Boucadair & Reddy         Expires 17 April 2023                [Page 12]
-
-Internet-Draft             RADIUS DHCP-Options              October 2022
-
-
    Mohamed Boucadair
    Orange
    35000 Rennes
@@ -685,26 +705,6 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    Nokia
    India
    Email: kondtir@gmail.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
