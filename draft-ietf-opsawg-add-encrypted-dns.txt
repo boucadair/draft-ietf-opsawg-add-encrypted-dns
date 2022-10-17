@@ -249,8 +249,8 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    Length
 
       This field indicates the total length, in octets, of all fields of
-      this attribute, including the Type, Length, Extended-Type, and the
-      entire length of the embedded TLVs.
+      this attribute, including the Type, Length, Extended-Type, and
+      "Value".
 
    Extended-Type
 
@@ -305,8 +305,8 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    Length
 
       This field indicates the total length, in octets, of all fields of
-      this attribute, including the Type, Length, Extended-Type, and the
-      entire length of the embedded TLVs.
+      this attribute, including the Type, Length, Extended-Type, and
+      "Value".
 
    Extended-Type
 
@@ -368,7 +368,7 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    having sent a RADIUS Access-Challenge message and assuming the CPE is
    entitled to connect to the network) that carries a list of parameters
    to be used for this session, and which include the encrypted DNS
-   information.  Such an information is encoded as OPTION_V6_DNR
+   information.  Such an information is encoded as OPTION_V6_DNR (144)
    instances ([I-D.ietf-add-dnr]) in the DHCPv6-Options RADIUS
    attribute.  These instances are then used by the NAS to complete the
    DHCPv6 procedure that the CPE initiated to retrieve information about
@@ -379,7 +379,7 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    Should any encrypted DNS-related information (e.g., Authentication
    Domain Name (ADN), IPv6 address) change, the RADIUS server sends a
    RADIUS Change-of-Authorization (CoA) message [RFC5176] that carries
-   the RADIUS DHCPv6 Attribute with the updated OPTION_V6_DNR
+   the DHCPv6-Options Attribute with the updated OPTION_V6_DNR
    information to the NAS.  Once that message is received and validated
    by the NAS, it replies with a RADIUS CoA ACK message.  The NAS
    replaces the old encrypted DNS resolver information with the new one
