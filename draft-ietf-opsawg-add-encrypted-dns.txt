@@ -82,10 +82,8 @@ Table of Contents
      7.2.  New RADIUS Attribute Permitted in DHCPv6 RADIUS Option  .  10
      7.3.  DHCP Options Permitted in the RADIUS DHCP*-Options
            Attribute . . . . . . . . . . . . . . . . . . . . . . . .  10
-       7.3.1.  DHCPv6 Options Permitted in the RADIUS DHCPv4-Options
-               Attribute . . . . . . . . . . . . . . . . . . . . . .  10
-       7.3.2.  DHCP Options Permitted in the RADIUS DHCPv4-Options
-               Attribute . . . . . . . . . . . . . . . . . . . . . .  11
+       7.3.1.  DHCPv6  . . . . . . . . . . . . . . . . . . . . . . .  10
+       7.3.2.  DHCPv4  . . . . . . . . . . . . . . . . . . . . . . .  11
        7.3.3.  Guidelines for the Designated Experts . . . . . . . .  11
    8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  12
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
@@ -105,7 +103,9 @@ Table of Contents
    User Service (RADIUS) [RFC2865] attributes, such as the DNS-Server-
    IPv6-Address Attribute specified in [RFC6911].
 
-
+   With the advent of encrypted DNS (e.g., DNS-over-HTTPS (DoH)
+   [RFC8484], DNS-over-TLS (DoT) [RFC7858], or DNS-over-QUIC (DoQ)
+   [RFC9250]), additional means are required to provision hosts with
 
 
 
@@ -114,9 +114,6 @@ Boucadair & Reddy         Expires 20 April 2023                 [Page 2]
 Internet-Draft             RADIUS DHCP-Options              October 2022
 
 
-   With the advent of encrypted DNS (e.g., DNS-over-HTTPS (DoH)
-   [RFC8484], DNS-over-TLS (DoT) [RFC7858], or DNS-over-QUIC (DoQ)
-   [RFC9250]), additional means are required to provision hosts with
    network-designated encrypted DNS.  To fill that void,
    [I-D.ietf-add-dnr] leverages existing protocols such as DHCP and IPv6
    Router Advertisement to provide hosts with the required information
@@ -128,10 +125,10 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    This document specifies two new RADIUS attributes: DHCPv6-Options
    (Section 3.1) and DHCPv4-Options (Section 3.2) Attributes.  These
    attributes can include DHCP options that are listed under the IANA
-   registries in Sections 7.3.1 and 7.3.1.  These two attributes are
-   specified in order to accommodate both IPv4 and IPv6 deployment
-   contexts while taking into account the constraints in Section 3.4 of
-   [RFC6158].
+   registries that are created in Sections 7.3.1 and 7.3.1.  These two
+   attributes are specified in order to accommodate both IPv4 and IPv6
+   deployment contexts while taking into account the constraints in
+   Section 3.4 of [RFC6158].
 
    The mechanism specified in this document is a generic mechanism and
    might be employed in network scenarios where the DHCP server and the
@@ -141,7 +138,8 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    allow a DHCP relay agent that is collocated with a RADIUS client to
    pass attributes obtained from a RADIUS server to a DHCP server.  DHCP
    options that are included in the new RADIUS attributes can be
-   controlled by a deployment specific policy.
+   controlled by a deployment specific policy.  Discussing such as
+   policy is out of scope.
 
    This document adheres to [RFC8044] for defining the new attributes.
 
@@ -162,6 +160,8 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    DHCP:  refers to both DHCPv4 [RFC2132] and DHCPv6 [RFC8415].
 
    Encrypted DNS:  refers to a scheme where DNS exchanges are
+      transported over an encrypted channel.  Examples of encrypted DNS
+      are DoT, DoH, and DoQ.
 
 
 
@@ -169,9 +169,6 @@ Boucadair & Reddy         Expires 20 April 2023                 [Page 3]
 
 Internet-Draft             RADIUS DHCP-Options              October 2022
 
-
-      transported over an encrypted channel.  Examples of encrypted DNS
-      are DoT, DoH, and DoQ.
 
    Encrypted DNS resolver:  refers to a resolver (Section 6 of
       [RFC8499]) that supports encrypted DNS.
@@ -217,6 +214,9 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
    These attributes are defined with globally unique names.  The naming
    of the attributes follows the guidelines in Section 2.7.1 of
    [RFC6929].
+
+
+
 
 
 
@@ -321,7 +321,7 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
 
       This field contains a list of DHCPv4 options.
 
-      Permitted DHCPv4 options in the DHCPv6-Options Attribute are
+      Permitted DHCPv4 options in the DHCPv4-Options Attribute are
       maintained by IANA in the registry created in Section 7.3.2.
 
    The DHCPv4-Options Attribute is associated with the following
@@ -537,7 +537,7 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
 7.3.  DHCP Options Permitted in the RADIUS DHCP*-Options Attribute
 
 
-7.3.1.  DHCPv6 Options Permitted in the RADIUS DHCPv4-Options Attribute
+7.3.1.  DHCPv6
 
    IANA is requested to create a new sub-registry entitled "DHCPv6
    Options Permitted in the RADIUS DHCPv6-Options Attribute" in the
@@ -570,10 +570,10 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
 
                       Table 3: Initial DHCPv6 Options
                           Permitted in the RADIUS
-                          DHCPv4-Options Attribute
+                          DHCPv6-Options Attribute
 
 
-7.3.2.  DHCP Options Permitted in the RADIUS DHCPv4-Options Attribute
+7.3.2.  DHCPv4
 
    IANA is requested to create a new sub-registry entitled "DHCP Options
    Permitted in the RADIUS DHCPv4-Options Attribute" in the "Dynamic
@@ -593,7 +593,7 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
                   | 162 | OPTION_V4_DNR | This-Document |
                   +-----+---------------+---------------+
 
-                       Table 4: Initial DHCP Options
+                      Table 4: Initial DHCPv4 Options
                           Permitted in the RADIUS
                           DHCPv4-Options Attribute
 
