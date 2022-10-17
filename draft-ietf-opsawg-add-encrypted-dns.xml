@@ -90,7 +90,7 @@
 
     <abstract>
       <t>This document specifies two new Remote Authentication Dial-In User
-      Service (RADIUS) attributes that carry any DHCP option. Even if the
+      Service (RADIUS) attributes that carry DHCP options. Even if the
       specification was initially motivated by the configuration of encrypted
       DNS resolvers, the specification is generic and can be applicable to any
       service that relies upon DHCP. Both DHCPv4 and DHCPv6 configured
@@ -127,20 +127,25 @@
 
       <t>This document specifies two new RADIUS attributes: DHCPv6-Options
       (<xref target="v6"></xref>) and DHCPv4-Options (<xref
-      target="v4"></xref>) Attributes. These attributes can include any DHCP
-      option. These two attributes are specified in order to accommodate both
-      IPv4 and IPv6 deployment contexts while taking into account the
-      constraints in <xref section="3.4" target="RFC6158"></xref>.</t>
+      target="v4"></xref>) Attributes. These attributes can include DHCP
+      options that are listed under the IANA registries in Sections <xref
+      format="counter" target="drv6-reg"></xref> and <xref format="counter"
+      target="drv6-reg"></xref>. These two attributes are specified in order
+      to accommodate both IPv4 and IPv6 deployment contexts while taking into
+      account the constraints in <xref section="3.4"
+      target="RFC6158"></xref>.</t>
 
       <t>The mechanism specified in this document is a generic mechanism and
       might be employed in network scenarios where the DHCP server and the
       RADIUS client are located in the same device. The new attributes can
       also be used in deployments that rely upon the mechanisms defined in
-      <xref target="RFC4014"></xref> or <xref target="RFC7037"></xref>, which
-      allow a DHCP relay agent that is collocated with a RADIUS client to pass
-      attributes obtained from a RADIUS server to a DHCP server. DHCP options
-      that are included in the new RADIUS attributes can be controlled by a
-      deployment specific policy. </t>
+      <xref target="RFC4014"></xref><xref
+      target="I-D.boucadair-dhcwg-rfc4014-update"></xref> or <xref
+      target="RFC7037"></xref>, which allow a DHCP relay agent that is
+      collocated with a RADIUS client to pass attributes obtained from a
+      RADIUS server to a DHCP server. DHCP options that are included in the
+      new RADIUS attributes can be controlled by a deployment specific policy.
+      </t>
 
       <t>This document adheres to <xref target="RFC8044"></xref> for defining
       the new attributes.</t>
@@ -209,6 +214,10 @@
       expose the DHCP options and allow administrators to configure them,
       instead of requiring them to be entered as opaque data.</t>
 
+      <t>Absent any explicit configuration on the DHCP server, RADIUS supplied
+      data by means of DHCP*-Options Attributes take precedence over any local
+      configuration. </t>
+
       <t>These attributes are defined with globally unique names. The naming
       of the attributes follows the guidelines in Section 2.7.1 of <xref
       target="RFC6929"></xref>.</t>
@@ -252,7 +261,11 @@
             instances of the same DHCPv6 option MAY be included. Consistent
             with Section 17 of <xref target="RFC7227"></xref>, this document
             does not impose any option order when multiple options are
-            present.</t>
+            present. <vspace blankLines="1" /></t>
+
+            <t>Permitted DHCPv6 options in the DHCPv6-Options Attribute are
+            maintained by IANA in the registry created in <xref
+            format="default" target="drv6-reg"></xref>.</t>
           </list></t>
 
         <t>The DHCPv6-Options Attribute is associated with the following
@@ -294,11 +307,14 @@
           </list></t>
 
         <t>Value<list style="empty">
-            <t>This field contains a list of DHCPv4 options.</t>
+            <t>This field contains a list of DHCPv4 options.<vspace
+            blankLines="1" />Permitted DHCPv4 options in the DHCPv6-Options
+            Attribute are maintained by IANA in the registry created in <xref
+            format="default" target="drv4-reg"></xref>.</t>
           </list></t>
 
         <t>The DHCPv4-Options Attribute is associated with the following
-        identifier: 245.TBA2.</t>
+        identifier: 245.TBA2. </t>
       </section>
     </section>
 
@@ -504,6 +520,98 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
         <t></t>
       </section>
+
+      <section title="DHCP Options Permitted in the RADIUS DHCP*-Options Attribute">
+        <t></t>
+
+        <section anchor="drv6-reg"
+                 title="DHCPv6 Options Permitted in the RADIUS DHCPv4-Options Attribute">
+          <t>IANA is requested to create a new sub-registry entitled "DHCPv6
+          Options Permitted in the RADIUS DHCPv6-Options Attribute" in the
+          "Dynamic Host Configuration Protocol for IPv6 (DHCPv6)" registry
+          <xref target="DHCP-RADIUS"></xref>.</t>
+
+          <t>The registration policy for this new sub-registry is Expert
+          Review (Section 4.5 of <xref target="RFC8126"></xref>). See more
+          details in <xref target="reg"></xref>.</t>
+
+          <t>The initial content of this sub-registry is listed in <xref
+          target="drv6"></xref>. The reference may include the document that
+          registers the option or the document that specifies the option.</t>
+
+          <texttable anchor="drv6" style="headers"
+                     title="Initial DHCPv6 Options Permitted in the RADIUS DHCPv4-Options Attribute">
+            <ttcol>Value</ttcol>
+
+            <ttcol>Description</ttcol>
+
+            <ttcol>Reference</ttcol>
+
+            <c>144</c>
+
+            <c>OPTION_V6_DNR</c>
+
+            <c>This-Document</c>
+          </texttable>
+
+          <t></t>
+        </section>
+
+        <section anchor="drv4-reg"
+                 title="DHCP Options Permitted in the RADIUS DHCPv4-Options Attribute">
+          <t>IANA is requested to create a new sub-registry entitled "DHCP
+          Options Permitted in the RADIUS DHCPv4-Options Attribute" in the
+          "Dynamic Host Configuration Protocol (DHCP) and Bootstrap Protocol
+          (BOOTP) Parameters" registry <xref target="BOOTP"></xref>.</t>
+
+          <t>The registration policy for this new sub-registry is Expert
+          Review (Section 4.5 of <xref target="RFC8126"></xref>). See more
+          details in <xref target="reg"></xref>.</t>
+
+          <t>The initial content of this sub-registry is listed in <xref
+          target="drv4"></xref>. The reference may include the document that
+          registers the option or the document that specifies the option.</t>
+
+          <texttable anchor="drv4" style="headers"
+                     title="Initial DHCP Options Permitted in the RADIUS DHCPv4-Options Attribute">
+            <ttcol>Tag</ttcol>
+
+            <ttcol>Name</ttcol>
+
+            <ttcol>Reference</ttcol>
+
+            <c>162</c>
+
+            <c>OPTION_V4_DNR</c>
+
+            <c>This-Document</c>
+          </texttable>
+
+          <t></t>
+        </section>
+
+        <section anchor="reg" title="Guidelines for the Designated Experts">
+          <t>It is suggested that multiple designated experts be appointed for
+          registry change requests.</t>
+
+          <t>Criteria that should be applied by the designated experts include
+          determining whether the proposed registration duplicates existing
+          entries and whether the registration description is clear and fits
+          the purpose of this registry.</t>
+
+          <t>Registration requests MUST be sent to radius-dhcp-review@ietf.org
+          and are evaluated within a three-week review period on the advice of
+          one or more designated experts. Within the review period, the
+          designated experts will either approve or deny the registration
+          request, communicating this decision to the review list and IANA.
+          Denials should include an explanation and, if applicable,
+          suggestions as to how to make the request successful.</t>
+
+          <t>Registration requests that are undetermined for a period longer
+          than 28 days can be brought to the IESG's attention for
+          resolution.</t>
+        </section>
+      </section>
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
@@ -530,6 +638,8 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
       <?rfc include='reference.RFC.6929'?>
 
       <?rfc include='reference.RFC.8415'?>
+
+      <?rfc include='reference.RFC.8126'?>
     </references>
 
     <references title="Informative References">
@@ -540,6 +650,8 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
       <?rfc include='reference.RFC.5176'?>
 
       <?rfc include='reference.RFC.4014'?>
+
+      <?rfc include='reference.I-D.boucadair-dhcwg-rfc4014-update'?>
 
       <?rfc include='reference.RFC.8484'?>
 
@@ -578,6 +690,20 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
                  target="https://www.iana.org/assignments/dhcpv6-parameters/dhcpv6-parameters.xhtml">
         <front>
           <title>Dynamic Host Configuration Protocol for IPv6 (DHCPv6)</title>
+
+          <author>
+            <organization>IANA</organization>
+          </author>
+
+          <date />
+        </front>
+      </reference>
+
+      <reference anchor="BOOTP"
+                 target="https://www.iana.org/assignments/bootp-dhcp-parameters/bootp-dhcp-parameters.xhtml">
+        <front>
+          <title>Dynamic Host Configuration Protocol (DHCP) and Bootstrap
+          Protocol (BOOTP) Parameters</title>
 
           <author>
             <organization>IANA</organization>
