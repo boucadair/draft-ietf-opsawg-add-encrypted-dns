@@ -5,19 +5,21 @@
 opsawg                                                      M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: 16 April 2023                                             Nokia
-                                                         13 October 2022
+Expires: 20 April 2023                                             Nokia
+                                                         17 October 2022
 
 
-                  RADIUS Extensions for Encrypted DNS
-                 draft-ietf-opsawg-add-encrypted-dns-03
+             RADIUS Extensions for DHCP Configured Services
+                 draft-ietf-opsawg-add-encrypted-dns-04
 
 Abstract
 
-   This document specifies new Remote Authentication Dial-In User
-   Service (RADIUS) attributes that carry an authentication domain name,
-   a list of IP addresses, and a set of service parameters of encrypted
-   DNS resolvers.
+   This document specifies two new Remote Authentication Dial-In User
+   Service (RADIUS) attributes that carry any DHCP option.  Even if the
+   specification was initially motivated by the configuration of
+   encrypted DNS resolvers, the specification is generic and can be
+   applicable to any service that relies upon DHCP.  Both DHCPv4 and
+   DHCPv6 configured services are covered.
 
 Status of This Memo
 
@@ -34,12 +36,27 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 April 2023.
+   This Internet-Draft will expire on 20 April 2023.
 
 Copyright Notice
 
    Copyright (c) 2022 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
+
+
+
+
+
+
+
+
+
+
+
+Boucadair & Reddy         Expires 20 April 2023                 [Page 1]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents (https://trustee.ietf.org/
@@ -50,39 +67,24 @@ Copyright Notice
    described in Section 4.e of the Trust Legal Provisions and are
    provided without warranty as described in the Revised BSD License.
 
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                 [Page 1]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   5
-   3.  Encrypted DNS RADIUS Attributes . . . . . . . . . . . . . . .   5
-     3.1.  IPv6-Encrypted-DNS Attribute  . . . . . . . . . . . . . .   6
-     3.2.  IPv4-Encrypted-DNS Attribute  . . . . . . . . . . . . . .   7
-     3.3.  RADIUS TLVs for Encrypted DNS . . . . . . . . . . . . . .   9
-       3.3.1.  Encrypted-DNS-ADN TLV . . . . . . . . . . . . . . . .   9
-       3.3.2.  Encrypted-DNS-IPv6-Address TLV  . . . . . . . . . . .  10
-       3.3.3.  Encrypted-DNS-IPv4-Address TLV  . . . . . . . . . . .  10
-       3.3.4.  Encrypted-DNS-SvcParams TLV . . . . . . . . . . . . .  11
-       3.3.5.  Encrypted-DNS-SvcPriority TLV . . . . . . . . . . . .  12
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
-   5.  Table of Attributes . . . . . . . . . . . . . . . . . . . . .  12
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
-     6.1.  New RADIUS Attributes . . . . . . . . . . . . . . . . . .  13
-     6.2.  RADIUS Encrypted DNS TLVs . . . . . . . . . . . . . . . .  13
-     6.3.  New RADIUS Attribute Permitted in DHCPv6 RADIUS Option  .  14
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  14
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  15
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  16
-   Appendix A.  DNR to RADIUS Field Mappings . . . . . . . . . . . .  18
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  DHCP Options RADIUS Attributes  . . . . . . . . . . . . . . .   4
+     3.1.  DHCPv6-Options Attribute  . . . . . . . . . . . . . . . .   4
+     3.2.  DHCPv4-Options Attribute  . . . . . . . . . . . . . . . .   5
+   4.  Applicability to Encrypted DNS Provisioning . . . . . . . . .   6
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
+   6.  Table of Attributes . . . . . . . . . . . . . . . . . . . . .   9
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
+     7.1.  New RADIUS Attributes . . . . . . . . . . . . . . . . . .   9
+     7.2.  New RADIUS Attribute Permitted in DHCPv6 RADIUS Option  .   9
+   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  10
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  11
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
 
 1.  Introduction
 
@@ -96,6 +98,22 @@ Table of Contents
    User Service (RADIUS) [RFC2865] attributes, such as the DNS-Server-
    IPv6-Address Attribute specified in [RFC6911].
 
+
+
+
+
+
+
+
+
+
+
+
+Boucadair & Reddy         Expires 20 April 2023                 [Page 2]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
+
    With the advent of encrypted DNS (e.g., DNS-over-HTTPS (DoH)
    [RFC8484], DNS-over-TLS (DoT) [RFC7858], or DNS-over-QUIC (DoQ)
    [RFC9250]), additional means are required to provision hosts with
@@ -104,31 +122,221 @@ Table of Contents
    Router Advertisement to provide hosts with the required information
    to connect to an encrypted DNS resolver.  However, there are no
    RADIUS attributes that can be used to populate the discovery messages
-   discussed in [I-D.ietf-add-dnr].
+   discussed in [I-D.ietf-add-dnr].  The same concern is likely to be
+   encountered for future services that are configured using DHCP.
+
+   This document specifies two new RADIUS attributes: DHCPv6-Options
+   (Section 3.1) and DHCPv4-Options (Section 3.2) Attributes.  These
+   attributes can include any DHCP option.  These two attributes are
+   specified in order to accommodate both IPv4 and IPv6 deployment
+   contexts while taking into account the constraints in Section 3.4 of
+   [RFC6158].
+
+   The mechanism specified in this document is a generic mechanism and
+   might be employed in network scenarios where the DHCP server and the
+   RADIUS client are located in the same device.  The new attributes can
+   also be used in deployments that rely upon the mechanisms defined in
+   [RFC4014] or [RFC7037], which allow a DHCP relay agent that is
+   collocated with a RADIUS client to pass attributes obtained from a
+   RADIUS server to a DHCP server.  DHCP options that are included in
+   the new RADIUS attributes can be controlled by a deployment specific
+   policy.
+
+   This document adheres to [RFC8044] for defining the new attributes.
+
+   A sample deployment usage of the DHCPv6-Options and DHCPv4-Options
+   RADIUS attributes is described in Section 4.
+
+2.  Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+   This document makes use of the terms defined in [RFC2865], [RFC8415],
+   and [RFC8499].  The following additional terms are used:
+
+   DHCP:  refers to both DHCPv4 [RFC2132] and DHCPv6 [RFC8415].
+
+   Encrypted DNS:  refers to a scheme where DNS exchanges are
 
 
 
 
-Boucadair & Reddy         Expires 16 April 2023                 [Page 2]
+Boucadair & Reddy         Expires 20 April 2023                 [Page 3]
 
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
+Internet-Draft             RADIUS DHCP-Options              October 2022
 
 
-   This document specifies two new RADIUS attributes: IPv6-Encrypted-DNS
-   (Section 3.1) and IPv4-Encrypted-DNS (Section 3.2) Attributes.  These
-   two attributes are specified in order to accommodate both IPv4 and
-   IPv6 deployment contexts while taking into account the constraints in
-   Section 3.4 of [RFC6158].
+      transported over an encrypted channel.  Examples of encrypted DNS
+      are DoT, DoH, and DoQ.
+
+   Encrypted DNS resolver:  refers to a resolver (Section 6 of
+      [RFC8499]) that supports encrypted DNS.
+
+   DHCP*-Options:  refers to DHCPv4-Options and DHCPv6-Options
+      Attributes (Section 3).
+
+3.  DHCP Options RADIUS Attributes
+
+   This section specifies two new RADIUS attributes for RADIUS clients
+   and servers to exchange DHCP-encoded data.  This data is then used to
+   feed the DHCP procedure between DHCP client and a DHCP server.
+
+   Both DHCPv4-Options and DHCPv6-Options Attributes use the "Long
+   Extended Type" format (Section 2.2 of [RFC6929]).  The description of
+   the fields is provided in Sections 3.1 and 3.2.
+
+   These attributes use the "Long Extended Type" format in order to
+   permit the transport of attributes encapsulating more than 253 octets
+   of data.  DHCP options that can be included in the DHCP*-Options
+   RADIUS attributes are limited by the maximum packet size of 4096
+   bytes.  In order to accommodate deployments with large options,
+   implementations are RECOMMENDED to support a packet size up to 65535
+   bytes.
+
+   The value fields of DHCP*-Options Attributes are encoded in clear and
+   not encrypted as, for example, Tunnel-Password Attribute [RFC2868].
+
+   RADIUS implementations may support a configuration parameter to
+   control the DHCP options that can be included in a DHCP*-Options
+   RADIUS attribute.
+
+   For ease of administrator configuration, the RADIUS server SHOULD
+   expose the DHCP options and allow administrators to configure them,
+   instead of requiring them to be entered as opaque data.
+
+   These attributes are defined with globally unique names.  The naming
+   of the attributes follows the guidelines in Section 2.7.1 of
+   [RFC6929].
+
+3.1.  DHCPv6-Options Attribute
+
+   This attribute is of type "string" as defined in Section 3.5 of
+   [RFC8044].
+
+
+
+
+
+Boucadair & Reddy         Expires 20 April 2023                 [Page 4]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
+
+   The DHCPv6-Options Attribute MAY appear in a RADIUS Access-Accept
+   packet.  It MAY also appear in a RADIUS Access-Request packet as a
+   hint to the RADIUS server to indicate a preference.  However, the
+   server is not required to honor such a preference.
+
+   The DHCPv6-Options Attribute MAY appear in a RADIUS CoA-Request
+   packet.
+
+   The DHCPv6-Options Attribute MAY appear in a RADIUS Accounting-
+   Request packet.
+
+   The DHCPv6-Options Attribute MUST NOT appear in any other RADIUS
+   packet.
+
+   The DHCPv6-Options Attribute is structured as follows:
+
+   Type
+
+      245
+
+   Length
+
+      This field indicates the total length, in octets, of all fields of
+      this attribute, including the Type, Length, Extended-Type, and the
+      entire length of the embedded TLVs.
+
+   Extended-Type
+
+      TBA1 (see Section 7.1).
+
+   Value
+
+      This field contains a list of DHCPv6 options.  Multiple instances
+      of the same DHCPv6 option MAY be included.  Consistent with
+      Section 17 of [RFC7227], this document does not impose any option
+      order when multiple options are present.
+
+   The DHCPv6-Options Attribute is associated with the following
+   identifier: 245.TBA1.
+
+3.2.  DHCPv4-Options Attribute
+
+   This attribute is of type "string" as defined in Section 3.5 of
+   [RFC8044].
+
+
+
+
+
+
+
+Boucadair & Reddy         Expires 20 April 2023                 [Page 5]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
+
+   The DHCPv4-Options Attribute MAY appear in a RADIUS Access-Accept
+   packet.  It MAY also appear in a RADIUS Access-Request packet as a
+   hint to the RADIUS server to indicate a preference.  However, the
+   server is not required to honor such a preference.
+
+   The DHCPv4-Options Attribute MAY appear in a RADIUS CoA-Request
+   packet.
+
+   The DHCPv4-Options Attribute MAY appear in a RADIUS Accounting-
+   Request packet.
+
+   The DHCPv4-Options Attribute MUST NOT appear in any other RADIUS
+   packet.
+
+   The DHCPv4-Options Attribute is structured as follows:
+
+   Type
+
+      245
+
+   Length
+
+      This field indicates the total length, in octets, of all fields of
+      this attribute, including the Type, Length, Extended-Type, and the
+      entire length of the embedded TLVs.
+
+   Extended-Type
+
+      TBA2 (see Section 7.1).
+
+   Value
+
+      This field contains a list of DHCPv4 options.
+
+   The DHCPv4-Options Attribute is associated with the following
+   identifier: 245.TBA2.
+
+4.  Applicability to Encrypted DNS Provisioning
 
    Typical deployment scenarios are similar to those described, for
-   instance, in Section 2 of [RFC6911].  Some of these deployments may
-   rely upon the mechanisms defined in [RFC4014] or [RFC7037], which
-   allows a Network Access Server (NAS) to pass attributes obtained from
-   a RADIUS server to a DHCP server.  For illustration purposes,
+   instance, in Section 2 of [RFC6911].  For illustration purposes,
    Figure 1 shows an example where a Customer Premises Equipment (CPE)
    is provided with an encrypted DNS resolver.  This example assumes
-   that the NAS embeds both RADIUS client and DHCPv6 server
-   capabilities.
+   that the Network Access Server (NAS) embeds both RADIUS client and
+   DHCPv6 server capabilities.
+
+
+
+
+
+
+Boucadair & Reddy         Expires 20 April 2023                 [Page 6]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
 
    +-------------+           +-------------+             +-------+
    |     CPE     |           |     NAS     |             |  AAA  |
@@ -139,8 +347,8 @@ Internet-Draft          RADIUS for Encrypted DNS            October 2022
           |                         o----Access-Request ---->|
           |                         |                        |
           |                         |<----Access-Accept------o
-          |                         |  IPv6-Encrypted-DNS    |
-          |<--DHCPv6 Advertisement--o                        |
+          |                         |     DHCPv6-Options     |
+          |<----DHCPv6 Advertise----o    (OPTION_V6_DNR)     |
           |     (OPTION_V6_DNR)     |                        |
           |                         |                        |
           o-----DHCPv6 Request----->|                        |
@@ -160,35 +368,35 @@ Internet-Draft          RADIUS for Encrypted DNS            October 2022
    having sent a RADIUS Access-Challenge message and assuming the CPE is
    entitled to connect to the network) that carries a list of parameters
    to be used for this session, and which include the encrypted DNS
-   information.  The content of the IPv6-Encrypted-DNS Attribute is then
-   used by the NAS to complete the DHCPv6 procedure that the CPE
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                 [Page 3]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
-   initiated to retrieve information about the encrypted DNS service to
-   use.  The Discovery of Network-designated Resolvers (DNR) procedure
-   defined in [I-D.ietf-add-dnr] is then followed between the DHCPv6
-   client and the DHCPv6 server.  Appendix A describes the DNR to RADIUS
-   field mappings.
+   information.  Such an information is encoded as OPTION_V6_DNR
+   instances ([I-D.ietf-add-dnr]) in the DHCPv6-Options RADIUS
+   attribute.  These instances are then used by the NAS to complete the
+   DHCPv6 procedure that the CPE initiated to retrieve information about
+   the encrypted DNS service to use.  The Discovery of Network-
+   designated Resolvers (DNR) procedure defined in [I-D.ietf-add-dnr] is
+   then followed between the DHCPv6 client and the DHCPv6 server.
 
    Should any encrypted DNS-related information (e.g., Authentication
    Domain Name (ADN), IPv6 address) change, the RADIUS server sends a
    RADIUS Change-of-Authorization (CoA) message [RFC5176] that carries
-   the RADIUS IPv6-Encrypted-DNS Attributes to the NAS.  Once that
-   message is received and validated by the NAS, it replies with a
-   RADIUS CoA ACK message.  The NAS replaces the old encrypted DNS
-   resolver information with the new one and sends a DHCPv6 Reconfigure
-   message which leads the DHCPv6 client to initiate a Renew/Reply
-   message exchange with the DHCPv6 server.
+   the RADIUS DHCPv6 Attribute with the updated OPTION_V6_DNR
+   information to the NAS.  Once that message is received and validated
+   by the NAS, it replies with a RADIUS CoA ACK message.  The NAS
+   replaces the old encrypted DNS resolver information with the new one
+   and sends a DHCPv6 Reconfigure message which leads the DHCPv6 client
+   to initiate a Renew/Reply message exchange with the DHCPv6 server.
+
+
+
+
+Boucadair & Reddy         Expires 20 April 2023                 [Page 7]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
 
    In deployments where the NAS behaves as a DHCPv6 relay agent, the
    procedure discussed in Section 3 of [RFC7037] can be followed.  To
-   that aim, Section 6.3 updates the "RADIUS Attributes Permitted in
+   that aim, Section 7.2 updates the "RADIUS Attributes Permitted in
    DHCPv6 RADIUS Option" registry ([DHCP-RADIUS]).
 
    Figure 2 shows another example where a CPE is provided with an
@@ -204,8 +412,8 @@ Internet-Draft          RADIUS for Encrypted DNS            October 2022
           |                         o----Access-Request ---->|
           |                         |                        |
           |                         |<----Access-Accept------o
-          |                         |  IPv4-Encrypted-DNS    |
-          |<-----DHCPOFFER----------o                        |
+          |                         |     DHCPv4_Options     |
+          |<-----DHCPOFFER----------o    (OPTION_V4_DNR)     |
           |     (OPTION_V4_DNR)     |                        |
           |                         |                        |
           o-----DHCPREQUEST-------->|                        |
@@ -219,433 +427,13 @@ Internet-Draft          RADIUS for Encrypted DNS            October 2022
 
          Figure 2: An Example of RADIUS IPv4 Encrypted DNS Exchange
 
-
-
-Boucadair & Reddy         Expires 16 April 2023                 [Page 4]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
    Other deployment scenarios can be envisaged, such as returning
    customized service parameters (e.g., different DoH URI Templates) as
    a function of the service/policies/preferences that are set by a
    network administrator.  How an administrator indicates its
    service/policies/preferences to an AAA server is out of scope.
 
-   This document adheres to [RFC8044] for defining the new attributes.
-
-2.  Terminology
-
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in BCP
-   14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
-
-   This document makes use of the terms defined in [RFC8499].  The
-   following additional terms are used:
-
-   DHCP:  refers to both DHCPv4 [RFC2132] and DHCPv6 [RFC8415].
-
-   Encrypted DNS:  refers to a scheme where DNS exchanges are
-      transported over an encrypted channel.  Examples of encrypted DNS
-      are DoT, DoH, and DoQ.
-
-   Encrypted DNS resolver:  refers to a resolver (Section 6 of
-      [RFC8499]) that supports encrypted DNS.
-
-   *-Encrypted-DNS:  refers to IPv6-Encrypted-DNS and IPv4-Encrypted-DNS
-      Attributes.
-
-   Encrypted-DNS-*:  refers to any of the following attributes:
-      Encrypted-DNS-ADN, Encrypted-DNS-IPv6-Address, Encrypted-DNS-
-      IPv4-Address, Encrypted-DNS-SvcParams, and Encrypted-DNS-
-      SvcPriority.
-
-3.  Encrypted DNS RADIUS Attributes
-
-   Both IPv6-Encrypted-DNS and IPv4-Encrypted-DNS have the same format
-   shown in Figure 3.  These attributes uses the "Long Extended Type"
-   format (Section 2.2 of [RFC6929]) in order to permit the transport of
-   attributes encapsulating more than 253 octets of data.  The
-   description of the fields is provided in Sections 3.1 and 3.2.
-
-   These attributes and their embedded TLVs (Section 3.3) are defined
-   with globally unique names.  The definition of the attributes follows
-   the guidelines in Section 2.7.1 of [RFC6929].
-
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                 [Page 5]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
-       0                   1                   2                   3
-       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |     Type      |    Length     | Extended-Type |M|  Reserved   |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |     Value ...
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-       Figure 3: Format of IPv6-Encrypted-DNS and IPv4-Encrypted-DNS
-                                 Attributes
-
-   The value fields of *-Encrypted-DNS and Encrypted-DNS-* Attributes
-   are encoded in clear and not encrypted as, for example, Tunnel-
-   Password Attribute [RFC2868].
-
-3.1.  IPv6-Encrypted-DNS Attribute
-
-   This attribute is of type "tlv" as defined in Section 2.3 of
-   [RFC6929].
-
-   The IPv6-Encrypted-DNS Attribute includes the authentication domain
-   name, a list of IPv6 addresses, and a set of service parameters of an
-   encrypted DNS resolver (Section 3.1.9 of [I-D.ietf-add-dnr]).
-
-   Because multiple IPv6-Encrypted-DNS Attributes may be provisioned to
-   a requesting host, multiple instances of the IPv6-Encrypted-DNS
-   attribute MAY be included; each instance of the attribute carries a
-   distinct encrypted DNS resolver.  These TLVs SHOULD be processed
-   following their service priority (i.e., smaller service priority
-   indicates a higher preference).
-
-   The IPv6-Encrypted-DNS Attribute MAY appear in a RADIUS Access-Accept
-   packet.  It MAY also appear in a RADIUS Access-Request packet as a
-   hint to the RADIUS server to indicate a preference.  However, the
-   server is not required to honor such a preference.
-
-   The IPv6-Encrypted-DNS Attribute MAY appear in a RADIUS CoA-Request
-   packet.
-
-   The IPv6-Encrypted-DNS Attribute MAY appear in a RADIUS Accounting-
-   Request packet.
-
-   The IPv6-Encrypted-DNS Attribute MUST NOT appear in any other RADIUS
-   packet.
-
-   The IPv6-Encrypted-DNS Attribute is structured as follows:
-
-   Type
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                 [Page 6]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
-      245
-
-   Length
-
-      This field indicates the total length, in octets, of all fields of
-      this attribute, including the Type, Length, Extended-Type, and the
-      entire length of the embedded TLVs.
-
-   Extended-Type
-
-      TBA1 (see Section 6.1).
-
-   Value
-
-      This field contains a set of TLVs as follows:
-
-      Encrypted-DNS-ADN TLV:  The IPv6-Encrypted-DNS Attribute MUST
-         include exactly one instance of Encrypted-DNS-ADN TLV
-         (Section 3.3.1).
-
-      Encrypted-DNS-IPv6-Address TLV:  The IPv6-Encrypted-DNS Attribute
-         SHOULD include one or multiple instances of Encrypted-DNS-
-         IPv6-Address TLV (Section 3.3.2).  If multiple instances are
-         included, they are ordered in the preference for use.  In
-         contexts where putting additional complexity on requesting
-         hosts is acceptable, returning an ADN only (that is, no
-         Encrypted-DNS-IPv6-Address TLV is returned) can be considered.
-
-      Encrypted-DNS-SvcParams TLV:  The IPv6-Encrypted-DNS Attribute
-         SHOULD include one or multiple instances of Encrypted-DNS-
-         SvcParams TLV (Section 3.3.4).  If multiple instances are
-         included, each of these instances MUST include self-contained
-         SvcParams.
-
-      Encrypted-DNS-SvcPriority TLV:  The IPv6-Encrypted-DNS Attribute
-         SHOULD include one instance of Encrypted-DNS-SvcPriority TLV
-         (Section 3.3.5).
-
-   The IPv6-Encrypted-DNS Attribute is associated with the following
-   identifier: 245.TBA1.
-
-3.2.  IPv4-Encrypted-DNS Attribute
-
-   This attribute is of type "tlv" as defined in Section 2.3 of
-   [RFC6929].
-
-
-
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                 [Page 7]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
-   The IPv4-Encrypted-DNS Attribute includes the authentication domain
-   name, a list of IPv4 addresses, and a set of service parameters of an
-   encrypted DNS resolver (Section 3.1.9 of [I-D.ietf-add-dnr]).
-
-   Because multiple IPv4-Encrypted-DNS attributes may be provisioned to
-   a requesting host, multiple instances of the IPv4-Encrypted-DNS
-   attribute MAY be included; each instance of the attribute carries a
-   distinct encrypted DNS resolver.  These TLVs SHOULD be processed
-   following their service priority (i.e., smaller service priority
-   indicates a higher preference).
-
-   The IPv4-Encrypted-DNS Attribute MAY appear in a RADIUS Access-Accept
-   packet.  It MAY also appear in a RADIUS Access-Request packet as a
-   hint to the RADIUS server to indicate a preference.  However, the
-   server is not required to honor such a preference.
-
-   The IPv4-Encrypted-DNS Attribute MAY appear in a RADIUS CoA-Request
-   packet.
-
-   The IPv4-Encrypted-DNS Attribute MAY appear in a RADIUS Accounting-
-   Request packet.
-
-   The IPv4-Encrypted-DNS Attribute MUST NOT appear in any other RADIUS
-   packet.
-
-   The IPv4-Encrypted-DNS Attribute is structured as follows:
-
-   Type
-
-      245
-
-   Length
-
-      This field indicates the total length, in octets, of all fields of
-      this attribute, including the Type, Length, Extended-Type, and the
-      entire length of the embedded TLVs.
-
-   Extended-Type
-
-      TBA2 (see Section 6.1).
-
-   Value
-
-      This field contains a set of TLVs as follows:
-
-      Encrypted-DNS-ADN TLV:  The IPv4-Encrypted-DNS Attribute MUST
-         include exactly one instance of Encrypted-DNS-ADN TLV
-         (Section 3.3.1).
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                 [Page 8]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
-      Encrypted-DNS-IPv4-Address TLV:  The IPv4-Encrypted-DNS Attribute
-         SHOULD include one or multiple instances of Encrypted-DNS-
-         IPv4-Address TLV (Section 3.3.3).  In contexts where putting
-         additional complexity on requesting hosts is acceptable,
-         returning an ADN only (that is, no Encrypted-DNS-IPv4-Address
-         TLV is returned) can be considered.
-
-      Encrypted-DNS-SvcParams TLV:  The IPv4-Encrypted-DNS Attribute
-         SHOULD include one or multiple instances of Encrypted-DNS-
-         SvcParams TLV (Section 3.3.4).  If multiple instances are
-         included, each of these instances MUST include self-contained
-         SvcParams.
-
-      Encrypted-DNS-SvcPriority TLV:  The IPv4-Encrypted-DNS Attribute
-         SHOULD include one instance of Encrypted-DNS-SvcPriority TLV
-         (Section 3.3.5).
-
-   The IPv4-Encrypted-DNS Attribute is associated with the following
-   identifier: 245.TBA2.
-
-3.3.  RADIUS TLVs for Encrypted DNS
-
-   The TLVs defined in the following subsections use the format defined
-   in Section 2.3 of [RFC6929].
-
-   These TLVs have the same name and number when encapsulated in any of
-   the parent attributes defined in Sections 3.1 and 3.2.
-
-   The encoding of the "Value" field of these TLVs follows the
-   recommendation of [RFC6158].
-
-3.3.1.  Encrypted-DNS-ADN TLV
-
-   TLV-Type
-
-      TBA3 (see Section 6.2).
-
-   TLV-Length
-
-      Length of included ADN + 2 octets.
-
-   Data Type
-
-      The Encrypted-DNS-ADN TLV is of type string (Section 3.5 of
-      [RFC8044]).
-
-   TLV-Value
-
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                 [Page 9]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
-      This field includes a fully qualified domain name of the encrypted
-      DNS resolver.  This field is formatted as specified in Section 10
-      of [RFC8415].
-
-   This TLV is identified as 245.TBA1.TBA3 when included in the IPv6-
-   Encrypted-DNS Attribute (Section 3.1) and as 245.TBA2.TBA3 when
-   included in the IPv4-Encrypted-DNS Attribute (Section 3.2).
-
-3.3.2.  Encrypted-DNS-IPv6-Address TLV
-
-   TLV-Type
-
-      TBA4 (see Section 6.2).
-
-   TLV-Length
-
-      Eighteen octets.
-
-   Data Type
-
-      The Encrypted-DNS-IPv6-Address TLV is of type ip6addr (Section 3.9
-      of [RFC8044]).
-
-   TLV-Value
-
-      This field includes an IPv6 address (128 bits) of the encrypted
-      DNS resolver.
-
-      The Encrypted-DNS-IPv6-Address attribute MUST NOT include
-      multicast (Section 2.7 of [RFC4291]) and loopback addresses
-      [RFC6890].
-
-   This TLV is identified as 245.TBA1.TBA4 as part of the IPv6-
-   Encrypted-DNS Attribute (Section 3.1).
-
-3.3.3.  Encrypted-DNS-IPv4-Address TLV
-
-   TLV-Type
-
-      TBA5 (see Section 6.2).
-
-   TLV-Length
-
-      Six octets.
-
-   Data Type
-
-
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                [Page 10]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
-      The Encrypted-DNS-IPv4-Address TLV is of type ip4addr (Section 3.8
-      of [RFC8044]).
-
-   TLV-Value
-
-      This field includes an IPv4 address (32 bits) of the encrypted DNS
-      resolver.
-
-      The Encrypted-DNS-IPv4-Address attribute MUST NOT include
-      multicast (Section 4 of [RFC1112]) and loopback addresses
-      [RFC6890].
-
-   This TLV is identified as 245.TBA2.TBA5 as part of the IPv4-
-   Encrypted-DNS Attribute (Section 3.2).
-
-3.3.4.  Encrypted-DNS-SvcParams TLV
-
-   TLV-Type
-
-      TBA6 (see Section 6.2).
-
-   TLV-Length
-
-      Length of included service parameters + 2 octets.
-
-   Data Type
-
-      The Encrypted-DNS-SvcParams TLV is of type string (Section 3.5 of
-      [RFC8044]).
-
-   TLV-Value
-
-      Specifies a set of service parameters that are encoded following
-      the rules in Section 2.1 of [I-D.ietf-dnsop-svcb-https].
-      Section 3.1.5 of [I-D.ietf-add-dnr] lists a set of service
-      parameters that are recommended to be supported by
-      implementations.
-
-      The service parameters MUST include at least "alpn" SvcParam
-      (Section 4.1 of [I-D.ietf-add-svcb-dns]).  The service parameters
-      MUST NOT include "ipv4hint" or "ipv6hint" SvcParams as they are
-      superseded by the included IP addresses.
-
-   This TLV is identified as 245.TBA1.TBA6 when included in the IPv6-
-   Encrypted-DNS Attribute (Section 3.1) and as 245.TBA2.TBA6 when
-   included in the IPv4-Encrypted-DNS Attribute (Section 3.2).
-
-
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                [Page 11]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
-3.3.5.  Encrypted-DNS-SvcPriority TLV
-
-   TLV-Type
-
-      TBA7 (see Section 6.2).
-
-   TLV-Length
-
-      Six octets.
-
-   Data Type
-
-      The Encrypted-DNS-SvcPriority TLV is of type integer (Section 3.1
-      of [RFC8044]).
-
-   TLV-Value
-
-      Specifies the priority (unsigned16) of this *-Encrypted-DNS
-      instance compared to other instances, right justified, and the
-      unused bits in this field MUST be set to zero.  The value is
-      interpreted following the rules specified in Section 2.4.1 of
-      [I-D.ietf-dnsop-svcb-https].
-
-   This TLV is identified as 245.TBA1.TBA7 when included in the IPv6-
-   Encrypted-DNS Attribute (Section 3.1) and as 245.TBA2.TBA7 when
-   included in the IPv4-Encrypted-DNS Attribute (Section 3.2).
-
-4.  Security Considerations
+5.  Security Considerations
 
    RADIUS-related security considerations are discussed in [RFC2865].
 
@@ -654,169 +442,91 @@ Internet-Draft          RADIUS for Encrypted DNS            October 2022
    optionally secured by IPsec or Transport Layer Security (TLS)
    [RFC6614].
 
-   Security considerations (including traffic theft) are discussed in
-   Section 7 of [I-D.ietf-add-dnr].
 
-5.  Table of Attributes
+
+
+Boucadair & Reddy         Expires 20 April 2023                 [Page 8]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
+
+   Security considerations specific to the DHCP options that are carried
+   in RADIUS are discussed in relevant documents that specify these
+   options.  For example, security considerations (including traffic
+   theft) are discussed in Section 7 of [I-D.ietf-add-dnr].
+
+6.  Table of Attributes
 
    The following table provides a guide as what type of RADIUS packets
    that may contain these attributes, and in what quantity.
 
+   Access- Access- Access-  Challenge Acct.    #        Attribute
+   Request Accept  Reject             Request
+    0+      0+      0        0         0+      245.TBA1 DHCPv6-Options
+    0+      0+      0        0         0+      245.TBA2 DHCPv4-Options
 
-
-
-
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                [Page 12]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
- Access- Access- Access-  Challenge Acct.    #        Attribute
- Request Accept  Reject             Request
-  0+      0+      0        0         0+      245.TBA1 IPv6-Encrypted-DNS
-  0+      0+      0        0         0+      245.TBA2 IPv4-Encrypted-DNS
-
- CoA-Request CoA-ACK CoA-NACK #        Attribute
-   0+          0       0      245.TBA1 IPv6-Encrypted-DNS
-   0+          0       0      245.TBA2 IPv4-Encrypted-DNS
+   CoA-Request CoA-ACK CoA-NACK #        Attribute
+     0+          0       0      245.TBA1 DHCPv6-Options
+     0+          0       0      245.TBA2 DHCPv4-Options
 
    The following table defines the meaning of the above table entries:
 
    0  This attribute MUST NOT be present in packet.
    0+ Zero or more instances of this attribute MAY be present in packet.
 
-6.  IANA Considerations
+7.  IANA Considerations
 
-6.1.  New RADIUS Attributes
+7.1.  New RADIUS Attributes
 
    IANA is requested to assign two new RADIUS attribute types from the
    IANA registry "Radius Attribute Types" [RADIUS-Types]:
 
-
-       +==========+====================+===========+===============+
-       | Value    | Description        | Data Type | Reference     |
-       +==========+====================+===========+===============+
-       | 245.TBA1 | IPv6-Encrypted-DNS | tlv       | This-Document |
-       +----------+--------------------+-----------+---------------+
-       | 245.TBA2 | IPv4-Encrypted-DNS | tlv       | This-Document |
-       +----------+--------------------+-----------+---------------+
+         +==========+================+===========+===============+
+         | Value    | Description    | Data Type | Reference     |
+         +==========+================+===========+===============+
+         | 245.TBA1 | DHCPv6-Options | string    | This-Document |
+         +----------+----------------+-----------+---------------+
+         | 245.TBA2 | DHCPv4-Options | string    | This-Document |
+         +----------+----------------+-----------+---------------+
 
                   Table 1: Encrypted DNS RADIUS Attributes
 
 
-6.2.  RADIUS Encrypted DNS TLVs
-
-   IANA is requested to create a new subregistry called "RADIUS
-   Encrypted DNS TLVs" under the "Radius Attribute Types" registry
-   [RADIUS-Types].
-
-   The registration procedure for this subregistry is "Standards Action"
-   as defined in (Section 4.9 of [RFC8126]).
-
-   The subregistry is initially populated as follows:
-
-      Note to the RFC Editor: Please replace TBA3-TBA7 with the
-      corresponding values assigned from the 1-5 range.
-
-
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                [Page 13]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
-    +=======+============================+===========+================+
-    | Value | Description                | Data Type | Reference      |
-    +=======+============================+===========+================+
-    | 0     | Reserved                   |           | This-Document  |
-    +-------+----------------------------+-----------+----------------+
-    | TBA3  | Encrypted-DNS-ADN          | string    | This-Document, |
-    |       |                            |           | Section 3.3.1  |
-    +-------+----------------------------+-----------+----------------+
-    | TBA4  | Encrypted-DNS-IPv6-Address | ipv6addr  | This-Document, |
-    |       |                            |           | Section 3.3.2  |
-    +-------+----------------------------+-----------+----------------+
-    | TBA5  | Encrypted-DNS-IPv4-Address | ipv4addr  | This-Document, |
-    |       |                            |           | Section 3.3.3  |
-    +-------+----------------------------+-----------+----------------+
-    | TBA6  | Encrypted-DNS-SvcParams    | string    | This-Document, |
-    |       |                            |           | Section 3.3.4  |
-    +-------+----------------------------+-----------+----------------+
-    | TBA7  | Encrypted-DNS-SvcPriority  | integer   | This-Document, |
-    |       |                            |           | Section 3.3.5  |
-    +-------+----------------------------+-----------+----------------+
-    | 6-255 | Unassigned                 |           |                |
-    +-------+----------------------------+-----------+----------------+
-
-                 Table 2: Initial RADIUS Encrypted DNS TLVs
-
-6.3.  New RADIUS Attribute Permitted in DHCPv6 RADIUS Option
+7.2.  New RADIUS Attribute Permitted in DHCPv6 RADIUS Option
 
    IANA is requested to add the following entry to the "RADIUS
    Attributes Permitted in DHCPv6 RADIUS Option" subregistry in the
    "Dynamic Host Configuration Protocol for IPv6 (DHCPv6)" registry
    [DHCP-RADIUS]:
 
-            +===========+====================+===============+
-            | Type Code | Attribute          | Reference     |
-            +===========+====================+===============+
-            | 245.TBA1  | IPv6-Encrypted-DNS | This-Document |
-            +-----------+--------------------+---------------+
 
-                Table 3: New RADIUS Attribute Permitted in
+
+Boucadair & Reddy         Expires 20 April 2023                 [Page 9]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
+
+              +===========+================+===============+
+              | Type Code | Attribute      | Reference     |
+              +===========+================+===============+
+              | 245.TBA1  | DHCPv6-Options | This-Document |
+              +-----------+----------------+---------------+
+
+                Table 2: New RADIUS Attribute Permitted in
                            DHCPv6 RADIUS Option
 
 
-7.  Acknowledgements
+8.  Acknowledgements
 
    Thanks to Christian Jacquenet, Neil Cook, Alan Dekok, Joe Clarke, Qin
    Wu, Dirk von-Hugo, Tom Petch, and Chongfeng Xie for the review and
    suggestions.
 
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                [Page 14]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
    Thanks to Ben Schwartz and Bernie Volz for the comments.
 
-8.  References
+9.  References
 
-8.1.  Normative References
-
-   [I-D.ietf-add-dnr]
-              Boucadair, M., Reddy, T., Wing, D., Cook, N., and T.
-              Jensen, "DHCP and Router Advertisement Options for the
-              Discovery of Network-designated Resolvers (DNR)", Work in
-              Progress, Internet-Draft, draft-ietf-add-dnr-13, 13 August
-              2022, <https://www.ietf.org/archive/id/draft-ietf-add-dnr-
-              13.txt>.
-
-   [I-D.ietf-add-svcb-dns]
-              Schwartz, B., "Service Binding Mapping for DNS Servers",
-              Work in Progress, Internet-Draft, draft-ietf-add-svcb-dns-
-              07, 11 August 2022, <https://www.ietf.org/archive/id/
-              draft-ietf-add-svcb-dns-07.txt>.
-
-   [I-D.ietf-dnsop-svcb-https]
-              Schwartz, B. M., Bishop, M., and E. Nygren, "Service
-              binding and parameter specification via the DNS (DNS SVCB
-              and HTTPS RRs)", Work in Progress, Internet-Draft, draft-
-              ietf-dnsop-svcb-https-11, 11 October 2022,
-              <https://www.ietf.org/archive/id/draft-ietf-dnsop-svcb-
-              https-11.txt>.
-
-   [RFC1112]  Deering, S., "Host extensions for IP multicasting", STD 5,
-              RFC 1112, DOI 10.17487/RFC1112, August 1989,
-              <https://www.rfc-editor.org/info/rfc1112>.
+9.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -828,28 +538,9 @@ Internet-Draft          RADIUS for Encrypted DNS            October 2022
               RFC 2865, DOI 10.17487/RFC2865, June 2000,
               <https://www.rfc-editor.org/info/rfc2865>.
 
-   [RFC4291]  Hinden, R. and S. Deering, "IP Version 6 Addressing
-              Architecture", RFC 4291, DOI 10.17487/RFC4291, February
-              2006, <https://www.rfc-editor.org/info/rfc4291>.
-
-
-
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                [Page 15]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
    [RFC6158]  DeKok, A., Ed. and G. Weber, "RADIUS Design Guidelines",
               BCP 158, RFC 6158, DOI 10.17487/RFC6158, March 2011,
               <https://www.rfc-editor.org/info/rfc6158>.
-
-   [RFC6890]  Cotton, M., Vegoda, L., Bonica, R., Ed., and B. Haberman,
-              "Special-Purpose IP Address Registries", BCP 153,
-              RFC 6890, DOI 10.17487/RFC6890, April 2013,
-              <https://www.rfc-editor.org/info/rfc6890>.
 
    [RFC6929]  DeKok, A. and A. Lior, "Remote Authentication Dial In User
               Service (RADIUS) Protocol Extensions", RFC 6929,
@@ -860,14 +551,16 @@ Internet-Draft          RADIUS for Encrypted DNS            October 2022
               DOI 10.17487/RFC8044, January 2017,
               <https://www.rfc-editor.org/info/rfc8044>.
 
-   [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
-              Writing an IANA Considerations Section in RFCs", BCP 26,
-              RFC 8126, DOI 10.17487/RFC8126, June 2017,
-              <https://www.rfc-editor.org/info/rfc8126>.
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+
+
+Boucadair & Reddy         Expires 20 April 2023                [Page 10]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
 
    [RFC8415]  Mrugalski, T., Siodelski, M., Volz, B., Yourtchenko, A.,
               Richardson, M., Jiang, S., Lemon, T., and T. Winters,
@@ -875,12 +568,20 @@ Internet-Draft          RADIUS for Encrypted DNS            October 2022
               RFC 8415, DOI 10.17487/RFC8415, November 2018,
               <https://www.rfc-editor.org/info/rfc8415>.
 
-8.2.  Informative References
+9.2.  Informative References
 
    [DHCP-RADIUS]
               IANA, "Dynamic Host Configuration Protocol for IPv6
               (DHCPv6)", <https://www.iana.org/assignments/dhcpv6-
               parameters/dhcpv6-parameters.xhtml>.
+
+   [I-D.ietf-add-dnr]
+              Boucadair, M., Reddy, T., Wing, D., Cook, N., and T.
+              Jensen, "DHCP and Router Advertisement Options for the
+              Discovery of Network-designated Resolvers (DNR)", Work in
+              Progress, Internet-Draft, draft-ietf-add-dnr-13, 13 August
+              2022, <https://www.ietf.org/archive/id/draft-ietf-add-dnr-
+              13.txt>.
 
    [RADIUS-Types]
               IANA, "RADIUS Types",
@@ -889,14 +590,6 @@ Internet-Draft          RADIUS for Encrypted DNS            October 2022
    [RFC2132]  Alexander, S. and R. Droms, "DHCP Options and BOOTP Vendor
               Extensions", RFC 2132, DOI 10.17487/RFC2132, March 1997,
               <https://www.rfc-editor.org/info/rfc2132>.
-
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                [Page 16]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
 
    [RFC2868]  Zorn, G., Leifer, D., Rubens, A., Shriver, J., Holdrege,
               M., and I. Goyret, "RADIUS Attributes for Tunnel Protocol
@@ -913,6 +606,17 @@ Internet-Draft          RADIUS for Encrypted DNS            October 2022
               "Neighbor Discovery for IP version 6 (IPv6)", RFC 4861,
               DOI 10.17487/RFC4861, September 2007,
               <https://www.rfc-editor.org/info/rfc4861>.
+
+
+
+
+
+
+
+Boucadair & Reddy         Expires 20 April 2023                [Page 11]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
 
    [RFC5176]  Chiba, M., Dommety, G., Eklund, M., Mitton, D., and B.
               Aboba, "Dynamic Authorization Extensions to Remote
@@ -934,6 +638,11 @@ Internet-Draft          RADIUS for Encrypted DNS            October 2022
               Relay Agent", RFC 7037, DOI 10.17487/RFC7037, October
               2013, <https://www.rfc-editor.org/info/rfc7037>.
 
+   [RFC7227]  Hankins, D., Mrugalski, T., Siodelski, M., Jiang, S., and
+              S. Krishnan, "Guidelines for Creating New DHCPv6 Options",
+              BCP 187, RFC 7227, DOI 10.17487/RFC7227, May 2014,
+              <https://www.rfc-editor.org/info/rfc7227>.
+
    [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
               and P. Hoffman, "Specification for DNS over Transport
               Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
@@ -947,70 +656,23 @@ Internet-Draft          RADIUS for Encrypted DNS            October 2022
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
               January 2019, <https://www.rfc-editor.org/info/rfc8499>.
 
-
-
-Boucadair & Reddy         Expires 16 April 2023                [Page 17]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
    [RFC9250]  Huitema, C., Dickinson, S., and A. Mankin, "DNS over
               Dedicated QUIC Connections", RFC 9250,
               DOI 10.17487/RFC9250, May 2022,
               <https://www.rfc-editor.org/info/rfc9250>.
 
-Appendix A.  DNR to RADIUS Field Mappings
-
-   Each IPv6-Encrypted-DNS Attribute is mapped to an IPv6 DNR instance
-   (i.e., OPTION_V6_DNR(144) or IPv6 Neighbor Discovery Option(144)) as
-   shown in Table 4.
-
-    +============================+====================================+
-    | DNR Field                  | Value Field of RADIUS TLV          |
-    +============================+====================================+
-    | Service Priority           | Encrypted-DNS-SvcPriority          |
-    +----------------------------+------------------------------------+
-    | authentication-domain-name | Encrypted-DNS-ADN                  |
-    +----------------------------+------------------------------------+
-    | ipv6-address(es)           | One or multiple Encrypted-DNS-     |
-    |                            | IPv6-Address                       |
-    +----------------------------+------------------------------------+
-    | Service Parameters         | One or multiple whitespace-        |
-    | (SvcParams)                | separated Encrypted-DNS-SvcParams. |
-    +----------------------------+------------------------------------+
-
-                   Table 4: IPv6 DNR-RADIUS Field Mapping
-
-   Likewise, each IPv4-Encrypted-DNS Attribute is mapped to an IPv4 DNR
-   instance (i.e., OPTION_V4_DNR(162)) as shown in Table 5.
-
-    +============================+===================================+
-    | DNR Field                  | Value Field of RADIUS TLV         |
-    +============================+===================================+
-    | Service Priority           | Encrypted-DNS-SvcPriority         |
-    +----------------------------+-----------------------------------+
-    | authentication-domain-name | Encrypted-DNS-ADN                 |
-    +----------------------------+-----------------------------------+
-    | IPv4 Address(es)           | One or multiple Encrypted-DNS-    |
-    |                            | IPv4-Address                      |
-    +----------------------------+-----------------------------------+
-    | Service Parameters         | One or multiple whitespace-       |
-    | (SvcParams)                | separated Encrypted-DNS-SvcParams |
-    +----------------------------+-----------------------------------+
-
-                  Table 5: IPv4 DNR-RADIUS Field Mapping
-
-   ADN Length, Addr Length, and SvcParams Length fields are set as a
-   function of the enclosed data in the corresponding fields.
-
-
-
-Boucadair & Reddy         Expires 16 April 2023                [Page 18]
-
-Internet-Draft          RADIUS for Encrypted DNS            October 2022
-
-
 Authors' Addresses
+
+
+
+
+
+
+
+Boucadair & Reddy         Expires 20 April 2023                [Page 12]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
 
    Mohamed Boucadair
    Orange
@@ -1061,4 +723,6 @@ Authors' Addresses
 
 
 
-Boucadair & Reddy         Expires 16 April 2023                [Page 19]
+
+
+Boucadair & Reddy         Expires 20 April 2023                [Page 13]

@@ -10,11 +10,11 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-ietf-opsawg-add-encrypted-dns-03"
+<rfc category="std" docName="draft-ietf-opsawg-add-encrypted-dns-04"
      ipr="trust200902">
   <front>
-    <title abbrev="RADIUS for Encrypted DNS">RADIUS Extensions for Encrypted
-    DNS</title>
+    <title abbrev="RADIUS DHCP-Options">RADIUS Extensions for DHCP Configured
+    Services</title>
 
     <author fullname="Mohamed Boucadair" initials="M." surname="Boucadair">
       <organization>Orange</organization>
@@ -89,10 +89,12 @@
     <keyword>connectivity</keyword>
 
     <abstract>
-      <t>This document specifies new Remote Authentication Dial-In User
-      Service (RADIUS) attributes that carry an authentication domain name, a
-      list of IP addresses, and a set of service parameters of encrypted DNS
-      resolvers.<!--
+      <t>This document specifies two new Remote Authentication Dial-In User
+      Service (RADIUS) attributes that carry any DHCP option. Even if the
+      specification was initially motivated by the configuration of encrypted
+      DNS resolvers, the specification is generic and can be applicable to any
+      service that relies upon DHCP. Both DHCPv4 and DHCPv6 configured
+      services are covered.<!--
 --></t>
     </abstract>
   </front>
@@ -119,25 +121,193 @@
       DHCP and IPv6 Router Advertisement to provide hosts with the required
       information to connect to an encrypted DNS resolver. However, there are
       no RADIUS attributes that can be used to populate the discovery messages
-      discussed in <xref target="I-D.ietf-add-dnr"></xref>.</t>
+      discussed in <xref target="I-D.ietf-add-dnr"></xref>. The same concern
+      is likely to be encountered for future services that are configured
+      using DHCP.</t>
 
-      <t>This document specifies two new RADIUS attributes: IPv6-Encrypted-DNS
-      (<xref target="v6"></xref>) and IPv4-Encrypted-DNS (<xref
-      target="v4"></xref>) Attributes. These two attributes are specified in
-      order to accommodate both IPv4 and IPv6 deployment contexts while taking
-      into account the constraints in <xref section="3.4"
-      target="RFC6158"></xref>.</t>
+      <t>This document specifies two new RADIUS attributes: DHCPv6-Options
+      (<xref target="v6"></xref>) and DHCPv4-Options (<xref
+      target="v4"></xref>) Attributes. These attributes can include any DHCP
+      option. These two attributes are specified in order to accommodate both
+      IPv4 and IPv6 deployment contexts while taking into account the
+      constraints in <xref section="3.4" target="RFC6158"></xref>.</t>
 
+      <t>The mechanism specified in this document is a generic mechanism and
+      might be employed in network scenarios where the DHCP server and the
+      RADIUS client are located in the same device. The new attributes can
+      also be used in deployments that rely upon the mechanisms defined in
+      <xref target="RFC4014"></xref> or <xref target="RFC7037"></xref>, which
+      allow a DHCP relay agent that is collocated with a RADIUS client to pass
+      attributes obtained from a RADIUS server to a DHCP server. DHCP options
+      that are included in the new RADIUS attributes can be controlled by a
+      deployment specific policy. </t>
+
+      <t>This document adheres to <xref target="RFC8044"></xref> for defining
+      the new attributes.</t>
+
+      <t>A sample deployment usage of the DHCPv6-Options and DHCPv4-Options
+      RADIUS attributes is described in <xref target="sample"></xref>.</t>
+    </section>
+
+    <section title="Terminology">
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+      "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+      "OPTIONAL" in this document are to be interpreted as described in BCP 14
+      <xref target="RFC2119"></xref> <xref target="RFC8174"></xref> when, and
+      only when, they appear in all capitals, as shown here.</t>
+
+      <t>This document makes use of the terms defined in <xref
+      target="RFC2865"></xref>, <xref target="RFC8415"></xref>, and <xref
+      target="RFC8499"></xref>. The following additional terms are used: <list
+          style="hanging">
+          <t hangText="DHCP:">refers to both DHCPv4 <xref
+          target="RFC2132"></xref> and DHCPv6 <xref
+          target="RFC8415"></xref>.</t>
+
+          <t hangText="Encrypted DNS:">refers to a scheme where DNS exchanges
+          are transported over an encrypted channel. Examples of encrypted DNS
+          are DoT, DoH, and DoQ.</t>
+
+          <t hangText="Encrypted DNS resolver:">refers to a resolver (<xref
+          section="6" target="RFC8499"></xref>) that supports encrypted
+          DNS.</t>
+
+          <t hangText="DHCP*-Options:">refers to DHCPv4-Options and
+          DHCPv6-Options Attributes (<xref target="att"></xref>).</t>
+        </list></t>
+    </section>
+
+    <section anchor="att" title="DHCP Options RADIUS Attributes">
+      <t>This section specifies two new RADIUS attributes for RADIUS clients
+      and servers to exchange DHCP-encoded data. This data is then used to
+      feed the DHCP procedure between DHCP client and a DHCP server.</t>
+
+      <t>Both DHCPv4-Options and DHCPv6-Options Attributes use the "Long
+      Extended Type" format (<xref section="2.2" target="RFC6929"></xref>).
+      The description of the fields is provided in Sections <xref
+      format="counter" target="v6"></xref> and <xref format="counter"
+      target="v4"></xref>.</t>
+
+      <t>These attributes use the "Long Extended Type" format in order to
+      permit the transport of attributes encapsulating more than 253 octets of
+      data. DHCP options that can be included in the DHCP*-Options RADIUS
+      attributes are limited by the maximum packet size of 4096 bytes. In
+      order to accommodate deployments with large options, implementations are
+      RECOMMENDED to support a packet size up to 65535 bytes.</t>
+
+      <t>The value fields of DHCP*-Options Attributes are encoded in clear and
+      not encrypted as, for example, Tunnel-Password Attribute <xref
+      target="RFC2868"></xref>.</t>
+
+      <t>RADIUS implementations may support a configuration parameter to
+      control the DHCP options that can be included in a DHCP*-Options RADIUS
+      attribute.</t>
+
+      <t>For ease of administrator configuration, the RADIUS server SHOULD
+      expose the DHCP options and allow administrators to configure them,
+      instead of requiring them to be entered as opaque data.</t>
+
+      <t>These attributes are defined with globally unique names. The naming
+      of the attributes follows the guidelines in Section 2.7.1 of <xref
+      target="RFC6929"></xref>.</t>
+
+      <section anchor="v6" title="DHCPv6-Options Attribute">
+        <t>This attribute is of type "string" as defined in <xref
+        section="3.5" target="RFC8044"></xref>.</t>
+
+        <t>The DHCPv6-Options Attribute MAY appear in a RADIUS Access-Accept
+        packet. It MAY also appear in a RADIUS Access-Request packet as a hint
+        to the RADIUS server to indicate a preference. However, the server is
+        not required to honor such a preference.</t>
+
+        <t>The DHCPv6-Options Attribute MAY appear in a RADIUS CoA-Request
+        packet.</t>
+
+        <t>The DHCPv6-Options Attribute MAY appear in a RADIUS
+        Accounting-Request packet.</t>
+
+        <t>The DHCPv6-Options Attribute MUST NOT appear in any other RADIUS
+        packet.</t>
+
+        <t>The DHCPv6-Options Attribute is structured as follows:</t>
+
+        <t>Type<list style="empty">
+            <t>245</t>
+          </list></t>
+
+        <t>Length<list style="empty">
+            <t>This field indicates the total length, in octets, of all fields
+            of this attribute, including the Type, Length, Extended-Type, and
+            the entire length of the embedded TLVs.</t>
+          </list></t>
+
+        <t>Extended-Type<list style="empty">
+            <t>TBA1 (see <xref target="IANA-Att"></xref>).</t>
+          </list></t>
+
+        <t>Value<list style="empty">
+            <t>This field contains a list of DHCPv6 options. Multiple
+            instances of the same DHCPv6 option MAY be included. Consistent
+            with Section 17 of <xref target="RFC7227"></xref>, this document
+            does not impose any option order when multiple options are
+            present.</t>
+          </list></t>
+
+        <t>The DHCPv6-Options Attribute is associated with the following
+        identifier: 245.TBA1.</t>
+      </section>
+
+      <section anchor="v4" title="DHCPv4-Options Attribute">
+        <t>This attribute is of type "string" as defined in <xref
+        section="3.5" target="RFC8044"></xref>.</t>
+
+        <t>The DHCPv4-Options Attribute MAY appear in a RADIUS Access-Accept
+        packet. It MAY also appear in a RADIUS Access-Request packet as a hint
+        to the RADIUS server to indicate a preference. However, the server is
+        not required to honor such a preference.</t>
+
+        <t>The DHCPv4-Options Attribute MAY appear in a RADIUS CoA-Request
+        packet.</t>
+
+        <t>The DHCPv4-Options Attribute MAY appear in a RADIUS
+        Accounting-Request packet.</t>
+
+        <t>The DHCPv4-Options Attribute MUST NOT appear in any other RADIUS
+        packet.</t>
+
+        <t>The DHCPv4-Options Attribute is structured as follows:</t>
+
+        <t>Type<list style="empty">
+            <t>245</t>
+          </list></t>
+
+        <t>Length<list style="empty">
+            <t>This field indicates the total length, in octets, of all fields
+            of this attribute, including the Type, Length, Extended-Type, and
+            the entire length of the embedded TLVs.</t>
+          </list></t>
+
+        <t>Extended-Type<list style="empty">
+            <t>TBA2 (see <xref target="IANA-Att"></xref>).</t>
+          </list></t>
+
+        <t>Value<list style="empty">
+            <t>This field contains a list of DHCPv4 options.</t>
+          </list></t>
+
+        <t>The DHCPv4-Options Attribute is associated with the following
+        identifier: 245.TBA2.</t>
+      </section>
+    </section>
+
+    <section anchor="sample"
+             title="Applicability to Encrypted DNS Provisioning">
       <t>Typical deployment scenarios are similar to those described, for
-      instance, in <xref section="2" target="RFC6911"></xref>. Some of these
-      deployments may rely upon the mechanisms defined in <xref
-      target="RFC4014"></xref> or <xref target="RFC7037"></xref>, which allows
-      a Network Access Server (NAS) to pass attributes obtained from a RADIUS
-      server to a DHCP server. For illustration purposes, <xref
-      target="ex"></xref> shows an example where a Customer Premises Equipment
-      (CPE) is provided with an encrypted DNS resolver. This example assumes
-      that the NAS embeds both RADIUS client and DHCPv6 server
-      capabilities.</t>
+      instance, in <xref section="2" target="RFC6911"></xref>. For
+      illustration purposes, <xref target="ex"></xref> shows an example where
+      a Customer Premises Equipment (CPE) is provided with an encrypted DNS
+      resolver. This example assumes that the Network Access Server (NAS)
+      embeds both RADIUS client and DHCPv6 server capabilities.</t>
 
       <t><figure align="center" anchor="ex"
           title="An Example of RADIUS IPv6 Encrypted DNS Exchange">
@@ -150,8 +320,8 @@
        |                         o----Access-Request ---->|
        |                         |                        |
        |                         |<----Access-Accept------o
-       |                         |  IPv6-Encrypted-DNS    |
-       |<--DHCPv6 Advertisement--o                        |
+       |                         |     DHCPv6-Options     |
+       |<----DHCPv6 Advertise----o    (OPTION_V6_DNR)     |
        |     (OPTION_V6_DNR)     |                        |
        |                         |                        |
        o-----DHCPv6 Request----->|                        |
@@ -169,24 +339,26 @@
       it replies with an Access-Accept message (possibly after having sent a
       RADIUS Access-Challenge message and assuming the CPE is entitled to
       connect to the network) that carries a list of parameters to be used for
-      this session, and which include the encrypted DNS information. The
-      content of the IPv6-Encrypted-DNS Attribute is then used by the NAS to
-      complete the DHCPv6 procedure that the CPE initiated to retrieve
-      information about the encrypted DNS service to use. The Discovery of
-      Network-designated Resolvers (DNR) procedure defined in <xref
+      this session, and which include the encrypted DNS information. Such an
+      information is encoded as OPTION_V6_DNR instances (<xref
+      target="I-D.ietf-add-dnr"></xref>) in the DHCPv6-Options RADIUS
+      attribute. These instances are then used by the NAS to complete the
+      DHCPv6 procedure that the CPE initiated to retrieve information about
+      the encrypted DNS service to use. The Discovery of Network-designated
+      Resolvers (DNR) procedure defined in <xref
       target="I-D.ietf-add-dnr"></xref> is then followed between the DHCPv6
-      client and the DHCPv6 server. <xref target="mapping"></xref> describes
-      the DNR to RADIUS field mappings.</t>
+      client and the DHCPv6 server.</t>
 
       <t>Should any encrypted DNS-related information (e.g., Authentication
       Domain Name (ADN), IPv6 address) change, the RADIUS server sends a
       RADIUS Change-of-Authorization (CoA) message <xref
-      target="RFC5176"></xref> that carries the RADIUS IPv6-Encrypted-DNS
-      Attributes to the NAS. Once that message is received and validated by
-      the NAS, it replies with a RADIUS CoA ACK message. The NAS replaces the
-      old encrypted DNS resolver information with the new one and sends a
-      DHCPv6 Reconfigure message which leads the DHCPv6 client to initiate a
-      Renew/Reply message exchange with the DHCPv6 server.</t>
+      target="RFC5176"></xref> that carries the RADIUS DHCPv6 Attribute with
+      the updated OPTION_V6_DNR information to the NAS. Once that message is
+      received and validated by the NAS, it replies with a RADIUS CoA ACK
+      message. The NAS replaces the old encrypted DNS resolver information
+      with the new one and sends a DHCPv6 Reconfigure message which leads the
+      DHCPv6 client to initiate a Renew/Reply message exchange with the DHCPv6
+      server.</t>
 
       <t>In deployments where the NAS behaves as a DHCPv6 relay agent, the
       procedure discussed in <xref section="3" target="RFC7037"></xref> can be
@@ -209,8 +381,8 @@
        |                         o----Access-Request ---->|
        |                         |                        |
        |                         |<----Access-Accept------o
-       |                         |  IPv4-Encrypted-DNS    |
-       |<-----DHCPOFFER----------o                        |
+       |                         |     DHCPv4_Options     |
+       |<-----DHCPOFFER----------o    (OPTION_V4_DNR)     |
        |     (OPTION_V4_DNR)     |                        |
        |                         |                        |
        o-----DHCPREQUEST-------->|                        |
@@ -228,370 +400,6 @@
       function of the service/policies/preferences that are set by a network
       administrator. How an administrator indicates its
       service/policies/preferences to an AAA server is out of scope.</t>
-
-      <t>This document adheres to <xref target="RFC8044"></xref> for defining
-      the new attributes.</t>
-    </section>
-
-    <section title="Terminology">
-      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-      "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-      "OPTIONAL" in this document are to be interpreted as described in BCP 14
-      <xref target="RFC2119"></xref> <xref target="RFC8174"></xref> when, and
-      only when, they appear in all capitals, as shown here.</t>
-
-      <t>This document makes use of the terms defined in <xref
-      target="RFC8499"></xref>. The following additional terms are used: <list
-          style="hanging">
-          <t hangText="DHCP:">refers to both DHCPv4 <xref
-          target="RFC2132"></xref> and DHCPv6 <xref
-          target="RFC8415"></xref>.</t>
-
-          <t hangText="Encrypted DNS:">refers to a scheme where DNS exchanges
-          are transported over an encrypted channel. Examples of encrypted DNS
-          are DoT, DoH, and DoQ.</t>
-
-          <t hangText="Encrypted DNS resolver:">refers to a resolver (<xref
-          section="6" target="RFC8499"></xref>) that supports encrypted
-          DNS.</t>
-
-          <t hangText="*-Encrypted-DNS:">refers to IPv6-Encrypted-DNS and
-          IPv4-Encrypted-DNS Attributes.</t>
-
-          <t hangText="Encrypted-DNS-*:">refers to any of the following
-          attributes: Encrypted-DNS-ADN, Encrypted-DNS-IPv6-Address,
-          Encrypted-DNS-IPv4-Address, Encrypted-DNS-SvcParams, and
-          Encrypted-DNS-SvcPriority.</t>
-        </list></t>
-    </section>
-
-    <section anchor="att" title="Encrypted DNS RADIUS Attributes">
-      <t>Both IPv6-Encrypted-DNS and IPv4-Encrypted-DNS have the same format
-      shown in <xref target="attr-format"></xref>. These attributes uses the
-      "Long Extended Type" format (<xref section="2.2"
-      target="RFC6929"></xref>) in order to permit the transport of attributes
-      encapsulating more than 253 octets of data. The description of the
-      fields is provided in Sections <xref format="counter"
-      target="v6"></xref> and <xref format="counter" target="v4"></xref>. </t>
-
-      <t>These attributes and their embedded TLVs (<xref target="tlv"></xref>)
-      are defined with globally unique names. The definition of the attributes
-      follows the guidelines in Section 2.7.1 of <xref
-      target="RFC6929"></xref>.</t>
-
-      <t><figure align="center" anchor="attr-format"
-          title="Format of IPv6-Encrypted-DNS and IPv4-Encrypted-DNS Attributes">
-          <artwork><![CDATA[    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |     Type      |    Length     | Extended-Type |M|  Reserved   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |     Value ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-]]></artwork>
-        </figure></t>
-
-      <t>The value fields of *-Encrypted-DNS and Encrypted-DNS-* Attributes
-      are encoded in clear and not encrypted as, for example, Tunnel-Password
-      Attribute <xref target="RFC2868"></xref>.</t>
-
-      <section anchor="v6" title="IPv6-Encrypted-DNS Attribute">
-        <t>This attribute is of type "tlv" as defined in <xref section="2.3"
-        target="RFC6929"></xref>.</t>
-
-        <t>The IPv6-Encrypted-DNS Attribute includes the authentication domain
-        name, a list of IPv6 addresses, and a set of service parameters of an
-        encrypted DNS resolver (<xref section="3.1.9"
-        target="I-D.ietf-add-dnr"></xref>).</t>
-
-        <t>Because multiple IPv6-Encrypted-DNS Attributes may be provisioned
-        to a requesting host, multiple instances of the IPv6-Encrypted-DNS
-        attribute MAY be included; each instance of the attribute carries a
-        distinct encrypted DNS resolver. These TLVs SHOULD be processed
-        following their service priority (i.e., smaller service priority
-        indicates a higher preference).</t>
-
-        <t>The IPv6-Encrypted-DNS Attribute MAY appear in a RADIUS
-        Access-Accept packet. It MAY also appear in a RADIUS Access-Request
-        packet as a hint to the RADIUS server to indicate a preference.
-        However, the server is not required to honor such a preference.</t>
-
-        <t>The IPv6-Encrypted-DNS Attribute MAY appear in a RADIUS CoA-Request
-        packet.</t>
-
-        <t>The IPv6-Encrypted-DNS Attribute MAY appear in a RADIUS
-        Accounting-Request packet.</t>
-
-        <t>The IPv6-Encrypted-DNS Attribute MUST NOT appear in any other
-        RADIUS packet.</t>
-
-        <t>The IPv6-Encrypted-DNS Attribute is structured as follows:</t>
-
-        <t>Type<list style="empty">
-            <t>245</t>
-          </list></t>
-
-        <t>Length<list style="empty">
-            <t>This field indicates the total length, in octets, of all fields
-            of this attribute, including the Type, Length, Extended-Type, and
-            the entire length of the embedded TLVs.</t>
-          </list></t>
-
-        <t>Extended-Type<list style="empty">
-            <t>TBA1 (see <xref target="IANA-Att"></xref>).</t>
-          </list></t>
-
-        <t>Value<list style="empty">
-            <t>This field contains a set of TLVs as follows:<list
-                style="hanging">
-                <t hangText="Encrypted-DNS-ADN TLV:">The IPv6-Encrypted-DNS
-                Attribute MUST include exactly one instance of
-                Encrypted-DNS-ADN TLV (<xref target="adn"></xref>).</t>
-
-                <t hangText="Encrypted-DNS-IPv6-Address TLV:">The
-                IPv6-Encrypted-DNS Attribute SHOULD include one or multiple
-                instances of Encrypted-DNS-IPv6-Address TLV (<xref
-                target="v6locator"></xref>). If multiple instances are
-                included, they are ordered in the preference for use. In
-                contexts where putting additional complexity on requesting
-                hosts is acceptable, returning an ADN only (that is, no
-                Encrypted-DNS-IPv6-Address TLV is returned) can be
-                considered.</t>
-
-                <t hangText="Encrypted-DNS-SvcParams TLV:">The
-                IPv6-Encrypted-DNS Attribute SHOULD include one or multiple
-                instances of Encrypted-DNS-SvcParams TLV (<xref
-                target="svcparams"></xref>). If multiple instances are
-                included, each of these instances MUST include self-contained
-                SvcParams. </t>
-
-                <t hangText="Encrypted-DNS-SvcPriority TLV:">The
-                IPv6-Encrypted-DNS Attribute SHOULD include one instance of
-                Encrypted-DNS-SvcPriority TLV (<xref
-                target="svcprio"></xref>).</t>
-              </list></t>
-          </list></t>
-
-        <t>The IPv6-Encrypted-DNS Attribute is associated with the following
-        identifier: 245.TBA1.</t>
-      </section>
-
-      <section anchor="v4" title="IPv4-Encrypted-DNS Attribute">
-        <t>This attribute is of type "tlv" as defined in <xref section="2.3"
-        target="RFC6929"></xref>.</t>
-
-        <t>The IPv4-Encrypted-DNS Attribute includes the authentication domain
-        name, a list of IPv4 addresses, and a set of service parameters of an
-        encrypted DNS resolver (<xref section="3.1.9"
-        target="I-D.ietf-add-dnr"></xref>).</t>
-
-        <t>Because multiple IPv4-Encrypted-DNS attributes may be provisioned
-        to a requesting host, multiple instances of the IPv4-Encrypted-DNS
-        attribute MAY be included; each instance of the attribute carries a
-        distinct encrypted DNS resolver. These TLVs SHOULD be processed
-        following their service priority (i.e., smaller service priority
-        indicates a higher preference).</t>
-
-        <t>The IPv4-Encrypted-DNS Attribute MAY appear in a RADIUS
-        Access-Accept packet. It MAY also appear in a RADIUS Access-Request
-        packet as a hint to the RADIUS server to indicate a preference.
-        However, the server is not required to honor such a preference.</t>
-
-        <t>The IPv4-Encrypted-DNS Attribute MAY appear in a RADIUS CoA-Request
-        packet.</t>
-
-        <t>The IPv4-Encrypted-DNS Attribute MAY appear in a RADIUS
-        Accounting-Request packet.</t>
-
-        <t>The IPv4-Encrypted-DNS Attribute MUST NOT appear in any other
-        RADIUS packet.</t>
-
-        <t>The IPv4-Encrypted-DNS Attribute is structured as follows:</t>
-
-        <t>Type<list style="empty">
-            <t>245</t>
-          </list></t>
-
-        <t>Length<list style="empty">
-            <t>This field indicates the total length, in octets, of all fields
-            of this attribute, including the Type, Length, Extended-Type, and
-            the entire length of the embedded TLVs.</t>
-          </list></t>
-
-        <t>Extended-Type<list style="empty">
-            <t>TBA2 (see <xref target="IANA-Att"></xref>).</t>
-          </list></t>
-
-        <t>Value<list style="empty">
-            <t>This field contains a set of TLVs as follows:<list
-                style="hanging">
-                <t hangText="Encrypted-DNS-ADN TLV:">The IPv4-Encrypted-DNS
-                Attribute MUST include exactly one instance of
-                Encrypted-DNS-ADN TLV (<xref target="adn"></xref>).</t>
-
-                <t hangText="Encrypted-DNS-IPv4-Address TLV:">The
-                IPv4-Encrypted-DNS Attribute SHOULD include one or multiple
-                instances of Encrypted-DNS-IPv4-Address TLV (<xref
-                target="v4locator"></xref>). In contexts where putting
-                additional complexity on requesting hosts is acceptable,
-                returning an ADN only (that is, no Encrypted-DNS-IPv4-Address
-                TLV is returned) can be considered.</t>
-
-                <t hangText="Encrypted-DNS-SvcParams TLV:">The
-                IPv4-Encrypted-DNS Attribute SHOULD include one or multiple
-                instances of Encrypted-DNS-SvcParams TLV (<xref
-                target="svcparams"></xref>). If multiple instances are
-                included, each of these instances MUST include self-contained
-                SvcParams. </t>
-
-                <t hangText="Encrypted-DNS-SvcPriority TLV:">The
-                IPv4-Encrypted-DNS Attribute SHOULD include one instance of
-                Encrypted-DNS-SvcPriority TLV (<xref
-                target="svcprio"></xref>).</t>
-              </list></t>
-          </list>The IPv4-Encrypted-DNS Attribute is associated with the
-        following identifier: 245.TBA2.</t>
-      </section>
-
-      <section anchor="tlv" title="RADIUS TLVs for Encrypted DNS">
-        <t>The TLVs defined in the following subsections use the format
-        defined in <xref section="2.3" target="RFC6929"></xref>.</t>
-
-        <t>These TLVs have the same name and number when encapsulated in any
-        of the parent attributes defined in Sections <xref format="counter"
-        target="v6"></xref> and <xref format="counter"
-        target="v4"></xref>.</t>
-
-        <t>The encoding of the "Value" field of these TLVs follows the
-        recommendation of <xref target="RFC6158"></xref>.</t>
-
-        <section anchor="adn" title="Encrypted-DNS-ADN TLV">
-          <t>TLV-Type<list style="empty">
-              <t>TBA3 (see <xref target="IANA-TLV"></xref>).</t>
-            </list></t>
-
-          <t>TLV-Length<list style="empty">
-              <t>Length of included ADN + 2 octets.</t>
-            </list>Data Type<list style="empty">
-              <t>The Encrypted-DNS-ADN TLV is of type string (<xref
-              section="3.5" target="RFC8044"></xref>).</t>
-            </list>TLV-Value<list style="empty">
-              <t>This field includes a fully qualified domain name of the
-              encrypted DNS resolver. This field is formatted as specified in
-              <xref section="10" target="RFC8415"></xref>.</t>
-            </list></t>
-
-          <t>This TLV is identified as 245.TBA1.TBA3 when included in the
-          IPv6-Encrypted-DNS Attribute (<xref target="v6"></xref>) and as
-          245.TBA2.TBA3 when included in the IPv4-Encrypted-DNS Attribute
-          (<xref target="v4"></xref>).</t>
-        </section>
-
-        <section anchor="v6locator" title="Encrypted-DNS-IPv6-Address TLV">
-          <t>TLV-Type<list style="empty">
-              <t>TBA4 (see <xref target="IANA-TLV"></xref>).</t>
-            </list></t>
-
-          <t>TLV-Length<list style="empty">
-              <t>Eighteen octets.</t>
-            </list>Data Type<list style="empty">
-              <t>The Encrypted-DNS-IPv6-Address TLV is of type ip6addr (<xref
-              section="3.9" target="RFC8044"></xref>).</t>
-            </list>TLV-Value<list style="empty">
-              <t>This field includes an IPv6 address (128 bits) of the
-              encrypted DNS resolver. <vspace blankLines="1" />The
-              Encrypted-DNS-IPv6-Address attribute MUST NOT include multicast
-              (<xref section="2.7" target="RFC4291"></xref>) and loopback
-              addresses <xref target="RFC6890"></xref>.</t>
-            </list>This TLV is identified as 245.TBA1.TBA4 as part of the
-          IPv6-Encrypted-DNS Attribute (<xref target="v6"></xref>).</t>
-        </section>
-
-        <section anchor="v4locator" title="Encrypted-DNS-IPv4-Address TLV">
-          <t>TLV-Type<list style="empty">
-              <t>TBA5 (see <xref target="IANA-TLV"></xref>).</t>
-            </list></t>
-
-          <t>TLV-Length<list style="empty">
-              <t>Six octets.</t>
-            </list></t>
-
-          <t>Data Type<list style="empty">
-              <t>The Encrypted-DNS-IPv4-Address TLV is of type ip4addr (<xref
-              section="3.8" target="RFC8044"></xref>).</t>
-            </list>TLV-Value<list style="empty">
-              <t>This field includes an IPv4 address (32 bits) of the
-              encrypted DNS resolver. <vspace blankLines="1" />The
-              Encrypted-DNS-IPv4-Address attribute MUST NOT include multicast
-              (<xref section="4" target="RFC1112"></xref>) and loopback
-              addresses <xref target="RFC6890"></xref>.</t>
-            </list></t>
-
-          <t>This TLV is identified as 245.TBA2.TBA5 as part of the
-          IPv4-Encrypted-DNS Attribute (<xref target="v4"></xref>).</t>
-        </section>
-
-        <section anchor="svcparams" title="Encrypted-DNS-SvcParams TLV">
-          <t>TLV-Type<list style="empty">
-              <t>TBA6 (see <xref target="IANA-TLV"></xref>).</t>
-            </list></t>
-
-          <t>TLV-Length<list style="empty">
-              <t>Length of included service parameters + 2 octets.</t>
-            </list></t>
-
-          <t>Data Type<list style="empty">
-              <t>The Encrypted-DNS-SvcParams TLV is of type string (<xref
-              section="3.5" target="RFC8044"></xref>).</t>
-            </list></t>
-
-          <t>TLV-Value<list style="empty">
-              <t>Specifies a set of service parameters that are encoded
-              following the rules in <xref section="2.1"
-              target="I-D.ietf-dnsop-svcb-https"></xref>. <xref
-              section="3.1.5" target="I-D.ietf-add-dnr"></xref> lists a set of
-              service parameters that are recommended to be supported by
-              implementations. <vspace blankLines="1" />The service parameters
-              MUST include at least "alpn" SvcParam (<xref section="4.1"
-              target="I-D.ietf-add-svcb-dns"></xref>). The service parameters
-              MUST NOT include "ipv4hint" or "ipv6hint" SvcParams as they are
-              superseded by the included IP addresses. </t>
-            </list></t>
-
-          <t>This TLV is identified as 245.TBA1.TBA6 when included in the
-          IPv6-Encrypted-DNS Attribute (<xref target="v6"></xref>) and as
-          245.TBA2.TBA6 when included in the IPv4-Encrypted-DNS Attribute
-          (<xref target="v4"></xref>).</t>
-        </section>
-
-        <section anchor="svcprio" title="Encrypted-DNS-SvcPriority TLV">
-          <t>TLV-Type<list style="empty">
-              <t>TBA7 (see <xref target="IANA-TLV"></xref>).</t>
-            </list></t>
-
-          <t>TLV-Length<list style="empty">
-              <t>Six octets.</t>
-            </list></t>
-
-          <t>Data Type<list style="empty">
-              <t>The Encrypted-DNS-SvcPriority TLV is of type integer (<xref
-              section="3.1" target="RFC8044"></xref>).</t>
-            </list></t>
-
-          <t>TLV-Value<list style="empty">
-              <t>Specifies the priority (unsigned16) of this *-Encrypted-DNS
-              instance compared to other instances, right justified, and the
-              unused bits in this field MUST be set to zero. The value is
-              interpreted following the rules specified in <xref
-              section="2.4.1" target="I-D.ietf-dnsop-svcb-https"></xref>.</t>
-            </list></t>
-
-          <t>This TLV is identified as 245.TBA1.TBA7 when included in the
-          IPv6-Encrypted-DNS Attribute (<xref target="v6"></xref>) and as
-          245.TBA2.TBA7 when included in the IPv4-Encrypted-DNS Attribute
-          (<xref target="v4"></xref>).</t>
-        </section>
-      </section>
     </section>
 
     <section anchor="Security" title="Security Considerations">
@@ -603,8 +411,11 @@
       secured by IPsec or Transport Layer Security (TLS) <xref
       target="RFC6614"></xref>.</t>
 
-      <t>Security considerations (including traffic theft) are discussed in
-      <xref section="7" target="I-D.ietf-add-dnr"></xref>.</t>
+      <t>Security considerations specific to the DHCP options that are carried
+      in RADIUS are discussed in relevant documents that specify these
+      options. For example, security considerations (including traffic theft)
+      are discussed in <xref section="7"
+      target="I-D.ietf-add-dnr"></xref>.</t>
     </section>
 
     <section title="Table of Attributes">
@@ -614,12 +425,12 @@
       <t><figure>
           <artwork><![CDATA[Access- Access- Access-  Challenge Acct.    #        Attribute
 Request Accept  Reject             Request 
- 0+      0+      0        0         0+      245.TBA1 IPv6-Encrypted-DNS
- 0+      0+      0        0         0+      245.TBA2 IPv4-Encrypted-DNS
+ 0+      0+      0        0         0+      245.TBA1 DHCPv6-Options
+ 0+      0+      0        0         0+      245.TBA2 DHCPv4-Options
 
 CoA-Request CoA-ACK CoA-NACK #        Attribute
-  0+          0       0      245.TBA1 IPv6-Encrypted-DNS
-  0+          0       0      245.TBA2 IPv4-Encrypted-DNS
+  0+          0       0      245.TBA1 DHCPv6-Options
+  0+          0       0      245.TBA2 DHCPv4-Options
 ]]></artwork>
         </figure></t>
 
@@ -637,8 +448,6 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
         IANA registry "Radius Attribute Types" <xref
         target="RADIUS-Types"></xref>:</t>
 
-        <t></t>
-
         <texttable anchor="ra" style="headers"
                    title="Encrypted DNS RADIUS Attributes">
           <ttcol>Value</ttcol>
@@ -651,105 +460,22 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
           <c>245.TBA1</c>
 
-          <c>IPv6-Encrypted-DNS</c>
+          <c>DHCPv6-Options</c>
 
-          <c>tlv</c>
+          <c>string</c>
 
           <c>This-Document</c>
 
           <c>245.TBA2</c>
 
-          <c>IPv4-Encrypted-DNS</c>
+          <c>DHCPv4-Options</c>
 
-          <c>tlv</c>
+          <c>string</c>
 
           <c>This-Document</c>
         </texttable>
 
         <t></t>
-      </section>
-
-      <section anchor="IANA-TLV" title="RADIUS Encrypted DNS TLVs">
-        <t>IANA is requested to create a new subregistry called "RADIUS
-        Encrypted DNS TLVs" under the "Radius Attribute Types" registry <xref
-        target="RADIUS-Types"></xref>.</t>
-
-        <t>The registration procedure for this subregistry is "Standards
-        Action" as defined in (<xref section="4.9"
-        target="RFC8126"></xref>).</t>
-
-        <t>The subregistry is initially populated as follows:<list
-            style="empty">
-            <t>Note to the RFC Editor: Please replace TBA3-TBA7 with the
-            corresponding values assigned from the 1-5 range.</t>
-          </list></t>
-
-        <texttable anchor="tlvs" style="headers"
-                   title="Initial RADIUS Encrypted DNS TLVs">
-          <ttcol>Value</ttcol>
-
-          <ttcol>Description</ttcol>
-
-          <ttcol>Data Type</ttcol>
-
-          <ttcol>Reference</ttcol>
-
-          <c>0</c>
-
-          <c>Reserved</c>
-
-          <c></c>
-
-          <c>This-Document</c>
-
-          <c>TBA3</c>
-
-          <c>Encrypted-DNS-ADN</c>
-
-          <c>string</c>
-
-          <c>This-Document, Section 3.3.1</c>
-
-          <c>TBA4</c>
-
-          <c>Encrypted-DNS-IPv6-Address</c>
-
-          <c>ipv6addr</c>
-
-          <c>This-Document, Section 3.3.2</c>
-
-          <c>TBA5</c>
-
-          <c>Encrypted-DNS-IPv4-Address</c>
-
-          <c>ipv4addr</c>
-
-          <c>This-Document, Section 3.3.3</c>
-
-          <c>TBA6</c>
-
-          <c>Encrypted-DNS-SvcParams</c>
-
-          <c>string</c>
-
-          <c>This-Document, Section 3.3.4</c>
-
-          <c>TBA7</c>
-
-          <c>Encrypted-DNS-SvcPriority</c>
-
-          <c>integer</c>
-
-          <c>This-Document, Section 3.3.5</c>
-
-          <c>6-255</c>
-
-          <c>Unassigned</c>
-
-          <c></c>
-
-          <c></c>
-        </texttable>
       </section>
 
       <section anchor="urd"
@@ -769,7 +495,7 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
           <c>245.TBA1</c>
 
-          <c>IPv6-Encrypted-DNS</c>
+          <c>DHCPv6-Options</c>
 
           <c>This-Document</c>
         </texttable>
@@ -791,12 +517,6 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
 
-      <?rfc include='reference.RFC.6890'?>
-
-      <?rfc include='reference.RFC.4291'?>
-
-      <?rfc include='reference.RFC.1112'?>
-
       <?rfc include='reference.RFC.2865'?>
 
       <?rfc include='reference.RFC.6158'?>
@@ -805,17 +525,9 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
       <?rfc include='reference.RFC.8174'?>
 
-      <?rfc include='reference.I-D.ietf-dnsop-svcb-https'?>
-
-      <?rfc include='reference.I-D.ietf-add-svcb-dns'?>
-
-      <?rfc include='reference.I-D.ietf-add-dnr'?>
-
       <?rfc include='reference.RFC.6929'?>
 
       <?rfc include='reference.RFC.8415'?>
-
-      <?rfc include='reference.RFC.8126'?>
     </references>
 
     <references title="Informative References">
@@ -843,6 +555,10 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
       <?rfc include='reference.RFC.7037'?>
 
+      <?rfc include='reference.I-D.ietf-add-dnr'?>
+
+      <?rfc include='reference.RFC.7227'?>
+
       <reference anchor="RADIUS-Types"
                  target="http://www.iana.org/assignments/radius-types">
         <front>
@@ -869,62 +585,5 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
         </front>
       </reference>
     </references>
-
-    <section anchor="mapping" title="DNR to RADIUS Field Mappings">
-      <t>Each IPv6-Encrypted-DNS Attribute is mapped to an IPv6 DNR instance
-      (i.e., OPTION_V6_DNR(144) or IPv6 Neighbor Discovery Option(144)) as
-      shown in <xref target="map1"></xref>.</t>
-
-      <texttable anchor="map1" title="IPv6 DNR-RADIUS Field Mapping">
-        <ttcol>DNR Field</ttcol>
-
-        <ttcol>Value Field of RADIUS TLV</ttcol>
-
-        <c>Service Priority</c>
-
-        <c>Encrypted-DNS-SvcPriority</c>
-
-        <c>authentication-domain-name</c>
-
-        <c>Encrypted-DNS-ADN</c>
-
-        <c>ipv6-address(es)</c>
-
-        <c>One or multiple Encrypted-DNS-IPv6-Address</c>
-
-        <c>Service Parameters (SvcParams)</c>
-
-        <c>One or multiple whitespace-separated Encrypted-DNS-SvcParams. </c>
-      </texttable>
-
-      <t>Likewise, each IPv4-Encrypted-DNS Attribute is mapped to an IPv4 DNR
-      instance (i.e., OPTION_V4_DNR(162)) as shown in <xref
-      target="map2"></xref>.</t>
-
-      <texttable anchor="map2" title="IPv4 DNR-RADIUS Field Mapping">
-        <ttcol>DNR Field</ttcol>
-
-        <ttcol>Value Field of RADIUS TLV</ttcol>
-
-        <c>Service Priority</c>
-
-        <c>Encrypted-DNS-SvcPriority</c>
-
-        <c>authentication-domain-name</c>
-
-        <c>Encrypted-DNS-ADN</c>
-
-        <c>IPv4 Address(es)</c>
-
-        <c>One or multiple Encrypted-DNS-IPv4-Address</c>
-
-        <c>Service Parameters (SvcParams)</c>
-
-        <c>One or multiple whitespace-separated Encrypted-DNS-SvcParams</c>
-      </texttable>
-
-      <t>ADN Length, Addr Length, and SvcParams Length fields are set as a
-      function of the enclosed data in the corresponding fields.</t>
-    </section>
   </back>
 </rfc>
