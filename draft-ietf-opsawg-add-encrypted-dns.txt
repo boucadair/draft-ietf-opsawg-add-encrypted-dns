@@ -202,7 +202,9 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
 
    RADIUS implementations may support a configuration parameter to
    control the DHCP options that can be included in a DHCP*-Options
-   RADIUS attribute.
+   RADIUS attribute.  Likewise, DHCP server implementations may support
+   a configuration parameter to control the permitted DHCP options in a
+   DHCP*-Options RADIUS attribute.
 
    For ease of administrator configuration, the RADIUS server SHOULD
    expose the DHCP options and allow administrators to configure them,
@@ -216,8 +218,6 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
 
    This attribute is of type "string" as defined in Section 3.5 of
    [RFC8044].
-
-
 
 
 

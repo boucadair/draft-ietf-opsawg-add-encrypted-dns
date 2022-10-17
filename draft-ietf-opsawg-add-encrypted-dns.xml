@@ -201,7 +201,9 @@
 
       <t>RADIUS implementations may support a configuration parameter to
       control the DHCP options that can be included in a DHCP*-Options RADIUS
-      attribute.</t>
+      attribute. Likewise, DHCP server implementations may support a
+      configuration parameter to control the permitted DHCP options in a
+      DHCP*-Options RADIUS attribute.</t>
 
       <t>For ease of administrator configuration, the RADIUS server SHOULD
       expose the DHCP options and allow administrators to configure them,
