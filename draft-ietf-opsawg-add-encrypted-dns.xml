@@ -10,8 +10,8 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-ietf-opsawg-add-encrypted-dns-04"
-     ipr="trust200902">
+<rfc category="std" docName="draft-ietf-opsawg-add-encrypted-dns-05"
+     ipr="trust200902" updates="4014">
   <front>
     <title abbrev="RADIUS DHCP-Options">RADIUS Extensions for DHCP Configured
     Services</title>
@@ -94,7 +94,10 @@
       specification was initially motivated by the configuration of encrypted
       DNS resolvers, the specification is generic and can be applicable to any
       service that relies upon DHCP. Both DHCPv4 and DHCPv6 configured
-      services are covered.<!--
+      services are covered.</t>
+
+      <t>Also, this document updates RFC 4014 by relaxing a constraint on
+      permitted RADIUS Attributes in the RADIUS Attributes DHCP suboption.<!--
 --></t>
     </abstract>
   </front>
@@ -139,13 +142,16 @@
       might be employed in network scenarios where the DHCP server and the
       RADIUS client are located in the same device. The new attributes can
       also be used in deployments that rely upon the mechanisms defined in
-      <xref target="RFC4014"></xref><xref
-      target="I-D.boucadair-dhcwg-rfc4014-update"></xref> or <xref
-      target="RFC7037"></xref>, which allow a DHCP relay agent that is
-      collocated with a RADIUS client to pass attributes obtained from a
-      RADIUS server to a DHCP server. DHCP options that are included in the
-      new RADIUS attributes can be controlled by a deployment specific policy.
-      Discussing such as policy is out of scope. </t>
+      <xref target="RFC4014"></xref> or <xref target="RFC7037"></xref>, which
+      allow a DHCP relay agent that is collocated with a RADIUS client to pass
+      attributes obtained from a RADIUS server to a DHCP server. However, an
+      update to <xref target="RFC4014"></xref> is required so that a DHCP
+      relay agent can pass the DHCPv4-Options Attribute obtained from a RADIUS
+      server to a DHCP server (<xref target="RAD"></xref>).</t>
+
+      <t>DHCP options that are included in the new RADIUS attributes can be
+      controlled by a deployment specific policy. Discussing such as policy is
+      out of scope.</t>
 
       <t>This document adheres to <xref target="RFC8044"></xref> for defining
       the new attributes.</t>
@@ -185,7 +191,7 @@
     <section anchor="att" title="DHCP Options RADIUS Attributes">
       <t>This section specifies two new RADIUS attributes for RADIUS clients
       and servers to exchange DHCP-encoded data. This data is then used to
-      feed the DHCP procedure between DHCP client and a DHCP server.</t>
+      feed the DHCP procedure between a DHCP client and a DHCP server.</t>
 
       <t>Both DHCPv4-Options and DHCPv6-Options Attributes use the "Long
       Extended Type" format (<xref section="2.2" target="RFC6929"></xref>).
@@ -216,7 +222,7 @@
 
       <t>Absent any explicit configuration on the DHCP server, RADIUS supplied
       data by means of DHCP*-Options Attributes take precedence over any local
-      configuration. </t>
+      configuration.</t>
 
       <t>These attributes are defined with globally unique names. The naming
       of the attributes follows the guidelines in Section 2.7.1 of <xref
@@ -314,7 +320,75 @@
           </list></t>
 
         <t>The DHCPv4-Options Attribute is associated with the following
-        identifier: 245.TBA2. </t>
+        identifier: 245.TBA2.</t>
+      </section>
+    </section>
+
+    <section anchor="RAD"
+             title="Passing DHCP Options RADIUS Attributes to DHCP Servers">
+      <section title="Context">
+        <t>The RADIUS Attributes suboption <xref target="RFC4014"></xref>
+        enables a DHCPv4 relay agent to pass identification and authorization
+        attributes received during RADIUS authentication to a DHCPv4 server.
+        However, <xref target="RFC4014"></xref> defines a frozen set of RADIUS
+        attributes that can be included in such a suboption. This limitation
+        is suboptimal in contexts where new services are deployed (e.g.,
+        support of encrypted DNS <xref target="I-D.ietf-add-dnr"></xref>).</t>
+
+        <t><xref target="update"></xref> updates <xref
+        target="RFC4014"></xref> by relaxing that constraint and allowing to
+        tag additional RADIUS attributes as permitted in the RADIUS Attributes
+        DHCP suboption. <xref target="IANA-RAD"></xref> creates a new IANA
+        registry to maintain the set of permitted attributes in the RADIUS
+        Attributes DHCP suboption. </t>
+      </section>
+
+      <section anchor="update" title="Updates to RFC 4014">
+        <t></t>
+
+        <section anchor="update1" title="Section 3 of RFC 4014">
+          <t>This document updates Section 3 of <xref target="RFC4014"></xref>
+          as follows:<list style="hanging">
+              <t hangText="OLD:"><vspace blankLines="1" />To avoid
+              dependencies between the address allocation and other state
+              information between the RADIUS server and the DHCP server, the
+              DHCP relay agent SHOULD include only the attributes in the table
+              below in an instance of the RADIUS Attributes suboption. The
+              table, based on the analysis in RFC 3580 [8], lists attributes
+              that MAY be included:<vspace blankLines="1" /><figure>
+                  <artwork><![CDATA[           #   Attribute
+         ---   ---------
+           1   User-Name (RFC 2865 [3])
+           6   Service-Type (RFC 2865)
+          26   Vendor-Specific (RFC 2865)
+          27   Session-Timeout (RFC 2865)
+          88   Framed-Pool (RFC 2869)
+         100   Framed-IPv6-Pool (RFC 3162 [7])
+]]></artwork>
+                </figure></t>
+
+              <t hangText="NEW:"><vspace blankLines="1" />To avoid
+              dependencies between the address allocation and other state
+              information between the RADIUS server and the DHCP server, the
+              DHCP relay agent SHOULD include only the attributes in the
+              IANA-maintained registry (<xref target="IANA-RAD"></xref>) in an
+              instance of the RADIUS Attributes suboption.</t>
+            </list></t>
+        </section>
+
+        <section anchor="update2" title="Section 4 of RFC 4014">
+          <t>This document updates Section 4 of <xref target="RFC4014"></xref>
+          as follows:<list style="hanging">
+              <t hangText="OLD:"><vspace blankLines="1" />If the relay agent
+              relays RADIUS attributes not included in the table in Section 4,
+              the DHCP server SHOULD ignore them.</t>
+
+              <t hangText="NEW:"><vspace blankLines="1" />If the relay agent
+              relays RADIUS attributes not included in the IANA-maintained
+              registry (<xref target="IANA-RAD"></xref>), the DHCP server
+              SHOULD ignore them.</t>
+            </list></t>
+        </section>
       </section>
     </section>
 
@@ -434,6 +508,11 @@
       options. For example, security considerations (including traffic theft)
       are discussed in <xref section="7"
       target="I-D.ietf-add-dnr"></xref>.</t>
+
+      <t>The considerations discussed in Section 7 of <xref
+      target="RFC4014"></xref> and Section 8 of <xref target="RFC7037"></xref>
+      should be taken into account in deployments where DHCP relay agents pass
+      the DHCP*-Options Attributes to DHCP servers.</t>
     </section>
 
     <section title="Table of Attributes">
@@ -521,6 +600,78 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
         <t></t>
       </section>
 
+      <section anchor="IANA-RAD"
+               title="RADIUS Attributes Permitted in RADIUS Attributes DHCP Sub-option">
+        <t>IANA is requested to create a new sub-registry entitled "RADIUS
+        Attributes Permitted in RADIUS Attributes Sub-option" in the "Dynamic
+        Host Configuration Protocol (DHCP) and Bootstrap Protocol (BOOTP)
+        Parameters" registry <xref target="BOOTP"></xref>.</t>
+
+        <t>The allocation policy of this new sub-registry is Expert Review
+        (Section 4.5 of <xref target="RFC8126"></xref>). Designated experts
+        should carefully consider the security implications of allowing the
+        relay agent to include new RADIUS attributes to this registry.
+        Additional considerations are provided in <xref
+        target="reg"></xref>.</t>
+
+        <t>The initial content of this sub-registry is listed in <xref
+        target="rad-new"></xref>. The reference may include the document that
+        registers or specifies the Attribute.</t>
+
+        <texttable anchor="rad-new" style="headers"
+                   title="RADIUS Attributes Permitted in RADIUS Attributes Suboption">
+          <ttcol>Type Code</ttcol>
+
+          <ttcol>Attribute</ttcol>
+
+          <ttcol>Reference</ttcol>
+
+          <c>1</c>
+
+          <c>User-Name</c>
+
+          <c>RFC 2865</c>
+
+          <c>6</c>
+
+          <c>Service-Type</c>
+
+          <c>RFC 2865</c>
+
+          <c>26</c>
+
+          <c>Vendor-Specific</c>
+
+          <c>RFC 2865</c>
+
+          <c>27</c>
+
+          <c>Session-Timeout</c>
+
+          <c>RFC 2865</c>
+
+          <c>88</c>
+
+          <c>Framed-Pool</c>
+
+          <c>RFC 2869</c>
+
+          <c>100</c>
+
+          <c>Framed-IPv6-Pool</c>
+
+          <c>RFC 3162</c>
+
+          <c>245.TBA2</c>
+
+          <c>DHCPv4-Options</c>
+
+          <c>This-Document</c>
+        </texttable>
+
+        <t></t>
+      </section>
+
       <section title="DHCP Options Permitted in the RADIUS DHCP*-Options Attribute">
         <t></t>
 
@@ -597,13 +748,14 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
           entries and whether the registration description is clear and fits
           the purpose of this registry.</t>
 
-          <t>Registration requests MUST be sent to radius-dhcp-review@ietf.org
-          and are evaluated within a three-week review period on the advice of
-          one or more designated experts. Within the review period, the
-          designated experts will either approve or deny the registration
-          request, communicating this decision to the review list and IANA.
-          Denials should include an explanation and, if applicable,
-          suggestions as to how to make the request successful.</t>
+          <t>Registration requests are to be sent to
+          radius-dhcp-review@ietf.org and are evaluated within a three-week
+          review period on the advice of one or more designated experts.
+          Within the review period, the designated experts will either approve
+          or deny the registration request, communicating this decision to the
+          review list and IANA. Denials should include an explanation and, if
+          applicable, suggestions as to how to make the request
+          successful.</t>
 
           <t>Registration requests that are undetermined for a period longer
           than 28 days can be brought to the IESG's attention for
@@ -649,8 +801,6 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
       <?rfc include='reference.RFC.4014'?>
 
-      <?rfc include='reference.I-D.boucadair-dhcwg-rfc4014-update'?>
-
       <?rfc include='reference.RFC.8484'?>
 
       <?rfc include='reference.RFC.7858'?>
@@ -658,6 +808,10 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
       <?rfc include='reference.RFC.9250'?>
 
       <?rfc include='reference.RFC.2868'?>
+
+      <?rfc include='reference.RFC.2869'?>
+
+      <?rfc include='reference.RFC.3162'?>
 
       <?rfc include='reference.RFC.6614'?>
 
