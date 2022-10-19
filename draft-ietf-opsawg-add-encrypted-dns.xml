@@ -340,7 +340,7 @@
         tag additional RADIUS attributes as permitted in the RADIUS Attributes
         DHCP suboption. <xref target="IANA-RAD"></xref> creates a new IANA
         registry to maintain the set of permitted attributes in the RADIUS
-        Attributes DHCP suboption. </t>
+        Attributes DHCP suboption.</t>
       </section>
 
       <section anchor="update" title="Updates to RFC 4014">
@@ -765,11 +765,14 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>Thanks to Christian Jacquenet, Neil Cook, Alan Dekok, Joe Clarke, Qin
-      Wu, Dirk von-Hugo, Tom Petch, and Chongfeng Xie for the review and
+      <t>Thanks to Christian Jacquenet, Neil Cook, Joe Clarke, Qin Wu, Dirk
+      von-Hugo, Tom Petch, and Chongfeng Xie for the review and
       suggestions.</t>
 
       <t>Thanks to Ben Schwartz and Bernie Volz for the comments.</t>
+
+      <t>Special thanks to Alan DeKok for his several thorough reviews and
+      suggestions, which improved this specification significantly. </t>
     </section>
   </middle>
 

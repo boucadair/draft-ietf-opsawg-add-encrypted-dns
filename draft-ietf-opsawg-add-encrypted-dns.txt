@@ -764,20 +764,20 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
 
 9.  Acknowledgements
 
-   Thanks to Christian Jacquenet, Neil Cook, Alan Dekok, Joe Clarke, Qin
-   Wu, Dirk von-Hugo, Tom Petch, and Chongfeng Xie for the review and
+   Thanks to Christian Jacquenet, Neil Cook, Joe Clarke, Qin Wu, Dirk
+   von-Hugo, Tom Petch, and Chongfeng Xie for the review and
    suggestions.
 
    Thanks to Ben Schwartz and Bernie Volz for the comments.
+
+   Special thanks to Alan DeKok for his several thorough reviews and
+   suggestions, which improved this specification significantly.
 
 10.  References
 
 10.1.  Normative References
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/info/rfc2119>.
+
 
 
 
@@ -785,6 +785,11 @@ Boucadair & Reddy         Expires 22 April 2023                [Page 14]
 
 Internet-Draft             RADIUS DHCP-Options              October 2022
 
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
 
    [RFC2865]  Rigney, C., Willens, S., Rubens, A., and W. Simpson,
               "Remote Authentication Dial In User Service (RADIUS)",
@@ -826,14 +831,9 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
               <https://www.iana.org/assignments/bootp-dhcp-parameters/
               bootp-dhcp-parameters.xhtml>.
 
-   [DHCP-RADIUS]
-              IANA, "Dynamic Host Configuration Protocol for IPv6
-              (DHCPv6)", <https://www.iana.org/assignments/dhcpv6-
-              parameters/dhcpv6-parameters.xhtml>.
 
-   [I-D.ietf-add-dnr]
-              Boucadair, M., Reddy, T., Wing, D., Cook, N., and T.
-              Jensen, "DHCP and Router Advertisement Options for the
+
+
 
 
 
@@ -842,6 +842,14 @@ Boucadair & Reddy         Expires 22 April 2023                [Page 15]
 Internet-Draft             RADIUS DHCP-Options              October 2022
 
 
+   [DHCP-RADIUS]
+              IANA, "Dynamic Host Configuration Protocol for IPv6
+              (DHCPv6)", <https://www.iana.org/assignments/dhcpv6-
+              parameters/dhcpv6-parameters.xhtml>.
+
+   [I-D.ietf-add-dnr]
+              Boucadair, M., Reddy, T., Wing, D., Cook, N., and T.
+              Jensen, "DHCP and Router Advertisement Options for the
               Discovery of Network-designated Resolvers (DNR)", Work in
               Progress, Internet-Draft, draft-ietf-add-dnr-13, 13 August
               2022, <https://www.ietf.org/archive/id/draft-ietf-add-dnr-
@@ -879,6 +887,17 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
               DOI 10.17487/RFC4861, September 2007,
               <https://www.rfc-editor.org/info/rfc4861>.
 
+
+
+
+
+
+
+Boucadair & Reddy         Expires 22 April 2023                [Page 16]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
+
    [RFC5176]  Chiba, M., Dommety, G., Eklund, M., Mitton, D., and B.
               Aboba, "Dynamic Authorization Extensions to Remote
               Authentication Dial In User Service (RADIUS)", RFC 5176,
@@ -889,14 +908,6 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
               "Transport Layer Security (TLS) Encryption for RADIUS",
               RFC 6614, DOI 10.17487/RFC6614, May 2012,
               <https://www.rfc-editor.org/info/rfc6614>.
-
-
-
-
-Boucadair & Reddy         Expires 22 April 2023                [Page 16]
-
-Internet-Draft             RADIUS DHCP-Options              October 2022
-
 
    [RFC6911]  Dec, W., Ed., Sarikaya, B., Zorn, G., Ed., Miles, D., and
               B. Lourdelet, "RADIUS Attributes for IPv6 Access
@@ -932,6 +943,17 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
 
 Authors' Addresses
 
+
+
+
+
+
+
+Boucadair & Reddy         Expires 22 April 2023                [Page 17]
+
+Internet-Draft             RADIUS DHCP-Options              October 2022
+
+
    Mohamed Boucadair
    Orange
    35000 Rennes
@@ -949,4 +971,38 @@ Authors' Addresses
 
 
 
-Boucadair & Reddy         Expires 22 April 2023                [Page 17]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair & Reddy         Expires 22 April 2023                [Page 18]
