@@ -648,23 +648,23 @@ Internet-Draft             RADIUS DHCP-Options              October 2022
              +===========+==================+===============+
              | Type Code | Attribute        | Reference     |
              +===========+==================+===============+
-             | 1         | User-Name        | RFC 2865      |
+             | 1         | User-Name        | [RFC2865]     |
              +-----------+------------------+---------------+
-             | 6         | Service-Type     | RFC 2865      |
+             | 6         | Service-Type     | [RFC2865]     |
              +-----------+------------------+---------------+
-             | 26        | Vendor-Specific  | RFC 2865      |
+             | 26        | Vendor-Specific  | [RFC2865]     |
              +-----------+------------------+---------------+
-             | 27        | Session-Timeout  | RFC 2865      |
+             | 27        | Session-Timeout  | [RFC2865]     |
              +-----------+------------------+---------------+
-             | 88        | Framed-Pool      | RFC 2869      |
+             | 88        | Framed-Pool      | [RFC2869]     |
              +-----------+------------------+---------------+
-             | 100       | Framed-IPv6-Pool | RFC 3162      |
+             | 100       | Framed-IPv6-Pool | [RFC3162]     |
              +-----------+------------------+---------------+
              | 245.TBA2  | DHCPv4-Options   | This-Document |
              +-----------+------------------+---------------+
 
                  Table 3: RADIUS Attributes Permitted in
-                       RADIUS Attributes Suboption
+                     RADIUS Attributes DHCP Suboption
 
 
 

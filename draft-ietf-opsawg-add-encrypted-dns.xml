@@ -619,7 +619,7 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
         registers or specifies the Attribute.</t>
 
         <texttable anchor="rad-new" style="headers"
-                   title="RADIUS Attributes Permitted in RADIUS Attributes Suboption">
+                   title="RADIUS Attributes Permitted in RADIUS Attributes DHCP Suboption">
           <ttcol>Type Code</ttcol>
 
           <ttcol>Attribute</ttcol>
@@ -630,37 +630,37 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
           <c>User-Name</c>
 
-          <c>RFC 2865</c>
+          <c>[RFC2865]</c>
 
           <c>6</c>
 
           <c>Service-Type</c>
 
-          <c>RFC 2865</c>
+          <c>[RFC2865]</c>
 
           <c>26</c>
 
           <c>Vendor-Specific</c>
 
-          <c>RFC 2865</c>
+          <c>[RFC2865]</c>
 
           <c>27</c>
 
           <c>Session-Timeout</c>
 
-          <c>RFC 2865</c>
+          <c>[RFC2865]</c>
 
           <c>88</c>
 
           <c>Framed-Pool</c>
 
-          <c>RFC 2869</c>
+          <c>[RFC2869]</c>
 
           <c>100</c>
 
           <c>Framed-IPv6-Pool</c>
 
-          <c>RFC 3162</c>
+          <c>[RFC3162]</c>
 
           <c>245.TBA2</c>
 
