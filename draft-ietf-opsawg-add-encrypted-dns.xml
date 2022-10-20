@@ -56,6 +56,32 @@
       </address>
     </author>
 
+    <author fullname="Alan DeKok" initials="A." surname="DeKok">
+      <organization>FreeRADIUS</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <city></city>
+
+          <region></region>
+
+          <code></code>
+
+          <country></country>
+        </postal>
+
+        <phone></phone>
+
+        <facsimile></facsimile>
+
+        <email>aland@freeradius.org</email>
+
+        <uri></uri>
+      </address>
+    </author>
+
     <date />
 
     <workgroup>opsawg</workgroup>
@@ -770,9 +796,6 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
       suggestions.</t>
 
       <t>Thanks to Ben Schwartz and Bernie Volz for the comments.</t>
-
-      <t>Special thanks to Alan DeKok for his several thorough reviews and
-      suggestions, which improved this specification significantly. </t>
     </section>
   </middle>
 
