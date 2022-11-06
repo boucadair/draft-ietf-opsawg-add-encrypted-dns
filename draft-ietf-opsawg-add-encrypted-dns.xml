@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-ietf-opsawg-add-encrypted-dns-05"
+<rfc category="std" docName="draft-ietf-opsawg-add-encrypted-dns-06"
      ipr="trust200902" updates="4014">
   <front>
     <title abbrev="RADIUS DHCP-Options">RADIUS Extensions for DHCP Configured
