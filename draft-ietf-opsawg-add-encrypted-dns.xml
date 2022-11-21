@@ -397,8 +397,9 @@
               dependencies between the address allocation and other state
               information between the RADIUS server and the DHCP server, the
               DHCP relay agent SHOULD include only the attributes in the
-              IANA-maintained registry (<xref target="IANA-RAD"></xref>) in an
-              instance of the RADIUS Attributes suboption.</t>
+              IANA-maintained registry (<xref target="IANA-RAD"></xref> of
+              [This-Document]) in an instance of the RADIUS Attributes
+              suboption.</t>
             </list></t>
         </section>
 
@@ -411,8 +412,8 @@
 
               <t hangText="NEW:"><vspace blankLines="1" />If the relay agent
               relays RADIUS attributes not included in the IANA-maintained
-              registry (<xref target="IANA-RAD"></xref>), the DHCP server
-              SHOULD ignore them.</t>
+              registry (<xref target="IANA-RAD"></xref> of [This-Document]),
+              the DHCP server SHOULD ignore them.</t>
             </list></t>
         </section>
       </section>
