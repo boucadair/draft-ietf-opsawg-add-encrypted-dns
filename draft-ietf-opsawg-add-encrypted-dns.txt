@@ -6,13 +6,13 @@ opsawg                                                      M. Boucadair
 Internet-Draft                                                    Orange
 Updates: 4014 (if approved)                                     T. Reddy
 Intended status: Standards Track                                   Nokia
-Expires: 25 May 2023                                            A. DeKok
+Expires: 7 July 2023                                            A. DeKok
                                                               FreeRADIUS
-                                                        21 November 2022
+                                                          3 January 2023
 
 
              RADIUS Extensions for DHCP Configured Services
-                 draft-ietf-opsawg-add-encrypted-dns-06
+                 draft-ietf-opsawg-add-encrypted-dns-08
 
 Abstract
 
@@ -41,11 +41,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 May 2023.
+   This Internet-Draft will expire on 7 July 2023.
 
 Copyright Notice
 
-   Copyright (c) 2022 IETF Trust and the persons identified as the
+   Copyright (c) 2023 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Boucadair, et al.          Expires 25 May 2023                  [Page 1]
+Boucadair, et al.          Expires 7 July 2023                  [Page 1]
 
-Internet-Draft             RADIUS DHCP-Options             November 2022
+Internet-Draft             RADIUS DHCP-Options              January 2023
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Boucadair, et al.          Expires 25 May 2023                  [Page 2]
+Boucadair, et al.          Expires 7 July 2023                  [Page 2]
 
-Internet-Draft             RADIUS DHCP-Options             November 2022
+Internet-Draft             RADIUS DHCP-Options              January 2023
 
 
    Advertisements relies upon specific Remote Authentication Dial-In
@@ -122,17 +122,17 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
    [RFC8484], DNS-over-TLS (DoT) [RFC7858], or DNS-over-QUIC (DoQ)
    [RFC9250]), additional means are required to provision hosts with
    network-designated encrypted DNS.  To fill that void,
-   [I-D.ietf-add-dnr] leverages existing protocols such as DHCP and IPv6
-   Router Advertisement to provide hosts with the required information
-   to connect to an encrypted DNS resolver.  However, there are no
-   RADIUS attributes that can be used to populate the discovery messages
-   discussed in [I-D.ietf-add-dnr].  The same concern is likely to be
-   encountered for future services that are configured using DHCP.
+   [I-D.ietf-add-dnr] leverages existing protocols such as DHCP to
+   provide hosts with the required information to connect to an
+   encrypted DNS resolver.  However, there are no RADIUS attributes that
+   can be used to populate the discovery messages discussed in
+   [I-D.ietf-add-dnr].  The same concern is likely to be encountered for
+   future services that are configured using DHCP.
 
    This document specifies two new RADIUS attributes: DHCPv6-Options
    (Section 3.1) and DHCPv4-Options (Section 3.2) Attributes.  These
    attributes can include DHCP options that are listed under the IANA
-   registries that are created in Sections 8.4.1 and 8.4.1.  These two
+   registries that are created in Sections 8.4.1 and 8.4.2.  These two
    attributes are specified in order to accommodate both IPv4 and IPv6
    deployment contexts while taking into account the constraints in
    Section 3.4 of [RFC6158].
@@ -165,9 +165,9 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
 
 
 
-Boucadair, et al.          Expires 25 May 2023                  [Page 3]
+Boucadair, et al.          Expires 7 July 2023                  [Page 3]
 
-Internet-Draft             RADIUS DHCP-Options             November 2022
+Internet-Draft             RADIUS DHCP-Options              January 2023
 
 
 2.  Terminology
@@ -207,9 +207,12 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
    permit the transport of attributes encapsulating more than 253 octets
    of data.  DHCP options that can be included in the DHCP*-Options
    RADIUS attributes are limited by the maximum packet size of 4096
-   bytes.  In order to accommodate deployments with large options,
-   implementations are RECOMMENDED to support a packet size up to 65535
-   bytes.
+   bytes (Section 3 of [RFC2865]).  In order to accommodate deployments
+   with large DHCP options, RADIUS implementations are RECOMMENDED to
+   support a packet size up to 65535 bytes.
+
+   Note:  The 4096 bytes size limit was relaxed by other RFCs, e.g.,
+      [RFC7499] and [RFC7930].
 
    The value fields of DHCP*-Options Attributes are encoded in clear and
    not encrypted as, for example, Tunnel-Password Attribute [RFC2868].
@@ -218,12 +221,9 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
 
 
 
-
-
-
-Boucadair, et al.          Expires 25 May 2023                  [Page 4]
+Boucadair, et al.          Expires 7 July 2023                  [Page 4]
 
-Internet-Draft             RADIUS DHCP-Options             November 2022
+Internet-Draft             RADIUS DHCP-Options              January 2023
 
 
    RADIUS implementations may support a configuration parameter to
@@ -277,9 +277,9 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
 
 
 
-Boucadair, et al.          Expires 25 May 2023                  [Page 5]
+Boucadair, et al.          Expires 7 July 2023                  [Page 5]
 
-Internet-Draft             RADIUS DHCP-Options             November 2022
+Internet-Draft             RADIUS DHCP-Options              January 2023
 
 
    Extended-Type
@@ -333,9 +333,9 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
 
 
 
-Boucadair, et al.          Expires 25 May 2023                  [Page 6]
+Boucadair, et al.          Expires 7 July 2023                  [Page 6]
 
-Internet-Draft             RADIUS DHCP-Options             November 2022
+Internet-Draft             RADIUS DHCP-Options              January 2023
 
 
    Extended-Type
@@ -344,7 +344,12 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
 
    Value
 
-      This field contains a list of DHCPv4 options.
+      This field contains a list of DHCPv4 options.  Multiple instances
+      of the same DHCPv4 option MAY be included, especially for
+      concatenation-requiring options that exceed the maximum DHCPv4
+      option size of 255 octets.  The mechanism specified in [RFC3396]
+      MUST be used for splitting and concatenating the instances of a
+      concatenation-requiring option.
 
       Permitted DHCPv4 options in the DHCPv4-Options Attribute are
       maintained by IANA in the registry created in Section 8.4.2.
@@ -381,18 +386,17 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
       To avoid dependencies between the address allocation and other
       state information between the RADIUS server and the DHCP server,
       the DHCP relay agent SHOULD include only the attributes in the
+
+
+
+Boucadair, et al.          Expires 7 July 2023                  [Page 7]
+
+Internet-Draft             RADIUS DHCP-Options              January 2023
+
+
       table below in an instance of the RADIUS Attributes suboption.
       The table, based on the analysis in RFC 3580 [8], lists attributes
       that MAY be included:
-
-
-
-
-
-Boucadair, et al.          Expires 25 May 2023                  [Page 7]
-
-Internet-Draft             RADIUS DHCP-Options             November 2022
-
 
                  #   Attribute
                ---   ---------
@@ -441,18 +445,15 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
 
 
 
-
-
-
-
-Boucadair, et al.          Expires 25 May 2023                  [Page 8]
+Boucadair, et al.          Expires 7 July 2023                  [Page 8]
 
-Internet-Draft             RADIUS DHCP-Options             November 2022
+Internet-Draft             RADIUS DHCP-Options              January 2023
 
 
    +-------------+           +-------------+             +-------+
    |     CPE     |           |     NAS     |             |  AAA  |
    |DHCPv6 client|           |DHCPv6 server|             |Server |
+   |             |           |RADIUS client|             |       |
    +------+------+           +------+------+             +---+---+
           |                         |                        |
           o-----DHCPv6 Solicit----->|                        |
@@ -500,10 +501,9 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
 
 
 
-
-Boucadair, et al.          Expires 25 May 2023                  [Page 9]
+Boucadair, et al.          Expires 7 July 2023                  [Page 9]
 
-Internet-Draft             RADIUS DHCP-Options             November 2022
+Internet-Draft             RADIUS DHCP-Options              January 2023
 
 
    In deployments where the NAS behaves as a DHCPv6 relay agent, the
@@ -518,6 +518,7 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
    +-------------+           +-------------+             +-------+
    |     CPE     |           |     NAS     |             |  AAA  |
    |DHCPv4 client|           |DHCPv4 server|             |Server |
+   |             |           |RADIUS client|             |       |
    +------+------+           +------+------+             +---+---+
           |                         |                        |
           o------DHCPDISCOVER------>|                        |
@@ -556,10 +557,9 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
 
 
 
-
-Boucadair, et al.          Expires 25 May 2023                 [Page 10]
+Boucadair, et al.          Expires 7 July 2023                 [Page 10]
 
-Internet-Draft             RADIUS DHCP-Options             November 2022
+Internet-Draft             RADIUS DHCP-Options              January 2023
 
 
    Security considerations specific to the DHCP options that are carried
@@ -613,9 +613,9 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
 
 
 
-Boucadair, et al.          Expires 25 May 2023                 [Page 11]
+Boucadair, et al.          Expires 7 July 2023                 [Page 11]
 
-Internet-Draft             RADIUS DHCP-Options             November 2022
+Internet-Draft             RADIUS DHCP-Options              January 2023
 
 
 8.2.  New RADIUS Attribute Permitted in DHCPv6 RADIUS Option
@@ -669,9 +669,9 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
 
 
 
-Boucadair, et al.          Expires 25 May 2023                 [Page 12]
+Boucadair, et al.          Expires 7 July 2023                 [Page 12]
 
-Internet-Draft             RADIUS DHCP-Options             November 2022
+Internet-Draft             RADIUS DHCP-Options              January 2023
 
 
              +===========+==================+===============+
@@ -710,8 +710,25 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
    (Section 4.5 of [RFC8126]).  See more details in Section 8.4.3.
 
    The initial content of this sub-registry is listed in Table 4.  The
-   reference may include the document that registers the option or the
-   document that specifies the option.
+   Value and Description fields echo those of [DHCPv6].  The reference
+   may include the document that registers the option or the document
+   that specifies the option.
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair, et al.          Expires 7 July 2023                 [Page 13]
+
+Internet-Draft             RADIUS DHCP-Options              January 2023
+
 
                  +=======+===============+===============+
                  | Value | Description   | Reference     |
@@ -722,12 +739,6 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
                       Table 4: Initial DHCPv6 Options
                           Permitted in the RADIUS
                           DHCPv6-Options Attribute
-
-
-
-Boucadair, et al.          Expires 25 May 2023                 [Page 13]
-
-Internet-Draft             RADIUS DHCP-Options             November 2022
 
 
 8.4.2.  DHCPv4
@@ -741,8 +752,9 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
    (Section 4.5 of [RFC8126]).  See more details in Section 8.4.3.
 
    The initial content of this sub-registry is listed in Table 5.  The
-   reference may include the document that registers the option or the
-   document that specifies the option.
+   Tag and Name fields echo those of [BOOTP].  The reference may include
+   the document that registers the option or the document that specifies
+   the option.
 
                   +=====+===============+===============+
                   | Tag | Name          | Reference     |
@@ -765,6 +777,15 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
    entries and whether the registration description is clear and fits
    the purpose of this registry.
 
+
+
+
+
+Boucadair, et al.          Expires 7 July 2023                 [Page 14]
+
+Internet-Draft             RADIUS DHCP-Options              January 2023
+
+
    Registration requests are to be sent to radius-dhcp-review@ietf.org
    and are evaluated within a three-week review period on the advice of
    one or more designated experts.  Within the review period, the
@@ -776,16 +797,6 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
    Registration requests that are undetermined for a period longer than
    28 days can be brought to the IESG's attention for resolution.
 
-
-
-
-
-
-Boucadair, et al.          Expires 25 May 2023                 [Page 14]
-
-Internet-Draft             RADIUS DHCP-Options             November 2022
-
-
 9.  Acknowledgements
 
    Thanks to Christian Jacquenet, Neil Cook, Joe Clarke, Qin Wu, Dirk
@@ -793,6 +804,8 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
    suggestions.
 
    Thanks to Ben Schwartz and Bernie Volz for the comments.
+
+   Thanks to Rob Wilton for the AD review.
 
 10.  References
 
@@ -803,22 +816,44 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC2865]  Rigney, C., Willens, S., Rubens, A., and W. Simpson,
-              "Remote Authentication Dial In User Service (RADIUS)",
-              RFC 2865, DOI 10.17487/RFC2865, June 2000,
+   [RFC2865]  Rigney, C., Willens, S., Rubens, A., Simpson, W., and RFC
+              Publisher, "Remote Authentication Dial In User Service
+              (RADIUS)", RFC 2865, DOI 10.17487/RFC2865, June 2000,
               <https://www.rfc-editor.org/info/rfc2865>.
 
-   [RFC6158]  DeKok, A., Ed. and G. Weber, "RADIUS Design Guidelines",
-              BCP 158, RFC 6158, DOI 10.17487/RFC6158, March 2011,
+   [RFC3396]  Lemon, T., Cheshire, S., and RFC Publisher, "Encoding Long
+              Options in the Dynamic Host Configuration Protocol
+              (DHCPv4)", RFC 3396, DOI 10.17487/RFC3396, November 2002,
+              <https://www.rfc-editor.org/info/rfc3396>.
+
+   [RFC4014]  Droms, R., Schnizlein, J., and RFC Publisher, "Remote
+              Authentication Dial-In User Service (RADIUS) Attributes
+              Suboption for the Dynamic Host Configuration Protocol
+              (DHCP) Relay Agent Information Option", RFC 4014,
+              DOI 10.17487/RFC4014, February 2005,
+              <https://www.rfc-editor.org/info/rfc4014>.
+
+
+
+
+
+Boucadair, et al.          Expires 7 July 2023                 [Page 15]
+
+Internet-Draft             RADIUS DHCP-Options              January 2023
+
+
+   [RFC6158]  DeKok, A., Ed., Weber, G., and RFC Publisher, "RADIUS
+              Design Guidelines", BCP 158, RFC 6158,
+              DOI 10.17487/RFC6158, March 2011,
               <https://www.rfc-editor.org/info/rfc6158>.
 
-   [RFC6929]  DeKok, A. and A. Lior, "Remote Authentication Dial In User
-              Service (RADIUS) Protocol Extensions", RFC 6929,
-              DOI 10.17487/RFC6929, April 2013,
+   [RFC6929]  DeKok, A., Lior, A., and RFC Publisher, "Remote
+              Authentication Dial In User Service (RADIUS) Protocol
+              Extensions", RFC 6929, DOI 10.17487/RFC6929, April 2013,
               <https://www.rfc-editor.org/info/rfc6929>.
 
-   [RFC8044]  DeKok, A., "Data Types in RADIUS", RFC 8044,
-              DOI 10.17487/RFC8044, January 2017,
+   [RFC8044]  DeKok, A. and RFC Publisher, "Data Types in RADIUS",
+              RFC 8044, DOI 10.17487/RFC8044, January 2017,
               <https://www.rfc-editor.org/info/rfc8044>.
 
    [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
@@ -829,18 +864,6 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-
-
-
-
-
-
-
-Boucadair, et al.          Expires 25 May 2023                 [Page 15]
-
-Internet-Draft             RADIUS DHCP-Options             November 2022
-
 
    [RFC8415]  Mrugalski, T., Siodelski, M., Volz, B., Yourtchenko, A.,
               Richardson, M., Jiang, S., Lemon, T., Winters, T., and RFC
@@ -860,8 +883,23 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
               (DHCPv6)", <https://www.iana.org/assignments/dhcpv6-
               parameters/dhcpv6-parameters.xhtml>.
 
+   [DHCPv6]   IANA, "Dynamic Host Configuration Protocol for IPv6
+              (DHCPv6), Option Codes",
+              <https://www.iana.org/assignments/dhcpv6-parameters/
+              dhcpv6-parameters.xhtml#dhcpv6-parameters-2>.
+
+
+
+
+
+
+Boucadair, et al.          Expires 7 July 2023                 [Page 16]
+
+Internet-Draft             RADIUS DHCP-Options              January 2023
+
+
    [I-D.ietf-add-dnr]
-              Boucadair, M., Reddy, T., Wing, D., Cook, N., and T.
+              Boucadair, M., Reddy.K, T., Wing, D., Cook, N., and T.
               Jensen, "DHCP and Router Advertisement Options for the
               Discovery of Network-designated Resolvers (DNR)", Work in
               Progress, Internet-Draft, draft-ietf-add-dnr-13, 13 August
@@ -872,99 +910,105 @@ Internet-Draft             RADIUS DHCP-Options             November 2022
               IANA, "RADIUS Types",
               <http://www.iana.org/assignments/radius-types>.
 
-   [RFC2132]  Alexander, S. and R. Droms, "DHCP Options and BOOTP Vendor
-              Extensions", RFC 2132, DOI 10.17487/RFC2132, March 1997,
+   [RFC2132]  Alexander, S., Droms, R., and RFC Publisher, "DHCP Options
+              and BOOTP Vendor Extensions", RFC 2132,
+              DOI 10.17487/RFC2132, March 1997,
               <https://www.rfc-editor.org/info/rfc2132>.
 
    [RFC2868]  Zorn, G., Leifer, D., Rubens, A., Shriver, J., Holdrege,
-              M., and I. Goyret, "RADIUS Attributes for Tunnel Protocol
-              Support", RFC 2868, DOI 10.17487/RFC2868, June 2000,
-              <https://www.rfc-editor.org/info/rfc2868>.
+              M., Goyret, I., and RFC Publisher, "RADIUS Attributes for
+              Tunnel Protocol Support", RFC 2868, DOI 10.17487/RFC2868,
+              June 2000, <https://www.rfc-editor.org/info/rfc2868>.
 
-   [RFC2869]  Rigney, C., Willats, W., and P. Calhoun, "RADIUS
-              Extensions", RFC 2869, DOI 10.17487/RFC2869, June 2000,
-              <https://www.rfc-editor.org/info/rfc2869>.
+   [RFC2869]  Rigney, C., Willats, W., Calhoun, P., and RFC Publisher,
+              "RADIUS Extensions", RFC 2869, DOI 10.17487/RFC2869, June
+              2000, <https://www.rfc-editor.org/info/rfc2869>.
 
-   [RFC3162]  Aboba, B., Zorn, G., and D. Mitton, "RADIUS and IPv6",
-              RFC 3162, DOI 10.17487/RFC3162, August 2001,
-              <https://www.rfc-editor.org/info/rfc3162>.
+   [RFC3162]  Aboba, B., Zorn, G., Mitton, D., and RFC Publisher,
+              "RADIUS and IPv6", RFC 3162, DOI 10.17487/RFC3162, August
+              2001, <https://www.rfc-editor.org/info/rfc3162>.
 
-
-
-
-
-Boucadair, et al.          Expires 25 May 2023                 [Page 16]
-
-Internet-Draft             RADIUS DHCP-Options             November 2022
-
-
-   [RFC4014]  Droms, R. and J. Schnizlein, "Remote Authentication Dial-
-              In User Service (RADIUS) Attributes Suboption for the
-              Dynamic Host Configuration Protocol (DHCP) Relay Agent
-              Information Option", RFC 4014, DOI 10.17487/RFC4014,
-              February 2005, <https://www.rfc-editor.org/info/rfc4014>.
-
-   [RFC4861]  Narten, T., Nordmark, E., Simpson, W., and H. Soliman,
-              "Neighbor Discovery for IP version 6 (IPv6)", RFC 4861,
-              DOI 10.17487/RFC4861, September 2007,
+   [RFC4861]  Narten, T., Nordmark, E., Simpson, W., Soliman, H., and
+              RFC Publisher, "Neighbor Discovery for IP version 6
+              (IPv6)", RFC 4861, DOI 10.17487/RFC4861, September 2007,
               <https://www.rfc-editor.org/info/rfc4861>.
 
-   [RFC5176]  Chiba, M., Dommety, G., Eklund, M., Mitton, D., and B.
-              Aboba, "Dynamic Authorization Extensions to Remote
-              Authentication Dial In User Service (RADIUS)", RFC 5176,
-              DOI 10.17487/RFC5176, January 2008,
+   [RFC5176]  Chiba, M., Dommety, G., Eklund, M., Mitton, D., Aboba, B.,
+              and RFC Publisher, "Dynamic Authorization Extensions to
+              Remote Authentication Dial In User Service (RADIUS)",
+              RFC 5176, DOI 10.17487/RFC5176, January 2008,
               <https://www.rfc-editor.org/info/rfc5176>.
 
-   [RFC6614]  Winter, S., McCauley, M., Venaas, S., and K. Wierenga,
-              "Transport Layer Security (TLS) Encryption for RADIUS",
-              RFC 6614, DOI 10.17487/RFC6614, May 2012,
+   [RFC6614]  Winter, S., McCauley, M., Venaas, S., Wierenga, K., and
+              RFC Publisher, "Transport Layer Security (TLS) Encryption
+              for RADIUS", RFC 6614, DOI 10.17487/RFC6614, May 2012,
               <https://www.rfc-editor.org/info/rfc6614>.
 
-   [RFC6911]  Dec, W., Ed., Sarikaya, B., Zorn, G., Ed., Miles, D., and
-              B. Lourdelet, "RADIUS Attributes for IPv6 Access
-              Networks", RFC 6911, DOI 10.17487/RFC6911, April 2013,
-              <https://www.rfc-editor.org/info/rfc6911>.
 
-   [RFC7037]  Yeh, L. and M. Boucadair, "RADIUS Option for the DHCPv6
-              Relay Agent", RFC 7037, DOI 10.17487/RFC7037, October
-              2013, <https://www.rfc-editor.org/info/rfc7037>.
 
-   [RFC7227]  Hankins, D., Mrugalski, T., Siodelski, M., Jiang, S., and
-              S. Krishnan, "Guidelines for Creating New DHCPv6 Options",
-              BCP 187, RFC 7227, DOI 10.17487/RFC7227, May 2014,
+
+
+
+Boucadair, et al.          Expires 7 July 2023                 [Page 17]
+
+Internet-Draft             RADIUS DHCP-Options              January 2023
+
+
+   [RFC6911]  Dec, W., Ed., Sarikaya, B., Zorn, G., Ed., Miles, D.,
+              Lourdelet, B., and RFC Publisher, "RADIUS Attributes for
+              IPv6 Access Networks", RFC 6911, DOI 10.17487/RFC6911,
+              April 2013, <https://www.rfc-editor.org/info/rfc6911>.
+
+   [RFC7037]  Yeh, L., Boucadair, M., and RFC Publisher, "RADIUS Option
+              for the DHCPv6 Relay Agent", RFC 7037,
+              DOI 10.17487/RFC7037, October 2013,
+              <https://www.rfc-editor.org/info/rfc7037>.
+
+   [RFC7227]  Hankins, D., Mrugalski, T., Siodelski, M., Jiang, S.,
+              Krishnan, S., and RFC Publisher, "Guidelines for Creating
+              New DHCPv6 Options", BCP 187, RFC 7227,
+              DOI 10.17487/RFC7227, May 2014,
               <https://www.rfc-editor.org/info/rfc7227>.
 
+   [RFC7499]  Perez-Mendez, A., Ed., Marin-Lopez, R., Pereniguez-Garcia,
+              F., Lopez-Millan, G., Lopez, D., DeKok, A., and RFC
+              Publisher, "Support of Fragmentation of RADIUS Packets",
+              RFC 7499, DOI 10.17487/RFC7499, April 2015,
+              <https://www.rfc-editor.org/info/rfc7499>.
+
    [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
-              and P. Hoffman, "Specification for DNS over Transport
-              Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
-              2016, <https://www.rfc-editor.org/info/rfc7858>.
+              Hoffman, P., and RFC Publisher, "Specification for DNS
+              over Transport Layer Security (TLS)", RFC 7858,
+              DOI 10.17487/RFC7858, May 2016,
+              <https://www.rfc-editor.org/info/rfc7858>.
+
+   [RFC7930]  Hartman, S. and RFC Publisher, "Larger Packets for RADIUS
+              over TCP", RFC 7930, DOI 10.17487/RFC7930, August 2016,
+              <https://www.rfc-editor.org/info/rfc7930>.
 
    [RFC8484]  Hoffman, P., McManus, P., and RFC Publisher, "DNS Queries
               over HTTPS (DoH)", RFC 8484, DOI 10.17487/RFC8484, October
               2018, <https://www.rfc-editor.org/info/rfc8484>.
-
-
-
-
-
-
-
-Boucadair, et al.          Expires 25 May 2023                 [Page 17]
-
-Internet-Draft             RADIUS DHCP-Options             November 2022
-
 
    [RFC8499]  Hoffman, P., Sullivan, A., Fujiwara, K., and RFC
               Publisher, "DNS Terminology", BCP 219, RFC 8499,
               DOI 10.17487/RFC8499, January 2019,
               <https://www.rfc-editor.org/info/rfc8499>.
 
-   [RFC9250]  Huitema, C., Dickinson, S., and A. Mankin, "DNS over
-              Dedicated QUIC Connections", RFC 9250,
+   [RFC9250]  Huitema, C., Dickinson, S., Mankin, A., and RFC Publisher,
+              "DNS over Dedicated QUIC Connections", RFC 9250,
               DOI 10.17487/RFC9250, May 2022,
               <https://www.rfc-editor.org/info/rfc9250>.
 
 Authors' Addresses
+
+
+
+
+Boucadair, et al.          Expires 7 July 2023                 [Page 18]
+
+Internet-Draft             RADIUS DHCP-Options              January 2023
+
 
    Mohamed Boucadair
    Orange
@@ -1005,4 +1049,16 @@ Authors' Addresses
 
 
 
-Boucadair, et al.          Expires 25 May 2023                 [Page 18]
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair, et al.          Expires 7 July 2023                 [Page 19]
