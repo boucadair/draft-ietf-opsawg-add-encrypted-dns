@@ -234,7 +234,7 @@
           style="hanging">
           <t hangText="Note:">The 4096 bytes size limit was relaxed by other
           RFCs, e.g., <xref target="RFC7499"></xref> and <xref
-          target="RFC7930"></xref>. </t>
+          target="RFC7930"></xref>.</t>
         </list></t>
 
       <t>The value fields of DHCP*-Options Attributes are encoded in clear and
@@ -584,8 +584,7 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
         IANA registry "Radius Attribute Types" <xref
         target="RADIUS-Types"></xref>:</t>
 
-        <texttable anchor="ra" style="headers"
-                   title="Encrypted DNS RADIUS Attributes">
+        <texttable anchor="ra" style="headers" title="New RADIUS Attributes">
           <ttcol>Value</ttcol>
 
           <ttcol>Description</ttcol>
@@ -728,7 +727,7 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
           target="drv6"></xref>. The Value and Description fields echo those
           of <xref target="DHCPv6"></xref>. The reference may include the
           document that registers the option or the document that specifies
-          the option. </t>
+          the option.</t>
 
           <texttable anchor="drv6" style="headers"
                      title="Initial DHCPv6 Options Permitted in the RADIUS DHCPv6-Options Attribute">
@@ -798,10 +797,6 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
           review list and IANA. Denials should include an explanation and, if
           applicable, suggestions as to how to make the request
           successful.</t>
-
-          <t>Registration requests that are undetermined for a period longer
-          than 28 days can be brought to the IESG's attention for
-          resolution.</t>
         </section>
       </section>
     </section>
@@ -813,7 +808,8 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
       <t>Thanks to Ben Schwartz and Bernie Volz for the comments.</t>
 
-      <t>Thanks to Rob Wilton for the AD review.</t>
+      <t>Thanks to Rob Wilton for the AD review and Ralf Weber for the dnsdir
+      review.</t>
     </section>
   </middle>
 
