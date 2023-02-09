@@ -251,11 +251,11 @@
       expose the DHCP options and allow administrators to configure them,
       instead of requiring them to be entered as opaque data.</t>
 
-      <t>RADIUS supplied data carries specific configuration data that is
-      returned as a function of authentication and authorization checks. As
-      such, absent any explicit configuration on the DHCP server, RADIUS
-      supplied data by means of DHCP*-Options Attributes take precedence over
-      any local configuration. </t>
+      <t>RADIUS supplied data is specific configuration data that is returned
+      as a function of authentication and authorization checks. As such,
+      absent any explicit configuration on the DHCP server, RADIUS supplied
+      data by means of DHCP*-Options Attributes take precedence over any local
+      configuration. </t>
 
       <t>These attributes are defined with globally unique names. The naming
       of the attributes follows the guidelines in Section 2.7.1 of <xref
@@ -296,11 +296,14 @@
           </list></t>
 
         <t>Value<list style="empty">
-            <t>This field contains a list of DHCPv6 options. Multiple
-            instances of the same DHCPv6 option MAY be included. Consistent
-            with Section 17 of <xref target="RFC7227"></xref>, this document
-            does not impose any option order when multiple options are
-            present. <vspace blankLines="1" /></t>
+            <t>This field contains a list of DHCPv6 options (Section 21 of
+            <xref target="RFC8415"></xref>). Multiple instances of the same
+            DHCPv6 option MAY be included. If an option appears multiple
+            times, each instance is considered separate and the data areas of
+            the options MUST NOT be concatenated or otherwise combined.
+            Consistent with Section 17 of <xref target="RFC7227"></xref>, this
+            document does not impose any option order when multiple options
+            are present. <vspace blankLines="1" /></t>
 
             <t>Permitted DHCPv6 options in the DHCPv6-Options Attribute are
             maintained by IANA in the registry created in <xref
