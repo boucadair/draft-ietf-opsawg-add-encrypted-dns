@@ -251,9 +251,11 @@
       expose the DHCP options and allow administrators to configure them,
       instead of requiring them to be entered as opaque data.</t>
 
-      <t>Absent any explicit configuration on the DHCP server, RADIUS supplied
-      data by means of DHCP*-Options Attributes take precedence over any local
-      configuration.</t>
+      <t>RADIUS supplied data carries specific configuration data that is
+      returned as a function of authentication and authorization checks. As
+      such, absent any explicit configuration on the DHCP server, RADIUS
+      supplied data by means of DHCP*-Options Attributes take precedence over
+      any local configuration. </t>
 
       <t>These attributes are defined with globally unique names. The naming
       of the attributes follows the guidelines in Section 2.7.1 of <xref
