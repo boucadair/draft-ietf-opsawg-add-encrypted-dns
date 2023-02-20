@@ -1,0 +1,825 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!-- This template is for creating an Internet Draft using xml2rfc,
+     which is available here: http://xml.resource.org. -->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!-- For a complete list and description of processing instructions (PIs), 
+     please see http://xml.resource.org/authoring/README.html. -->
+<!-- Below are generally applicable Processing Instructions (PIs) that most I-Ds might want to use.
+     (Here they are set differently than their defaults in xml2rfc v1.32) -->
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!-- control vertical white space 
+     (using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?>
+<!-- keep one blank line between list items -->
+<!-- end of list of popular I-D processing instructions -->
+<rfc category="std" docName="draft-ietf-ipsecme-add-ike-09" ipr="trust200902">
+  <front>
+    <title abbrev="IKEv2 for Encrypted DNS">Internet Key Exchange Protocol
+    Version 2 (IKEv2) Configuration for Encrypted DNS</title>
+
+    <author fullname="Mohamed Boucadair" initials="M." surname="Boucadair">
+      <organization>Orange</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <city>Rennes</city>
+
+          <code>35000</code>
+
+          <country>France</country>
+        </postal>
+
+        <email>mohamed.boucadair@orange.com</email>
+      </address>
+    </author>
+
+    <author fullname="Tirumaleswar Reddy" initials="T." surname="Reddy">
+      <organization>Nokia</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <city></city>
+
+          <region></region>
+
+          <code></code>
+
+          <country>India</country>
+        </postal>
+
+        <email>kondtir@gmail.com</email>
+      </address>
+    </author>
+
+    <author fullname="Dan Wing" initials="D." surname="Wing">
+      <organization abbrev="Citrix">Citrix Systems, Inc.</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <country>USA</country>
+        </postal>
+
+        <email>dwing-ietf@fuggles.com</email>
+      </address>
+    </author>
+
+    <author fullname="Valery Smyslov" initials="V." surname="Smyslov">
+      <organization>ELVIS-PLUS</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <city></city>
+
+          <region></region>
+
+          <code></code>
+
+          <country>RU</country>
+        </postal>
+
+        <email>svan@elvis.ru</email>
+      </address>
+    </author>
+
+    <date />
+
+    <workgroup>ipsecme</workgroup>
+
+    <keyword>security</keyword>
+
+    <keyword>name resolution</keyword>
+
+    <keyword>encryption</keyword>
+
+    <keyword>service discovery</keyword>
+
+    <keyword>naming</keyword>
+
+    <keyword>resolver</keyword>
+
+    <keyword>stub-resolver</keyword>
+
+    <keyword>CPE</keyword>
+
+    <keyword>Customer premise equipment</keyword>
+
+    <keyword>VPN</keyword>
+
+    <keyword>Secure discovery</keyword>
+
+    <keyword>DoT</keyword>
+
+    <keyword>DoH</keyword>
+
+    <keyword>DoQ</keyword>
+
+    <keyword>Tunnel</keyword>
+
+    <keyword>connectivity</keyword>
+
+    <abstract>
+      <t>This document specifies new Internet Key Exchange Protocol Version 2
+      (IKEv2) Configuration Payload Attribute Types to assign DNS resolvers
+      that support encrypted DNS protocols, such as DNS-over-HTTPS (DoH),
+      DNS-over-TLS (DoT), and DNS-over-QUIC (DoQ).</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="intro" title="Introduction">
+      <t>This document specifies a mechanism to assign encrypted DNS
+      configurations to an Internet Key Exchange Protocol Version 2 (IKEv2)
+      <xref target="RFC7296"></xref> initiator. Specifically, it assigns one
+      or more Authentication Domain Names (ADNs) of DNS resolvers that support
+      encrypted DNS protocols. The specific protocols supported are described
+      using the Service Parameters format defined in <xref
+      target="I-D.ietf-dnsop-svcb-https"></xref>; supported protocols include
+      DNS-over-HTTPS (DoH) <xref target="RFC8484"></xref>, DNS-over-TLS (DoT)
+      <xref target="RFC7858"></xref>, and DNS-over-QUIC (DoQ) <xref
+      target="RFC9250"></xref>.</t>
+
+      <t>This document introduces three new IKEv2 Configuration Payload
+      Attribute Types (<xref target="RI"></xref>) to add support for encrypted
+      DNS resolvers. The ENCDNS_IP4 and ENCDNS_IP6 attribute types (<xref
+      target="RIIP"></xref>) are used to provision ADNs, a list of IP
+      addresses, and a set of service parameters. The ENCDNS_DIGEST_INFO
+      attribute (<xref target="digest"></xref>) additionally allows a specific
+      resolver certificate to be indicated by the IKEv2 responder.</t>
+
+      <t>Sample use cases are described in <xref target="depl"></xref>. The
+      Configuration Payload Attribute Types defined in this document are not
+      specific to these deployments, but can also be used in other deployment
+      contexts. It is out of the scope of this document to provide a
+      comprehensive list of deployment contexts.</t>
+
+      <t>The encrypted DNS resolver hosted by a VPN provider can get a
+      domain-validate certificate from a public Certificate Authority (CA).
+      The VPN client does not need to be provisioned with the root certificate
+      of a private CA to authenticate the certificate of the encrypted DNS
+      resolvers. The encrypted DNS resolver can run on private IP addresses
+      and its access can be restricted to clients connected to the VPN.</t>
+
+      <t>Note that, for many years, typical designs have often considered that
+      the DNS resolver was usually located inside the protected domain, but
+      could be located outside of it. With encrypted DNS, the latter option
+      becomes plausible.</t>
+    </section>
+
+    <section anchor="notation" title="Terminology">
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+      "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+      "OPTIONAL" in this document are to be interpreted as described in BCP 14
+      <xref target="RFC2119"></xref> <xref target="RFC8174"></xref> when, and
+      only when, they appear in all capitals, as shown here.</t>
+
+      <t>This document uses the terms defined in <xref
+      target="RFC8499"></xref>.</t>
+
+      <t>Also, this document uses the terms defined in <xref
+      target="RFC7296"></xref>. In particular, readers should be familiar with
+      "initiator" and "responder" terms used in that document.</t>
+
+      <t>This document makes use of the following terms: <list style="hanging">
+          <t hangText="Do53:">refers to unencrypted DNS.</t>
+
+          <t hangText="Encrypted DNS:">refers to a scheme where DNS messages
+          are sent over an encrypted channel. Examples of encrypted DNS are
+          DoT, DoH, and DoQ.</t>
+
+          <t hangText="ENCDNS_IP*:">refers to any IKEv2 Configuration Payload
+          Attribute Types defined in <xref target="RIIP"></xref>.</t>
+        </list></t>
+
+      <t></t>
+    </section>
+
+    <section anchor="RI"
+             title="IKEv2 Configuration Payload Attribute Types for Encrypted DNS">
+      <section anchor="RIIP"
+               title="ENCDNS_IP* Configuration Payload Attributes">
+        <t>The ENCDNS_IP* IKEv2 Configuration Payload Attribute Types,
+        ENCDNS_IP4 and ENCDNS_IP6, are used to configure encrypted DNS
+        resolvers to an initiator. Both attribute types share the format that
+        is shown in <xref target="ri_attr"></xref>. The information included
+        in these attributes adheres to the recommendation in <xref
+        section="3.1.9" target="I-D.ietf-add-dnr"></xref>.</t>
+
+        <t><figure anchor="ri_attr" title="Attributes Format">
+            <artwork><![CDATA[                     1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-----------------------------+-------------------------------+
+|R|         Attribute Type      |            Length             |
++-+-----------------------------+---------------+---------------+
+|       Service Priority        | Num Addresses |  ADN Length   |
++-------------------------------+---------------+---------------+
+~                         IP Addresses                          ~
++---------------------------------------------------------------+
+~                  Authentication Domain Name                   ~
++---------------------------------------------------------------+
+~                 Service Parameters (SvcParams)                ~
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+]]></artwork>
+          </figure></t>
+
+        <t>The description of the fields of the attribute shown in <xref
+        target="ri_attr"></xref> is as follows:</t>
+
+        <t><list style="symbols">
+            <t>R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
+            ignored on receipt (see <xref section="3.15.1"
+            target="RFC7296"></xref> for details).</t>
+
+            <t>Attribute Type (15 bits) - Identifier for Configuration
+            Attribute Type. This is set to TBA1 for ENCDNS_IP4 or TBA2 for
+            ENCDNS_IP6, as registered in <xref target="IANA1"></xref>.</t>
+
+            <t>Length (2 octets, unsigned integer) - Length of the data in
+            octets. In particular, this field is set to:<list style="symbols">
+                <t>0 if the Configuration payload has types CFG_REQUEST (if no
+                specific DNS resolver is requested) or CFG_ACK. If the
+                'Length' field is set to 0, then later fields shown in <xref
+                target="ri_attr"></xref> are not present.</t>
+
+                <t>(4 + Length of the ADN + N * 4 + Length of SvcParams) for
+                ENCDNS_IP4 attributes if the Configuration payload has types
+                CFG_REQUEST or CFG_REPLY or CFG_SET; N being the number of
+                included IPv4 addresses ('Num addresses').</t>
+
+                <t>(4 + Length of the ADN + N * 16 + Length of SvcParams) for
+                ENCDNS_IP6 attributes if the Configuration payload has types
+                CFG_REQUEST or CFG_REPLY or CFG_SET; N being the number of
+                included IPv6 addresses ('Num addresses').</t>
+              </list></t>
+
+            <t>Service Priority (2 octets) - The priority of this attribute
+            compared to other ENCDNS_IP* instances. This 16-bit unsigned
+            integer is interpreted following the rules specified in <xref
+            section="2.4.1" target="I-D.ietf-dnsop-svcb-https"></xref>.
+            <vspace blankLines="1" />AliasMode (<xref section="2.4.2"
+            target="I-D.ietf-dnsop-svcb-https"></xref>) is not supported
+            because such a mode will trigger additional Do53 queries while the
+            data can be supplied directly in the IKE response. As such, this
+            field MUST NOT be set to 0.</t>
+
+            <t>Num Addresses (1 octet) - Indicates the number of enclosed IPv4
+            (for ENCDNS_IP4) or IPv6 (for ENCDNS_IP6) addresses. This value
+            MUST NOT be set to 0 if the Configuration payload is of type
+            CFG_REPLY or CFG_SET.</t>
+
+            <t>ADN Length (1 octet) - Indicates the length of the
+            "Authentication Domain Name" field in octets.</t>
+
+            <t>IP Address(es) (variable) - Includes one or more IP addresses
+            that can be used to reach the encrypted DNS resolver identified by
+            the Authentication Domain Name. For ENCDNS_IP4 this field contains
+            one or more 4-octet IPv4 addresses, and for ENCDNS_IP6 this field
+            contains one or more 16-octet IPv6 addresses.</t>
+
+            <t>Authentication Domain Name (variable) - A fully qualified
+            domain name of the encrypted DNS resolver following the syntax
+            defined in <xref target="RFC5890"></xref>. The name MUST NOT
+            contain any terminators (e.g., NULL, CR). <vspace
+            blankLines="1" />An example of a valid ADN for DoH server is
+            "doh1.example.com".</t>
+
+            <t>Service Parameters (SvcParams) (variable) - Specifies a set of
+            service parameters that are encoded following the rules in <xref
+            section="2.1" target="I-D.ietf-dnsop-svcb-https"></xref>. Section
+            3.1.5 of <xref target="I-D.ietf-add-dnr"></xref> lists a set of
+            service parameters that are recommended to be supported by
+            implementations. <vspace blankLines="1" />The service parameters
+            MUST NOT include "ipv4hint" or "ipv6hint" SvcParams as they are
+            superseded by the included IP addresses. <vspace
+            blankLines="1" />If no port service parameter is included, this
+            indicates that default port numbers should be used. As a reminder,
+            the default port number is 853 for DoT, 443 for DoH, and 853 for
+            DoQ. <vspace blankLines="1" />The service parameters apply to all
+            IP addresses in the ENCDNS_IP* Configuration Payload
+            Attribute.</t>
+          </list></t>
+      </section>
+
+      <section anchor="digest"
+               title="ENCDNS_DIGEST_INFO Configuration Payload Attribute">
+        <t>The ENCDNS_DIGEST_INFO configuration payload attribute allows IKEv2
+        responders to specify a certificate digest that initiators can use
+        when validating TLS connections to encrypted resolvers. This attribute
+        can also be sent by the initiator to request specific hash algorithms
+        for such digests. The format of ENCDNS_DIGEST_INFO attribute if the
+        Configuration payload has type CFG_REQUEST is shown in <xref
+        target="digest_attr"></xref>.</t>
+
+        <t><figure anchor="digest_attr"
+            title="ENCDNS_DIGEST_INFO Attribute Format in CFG_REQUEST">
+            <artwork><![CDATA[                     1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-----------------------------+-------------------------------+
+|R|         Attribute Type      |            Length             |
++-+-------------+---------------+-------------------------------+
+| Num Hash Algs |  ADN Length   |                               |
++---------------+---------------+                               +
+~                List of Hash Algorithm Identifiers             ~
++---------------------------------------------------------------+
+]]></artwork>
+          </figure></t>
+
+        <t>The description of the fields of the attribute shown in <xref
+        target="digest_attr"></xref> is as follows:<list style="symbols">
+            <t>R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
+            ignored on receipt (see <xref section="3.15.1"
+            target="RFC7296"></xref> for details).</t>
+
+            <t>Attribute Type (15 bits) - Identifier for Configuration
+            Attribute Type; is set to TBA3 value listed in <xref
+            target="IANA1"></xref>.</t>
+
+            <t>Length (2 octets, unsigned integer) - Length of the data in
+            octets.</t>
+
+            <t>Num Hash Algs (1 octet) - Indicates the number of included hash
+            algorithm identifiers. This field MUST be set to "(Length &ndash;
+            4)/2".</t>
+
+            <t>ADN Length (1 octet) - MUST be set to 0.</t>
+
+            <t>List of Hash Algorithm Identifiers (variable) - Specifies a
+            list of 16-bit hash algorithm identifiers that are supported by
+            the encrypted DNS client.<vspace blankLines="1" />The values of
+            this field are taken from the Hash Algorithm Identifiers of IANA's
+            "Internet Key Exchange Version 2 (IKEv2) Parameters" registry
+            <xref target="IANA-IKE-HASH"></xref>. <vspace
+            blankLines="1" />There is no padding between the hash algorithm
+            identifiers. <vspace blankLines="1" />Note that SHA2-256 is
+            mandatory to implement.</t>
+          </list></t>
+
+        <t>The format of ENCDNS_DIGEST_INFO attribute if the Configuration
+        payload has types CFG_REPLY or CFG_SET is shown in <xref
+        target="digest_attr_res"></xref>.</t>
+
+        <t><figure anchor="digest_attr_res"
+            title="ENCDNS_DIGEST_INFO Attribute Format in CFG_REPLY or CFG_SET">
+            <artwork><![CDATA[                     1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-----------------------------+-------------------------------+
+|R|         Attribute Type      |            Length             |
++-+-----------------------------+---------------+---------------+
+| Num Hash Algs |  ADN Length   |                               |
++---------------+---------------+                               +
+~                Authentication Domain Name                     ~
++-------------------------------+-------------------------------+
+| Hash Algorithm Identifier     |                               ~
++-------------------------------+                               +
+~                     Certificate Digest                        ~
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+]]></artwork>
+          </figure>The description of the fields of the attribute shown in
+        <xref target="digest_attr"></xref> is as follows:</t>
+
+        <t><list style="symbols">
+            <t>R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
+            ignored on receipt (see <xref section="3.15.1"
+            target="RFC7296"></xref> for details).</t>
+
+            <t>Attribute Type (15 bits) - Identifier for Configuration
+            Attribute Type; is set to TBA3 value listed in <xref
+            target="IANA1"></xref>.</t>
+
+            <t>Length (2 octets, unsigned integer) - Length of the data in
+            octets.</t>
+
+            <t>Num Hash Algs (1 octet) - MUST be set to 1.</t>
+
+            <t>ADN Length (1 octet) - Indicates the length of the
+            "Authentication Domain Name" field in octets. When set to '0',
+            this means that the digest applies on the ADN conveyed in the
+            ENCDNS_IP* Configuration Payload Attribute(s).</t>
+
+            <t>Authentication Domain Name (variable) - A fully qualified
+            domain name of the encrypted DNS resolver following the syntax
+            defined in <xref target="RFC5890"></xref>. The name MUST NOT
+            contain any terminators (e.g., NULL, CR). A name is included only
+            when multiple ADNs are included in the ENCDNS_IP* Configuration
+            Payload Attributes.</t>
+
+            <t>Hash Algorithm Identifier (2 octets) - Specifies the 16-bit
+            hash algorithm identifier selected by the DNS resolver to generate
+            the digest of its certificate.</t>
+
+            <t>Certificate Digest (variable) - This field includes the SPKI
+            hash of the encrypted DNS resolver certificate using the algorithm
+            identified in the 'Hash Algorithm Identifier' field <xref
+            target="RFC6234"></xref>. The length of this field is "Length
+            &ndash; 6 &ndash; ADN Length".</t>
+          </list></t>
+
+        <t>The ENCDNS_DIGEST_INFO attribute may be present in the
+        Configuration payload of CFG_ACK. In such a case, the
+        ENCDNS_DIGEST_INFO MUST be returned with zero-length data.</t>
+
+        <t>As discussed in <xref section="3.15.1" target="RFC7296"></xref>,
+        there are no defined uses for the CFG_SET/CFG_ACK exchange. The use of
+        the ENCDNS_DIGEST_INFO attribute for these messages is provided for
+        completeness.</t>
+      </section>
+    </section>
+
+    <section anchor="protocol" title="IKEv2 Protocol Exchange">
+      <t>This section describes how the attributes defined in <xref
+      target="RI"></xref> are used to configure an IKEv2 initiator with one or
+      more encrypted DNS resolvers.</t>
+
+      <t>Initiators first indicate support for encrypted DNS by including
+      ENCDNS_IP* attributes in their CFG_REQUEST payloads. Responders supply
+      encrypted DNS configuration by including ENCDNS_IP* attributes in their
+      CFG_REPLY payloads. Concretely:</t>
+
+      <t><list style="empty">
+          <t>If the initiator supports encrypted DNS, it includes either or
+          both of the ENCDNS_IP4 and ENCDNS_IP6 attributes in its CFG_REQUEST.
+          If the initiator does not want to request specific DNS resolvers, it
+          sets the Length field to 0 for the attribute. For a given attribute
+          type, the initiator MAY send either an empty attribute or a list of
+          distinct suggested resolvers. The initiator MAY also include the
+          ENCDNS_DIGEST_INFO attribute with a list of hash algorithms that are
+          supported by the encrypted DNS client.</t>
+
+          <t>If the request includes multiple bitwise identical attributes,
+          only the first occurrence is processed, and the rest SHOULD be
+          ignored by the responder. The responder MAY discard the full request
+          if the count of repeated attributes exceeds an (implementation
+          specific) threshold.</t>
+
+          <t>For each ENCDNS_IP* attribute from the CFG_REQUEST, if the
+          responder supports the corresponding address family, and absent any
+          policy restrictions, the responder sends back ENCDNS_IP*
+          attribute(s) in the CFG_REPLY with an appropriate list of IP
+          addresses, service parameters, and an ADN. The list of IP addresses
+          MUST include at least one IP address. The service parameters MUST
+          include at least the "alpn" service parameter. The responder MAY
+          ignore suggested values from the initiator (if any). Multiple
+          instances of the same ENCDNS_IP* attribute MAY be returned if
+          distinct ADNs or service parameters need to be assigned to the
+          initiator. In such instances, the different attributes can have
+          matching or distinct IP addresses. These instances MUST be presented
+          to a local DNS client following their service priority (i.e.,
+          smaller service priority values indicates a higher preference).</t>
+
+          <t>In addition, the responder MAY return the ENCDNS_DIGEST_INFO
+          attribute to convey a digest of the certificate of the encrypted DNS
+          and the identifier of the hash algorithm that is used to generate
+          the digest.</t>
+
+          <t>If the CFG_REQUEST includes an ENCDNS_IP* attribute but the
+          CFG_REPLY does not include an ENCDNS_IP* matching the requested
+          address family, this is an indication that requested address family
+          is not supported by the responder or the responder is not configured
+          to provide corresponding resolver addresses.</t>
+
+          <t>If the initiator receives both ENCDNS_IP* and INTERNAL_IP6_DNS
+          (or INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the
+          initiator uses the encrypted DNS resolvers.</t>
+        </list></t>
+
+      <t>The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
+      DoQ) with the address(es) conveyed in ENCDNS_IP* and uses the mechanism
+      discussed in Section 8 of <xref target="RFC8310"></xref> to authenticate
+      the DNS resolver certificate using the authentication domain name
+      conveyed in ENCDNS_IP*.</t>
+
+      <t>If the CFG_REPLY includes an ENCDNS_DIGEST_INFO attribute, the client
+      has to create an SPKI hash of the DNS resolver certificate received in
+      the TLS handshake using the negotiated hash algorithm in the
+      ENCDNS_DIGEST_INFO attribute. If the computed digest for an ADN matches
+      the one sent in the ENCDNS_DIGEST_INFO attribute, the encrypted DNS
+      resolver certificate is successfully validated. If so, the client
+      continues with the TLS connection as normal. Otherwise, the client MUST
+      treat the resolver certificate validation failure as a non-recoverable
+      error. This approach is similar to certificate usage PKIX-EE(1) with
+      selector SPKI(1) defined in <xref target="RFC7671"></xref> but without
+      PKIX validation.</t>
+
+      <t>If the IPsec connection is a split-tunnel configuration and the
+      initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
+      target="RFC8598"></xref>, the DNS client resolves the internal names
+      using ENCDNS_IP* DNS resolvers.</t>
+
+      <t><list style="empty">
+          <t>Note: <xref target="RFC8598"></xref> requires INTERNAL_IP6_DNS
+          (or INTERNAL_IP4_DNS) attribute to be mandatory present when
+          INTERNAL_DNS_DOMAIN is included. This specification relaxes that
+          constraint in the presence of ENCDNS_IP* attributes. That is, if
+          ENCDNS_IP* attributes are supplied, it is allowed to include
+          INTERNAL_DNS_DOMAIN even in the absence of INTERNAL_IP6_DNS (or
+          INTERNAL_IP4_DNS) attributes.</t>
+        </list></t>
+    </section>
+
+    <section anchor="Security" title="Security Considerations">
+      <t>This document adheres to the security considerations defined in <xref
+      target="RFC7296"></xref>. In particular, this document does not alter
+      the trust on the DNS configuration provided by a responder.</t>
+
+      <t>Networks are susceptible to internal attacks as discussed in <xref
+      section="3.2" target="I-D.arkko-farrell-arch-model-t"></xref>. Hosting
+      encrypted DNS resolvers even in case of split-VPN configuration
+      minimizes the attack vector (e.g., a compromised network device cannot
+      monitor/modify DNS traffic). This specification describes a mechanism to
+      restrict access to the DNS messages to only the parties that need to
+      know.</t>
+
+      <t>The initiator may trust the encrypted DNS resolvers supplied by means
+      of IKEv2 from a trusted responder more than the locally provided DNS
+      resolvers, especially in the case of connecting to unknown or untrusted
+      networks (e.g., coffee shops or hotel networks).</t>
+
+      <t>If the IKEv2 responder has used NULL Authentication method <xref
+      target="RFC7619"></xref> to authenticate itself, the initiator MUST NOT
+      use returned ENCDNS_IP* resolvers configuration unless it is
+      pre-configured, e.g., in the operating system or the application.</t>
+
+      <t>This specification does not extend the scope of accepting DNSSEC
+      trust anchors beyond the usage guidelines defined in <xref section="6"
+      target="RFC8598"></xref>.</t>
+    </section>
+
+    <section title="Privacy Considerations">
+      <t>As discussed in <xref target="RFC9076"></xref>, the use of encrypted
+      DNS does not reduce the data available in the DNS resolver. For example,
+      the reader may refer to <xref section="8" target="RFC8484"></xref> or
+      <xref section="7" target="RFC9250"></xref> for a discussion on specific
+      privacy considerations to encrypted DNS.</t>
+    </section>
+
+    <section anchor="IANA1" title="IANA Considerations">
+      <t>This document requests IANA to assign the following new IKEv2
+      Configuration Payload Attribute Types from the "IKEv2 Configuration
+      Payload Attribute Types" namespace available at <xref
+      target="IANA-IKE-CFG"></xref>.</t>
+
+      <t><figure>
+          <artwork><![CDATA[                               Multi-
+Value  Attribute Type          Valued  Length     Reference
+------ ------------------       -----  ---------  ---------
+ TBA1  ENCDNS_IP4                YES   0 or more  RFC XXXX
+ TBA2  ENCDNS_IP6                YES   0 or more  RFC XXXX
+ TBA3  ENCDNS_DIGEST_INFO        YES   0 or more  RFC XXXX
+]]></artwork>
+        </figure></t>
+    </section>
+
+    <section title="Acknowledgements">
+      <t>Many thanks to Yoav Nir, Christian Jacquenet, Paul Wouters, and Tommy
+      Pauly for the review and comments.</t>
+
+      <t>Yoav and Paul suggested the use of one single attribute carrying both
+      the name and an IP address instead of depending on the existing
+      INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.</t>
+
+      <t>Thanks to Tero Kivinen for the Shepherd review and Roman Danyliw for
+      the AD review.</t>
+    </section>
+  </middle>
+
+  <!--  *****BACK MATTER ***** -->
+
+  <back>
+    <references title="Normative References">
+      <?rfc include='reference.RFC.2119'?>
+
+      <?rfc include='reference.RFC.8174'?>
+
+      <?rfc include='reference.RFC.7296'?>
+
+      <?rfc include='reference.RFC.8310'?>
+
+      <?rfc include='reference.RFC.5890'?>
+
+      <?rfc include='reference.RFC.6234'?>
+
+      <?rfc include='reference.I-D.ietf-dnsop-svcb-https'?>
+
+      <reference anchor="IANA-IKE-HASH"
+                 target="https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#hash-algorithms">
+        <front>
+          <title>IKEv2 Hash Algorithms</title>
+
+          <author>
+            <organization></organization>
+          </author>
+
+          <date />
+        </front>
+      </reference>
+    </references>
+
+    <references title="Informative References">
+      <?rfc include='reference.RFC.8499'?>
+
+      <?rfc include='reference.RFC.7858'?>
+
+      <?rfc include='reference.RFC.9250'?>
+
+      <?rfc include='reference.RFC.8484'?>
+
+      <?rfc include='reference.RFC.8598'?>
+
+      <?rfc include='reference.I-D.arkko-farrell-arch-model-t'?>
+
+      <?rfc include='reference.RFC.7619'?>
+
+      <?rfc include='reference.RFC.7671'?>
+
+      <?rfc include='reference.RFC.9076'?>
+
+      <?rfc include='reference.I-D.ietf-add-dnr'?>
+
+      <reference anchor="IANA-IKE-CFG"
+                 target="https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-21">
+        <front>
+          <title>IKEv2 Configuration Payload Attribute Types</title>
+
+          <author>
+            <organization></organization>
+          </author>
+
+          <date />
+        </front>
+      </reference>
+    </references>
+
+    <section anchor="depl" title="Sample Deployment Scenarios">
+      <t></t>
+
+      <section title="Roaming Enterprise Users">
+        <t>In this Enterprise scenario (Section 1.1.3 of <xref
+        target="RFC7296"></xref>), a roaming user connects to the Enterprise
+        network through an IPsec tunnel. The split-tunnel Virtual Private
+        Network (VPN) configuration allows the endpoint to access hosts that
+        reside in the Enterprise network <xref target="RFC8598"></xref> using
+        that tunnel; other traffic not destined to the Enterprise does not
+        traverse the tunnel. In contrast, a non-split-tunnel VPN configuration
+        causes all traffic to traverse the tunnel into the Enterprise.</t>
+
+        <t>For both split- and non-split-tunnel configurations, the use of
+        encrypted DNS instead of Do53 provides privacy and integrity
+        protection along the entire path (rather than just to the VPN
+        termination device) and can communicate the encrypted DNS resolver
+        policies.</t>
+
+        <t>For split-tunnel VPN configurations, the endpoint uses the
+        Enterprise-provided encrypted DNS resolver to resolve internal-only
+        domain names.</t>
+
+        <t>For non-split-tunnel VPN configurations, the endpoint uses the
+        Enterprise-provided encrypted DNS resolver to resolve both internal
+        and external domain names.</t>
+
+        <t>Enterprise networks are susceptible to internal and external
+        attacks. To minimize that risk all enterprise traffic is encrypted
+        (Section 2.1 of <xref
+        target="I-D.arkko-farrell-arch-model-t"></xref>).</t>
+      </section>
+
+      <section title="VPN Service Provider">
+        <t>Legacy VPN service providers usually preserve end-users' data
+        confidentiality by sending all communication traffic through an
+        encrypted tunnel. A VPN service provider can also provide guarantees
+        about the security of the VPN network by filtering malware and
+        phishing domains.</t>
+
+        <t>Browsers and operating systems support DoH/DoT; VPN providers may
+        no longer expect DNS clients to fall back to Do53 just because it is a
+        closed network.</t>
+
+        <t>The encrypted DNS resolver hosted by the VPN service provider can
+        be securely discovered by the endpoint using the IKEv2 attributes
+        specified in <xref target="RIIP"></xref>.</t>
+      </section>
+
+      <section title="DNS Offload">
+        <t>VPN service providers typically allow split-tunnel VPN
+        configuration in which users can choose applications that can be
+        excluded from the tunnel. For example, users may exclude applications
+        that restrict VPN access.</t>
+
+        <t>The encrypted DNS resolver hosted by the VPN service provider can
+        be securely discovered by the endpoint using the IKEv2 attributes
+        specified in <xref target="RIIP"></xref>.</t>
+      </section>
+    </section>
+
+    <section title="Examples">
+      <t>The following depicts an example of a CFG_REQUEST to request the
+      configuration of IPv6 DNS resolvers without providing any suggested
+      values. In this example, the initiator uses the ENCDNS_DIGEST_INFO
+      attribute to indicate that the encrypted DNS client supports SHA2-256
+      (2), SHA2-384 (3), and SHA2-512 (4) hash algorithms. The label of these
+      algoirthms is taken from <xref target="IANA-IKE-HASH"></xref>. The use
+      of INTERNAL_IP6_ADDRESS is explained in <xref target="RFC7296"></xref>;
+      it is thus not reiterated here.</t>
+
+      <t><figure>
+          <artwork><![CDATA[CP(CFG_REQUEST) =
+  INTERNAL_IP6_ADDRESS()
+  INTERNAL_IP6_DNS()
+  ENCDNS_IP6()
+  ENCDNS_DIGEST_INFO(0, (SHA2-256, SHA2-384, SHA2-512))]]></artwork>
+        </figure></t>
+
+      <t>The following depicts an example of a CFG_REPLY that can be sent by a
+      responder as a response the above CFG_REQUEST. This response indicates
+      the following information to identify the encrypted DNS resolver:</t>
+
+      <t><list style="symbols">
+          <t>Its IPv6 address (2001:db8:99:88:77:66:55:44)</t>
+
+          <t>Its authentication domain name (doh.example.com)</t>
+
+          <t>Its supported HTTP version (h2)</t>
+
+          <t>The relative form of the URI Template (/dns-query{?dns})</t>
+
+          <t>The SPKI hash of the resolver's certificate using SHA2-256
+          (8b6e7a5971cc6bb0b4db5a71...)</t>
+        </list><figure>
+          <artwork><![CDATA[CP(CFG_REPLY) =
+  INTERNAL_IP6_ADDRESS(2001:db8:0:1:2:3:4:5/64)
+  ENCDNS_IP6(1, 1, 15,
+                (2001:db8:99:88:77:66:55:44),
+                "doh.example.com",
+                (alpn=h2 dohpath=/dns-query{?dns}))
+  ENCDNS_DIGEST_INFO(0, SHA2-256,
+                        8b6e7a5971cc6bb0b4db5a71...)
+]]></artwork>
+        </figure></t>
+
+      <t>In this example, no ADN is included in the ENCDNS_DIGEST_INFO
+      attribute because only one ADN is provided in the ENCDNS_IP6 attribute.
+      There is no ambiguity to identify the encrypted resolver associated with
+      the supplied digest.</t>
+
+      <t>An initiator may provide suggested values in the CFG_REQUEST when
+      requesting an encrypted DNS resolver. For example, the initiator
+      may:</t>
+
+      <t><list style="symbols">
+          <t>Indicate a preferred resolver that is identified by an IPv6
+          address<figure>
+              <artwork><![CDATA[CP(CFG_REQUEST) =
+  INTERNAL_IP6_ADDRESS()
+  INTERNAL_IP6_DNS()
+  ENCDNS_IP6(1, 1, 0,
+                (2001:db8:99:88:77:66:55:44))
+]]></artwork>
+            </figure></t>
+
+          <t>Indicate a preferred resolver that is identified by an ADN<figure>
+              <artwork><![CDATA[CP(CFG_REQUEST) =
+  INTERNAL_IP6_ADDRESS()
+  INTERNAL_IP6_DNS()
+  ENCDNS_IP6(1, 0, 15, "doh.example.com")
+]]></artwork>
+            </figure></t>
+
+          <t>Indicate a preferred transport protocol (DoT, in this
+          example)<figure>
+              <artwork><![CDATA[CP(CFG_REQUEST) =
+  INTERNAL_IP6_ADDRESS()
+  INTERNAL_IP6_DNS()
+  ENCDNS_IP6(1, 0, 0, (alpn=dot))
+]]></artwork>
+            </figure></t>
+
+          <t>or any combination thereof.</t>
+        </list></t>
+    </section>
+  </back>
+</rfc>
