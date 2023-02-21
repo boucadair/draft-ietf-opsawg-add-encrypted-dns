@@ -6,13 +6,13 @@ opsawg                                                      M. Boucadair
 Internet-Draft                                                    Orange
 Updates: 4014 (if approved)                                     T. Reddy
 Intended status: Standards Track                                   Nokia
-Expires: 13 August 2023                                         A. DeKok
+Expires: 25 August 2023                                         A. DeKok
                                                               FreeRADIUS
-                                                         9 February 2023
+                                                        21 February 2023
 
 
              RADIUS Extensions for DHCP Configured Services
-                 draft-ietf-opsawg-add-encrypted-dns-08
+                 draft-ietf-opsawg-add-encrypted-dns-09
 
 Abstract
 
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 August 2023.
+   This Internet-Draft will expire on 25 August 2023.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.        Expires 13 August 2023                 [Page 1]
+Boucadair, et al.        Expires 25 August 2023                 [Page 1]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.        Expires 13 August 2023                 [Page 2]
+Boucadair, et al.        Expires 25 August 2023                 [Page 2]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
@@ -165,7 +165,7 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
 
 
 
-Boucadair, et al.        Expires 13 August 2023                 [Page 3]
+Boucadair, et al.        Expires 25 August 2023                 [Page 3]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
@@ -209,22 +209,25 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
    RADIUS attributes are limited by the maximum packet size of 4096
    bytes (Section 3 of [RFC2865]).  In order to accommodate deployments
    with large DHCP options, RADIUS implementations are RECOMMENDED to
-   support a packet size up to 65535 bytes.
-
-   Note:  The 4096 bytes size limit was relaxed by other RFCs, e.g.,
-      [RFC7499] and [RFC7930].
-
-   The value fields of DHCP*-Options Attributes are encoded in clear and
-   not encrypted as, for example, Tunnel-Password Attribute [RFC2868].
+   support a packet size up to 65535 bytes.  Such a recommendation can
+   be met if RADIUS implementations support a mechanisms that relaxed
+   the relaxed the 4096 bytes limit (e.g., [RFC7499] and [RFC7930]).
 
 
 
 
 
-Boucadair, et al.        Expires 13 August 2023                 [Page 4]
+
+
+
+
+Boucadair, et al.        Expires 25 August 2023                 [Page 4]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
+
+   The value fields of DHCP*-Options Attributes are encoded in clear and
+   not encrypted as, for example, Tunnel-Password Attribute [RFC2868].
 
    RADIUS implementations may support a configuration parameter to
    control the DHCP options that can be included in a DHCP*-Options
@@ -271,16 +274,15 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
 
       245
 
-   Length
 
 
 
-
-
-Boucadair, et al.        Expires 13 August 2023                 [Page 5]
+Boucadair, et al.        Expires 25 August 2023                 [Page 5]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
+
+   Length
 
       This field indicates the total length, in octets, of all fields of
       this attribute, including the Type, Length, Extended-Type, and
@@ -329,14 +331,14 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
 
    Type
 
-      245
 
 
-
-Boucadair, et al.        Expires 13 August 2023                 [Page 6]
+Boucadair, et al.        Expires 25 August 2023                 [Page 6]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
+
+      245
 
    Length
 
@@ -387,9 +389,7 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
 
 
 
-
-
-Boucadair, et al.        Expires 13 August 2023                 [Page 7]
+Boucadair, et al.        Expires 25 August 2023                 [Page 7]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
@@ -445,7 +445,7 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
 
 
 
-Boucadair, et al.        Expires 13 August 2023                 [Page 8]
+Boucadair, et al.        Expires 25 August 2023                 [Page 8]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
@@ -501,7 +501,7 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
 
 
 
-Boucadair, et al.        Expires 13 August 2023                 [Page 9]
+Boucadair, et al.        Expires 25 August 2023                 [Page 9]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
@@ -557,7 +557,7 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
 
 
 
-Boucadair, et al.        Expires 13 August 2023                [Page 10]
+Boucadair, et al.        Expires 25 August 2023                [Page 10]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
@@ -613,7 +613,7 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
 
 
 
-Boucadair, et al.        Expires 13 August 2023                [Page 11]
+Boucadair, et al.        Expires 25 August 2023                [Page 11]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
@@ -669,7 +669,7 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
 
 
 
-Boucadair, et al.        Expires 13 August 2023                [Page 12]
+Boucadair, et al.        Expires 25 August 2023                [Page 12]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
@@ -725,7 +725,7 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
 
 
 
-Boucadair, et al.        Expires 13 August 2023                [Page 13]
+Boucadair, et al.        Expires 25 August 2023                [Page 13]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
@@ -781,7 +781,7 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
 
 
 
-Boucadair, et al.        Expires 13 August 2023                [Page 14]
+Boucadair, et al.        Expires 25 August 2023                [Page 14]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
@@ -802,8 +802,10 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
 
    Thanks to Ben Schwartz and Bernie Volz for the comments.
 
-   Thanks to Rob Wilton for the AD review and Ralf Weber for the dnsdir
-   review.
+   Thanks to Rob Wilton for the careful AD review.
+
+   Thanks to Ralf Weber for the dnsdir review and Robert Sparks for
+   genart review.
 
 10.  References
 
@@ -830,17 +832,19 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
               Information Option", RFC 4014, DOI 10.17487/RFC4014,
               February 2005, <https://www.rfc-editor.org/info/rfc4014>.
 
-   [RFC6158]  DeKok, A., Ed. and G. Weber, "RADIUS Design Guidelines",
-              BCP 158, RFC 6158, DOI 10.17487/RFC6158, March 2011,
-              <https://www.rfc-editor.org/info/rfc6158>.
 
 
 
 
-Boucadair, et al.        Expires 13 August 2023                [Page 15]
+
+Boucadair, et al.        Expires 25 August 2023                [Page 15]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
+
+   [RFC6158]  DeKok, A., Ed. and G. Weber, "RADIUS Design Guidelines",
+              BCP 158, RFC 6158, DOI 10.17487/RFC6158, March 2011,
+              <https://www.rfc-editor.org/info/rfc6158>.
 
    [RFC6929]  DeKok, A. and A. Lior, "Remote Authentication Dial In User
               Service (RADIUS) Protocol Extensions", RFC 6929,
@@ -886,17 +890,18 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
    [I-D.ietf-add-dnr]
               Boucadair, M., Reddy.K, T., Wing, D., Cook, N., and T.
               Jensen, "DHCP and Router Advertisement Options for the
+
+
+
+Boucadair, et al.        Expires 25 August 2023                [Page 16]
+
+Internet-Draft             RADIUS DHCP-Options             February 2023
+
+
               Discovery of Network-designated Resolvers (DNR)", Work in
               Progress, Internet-Draft, draft-ietf-add-dnr-13, 13 August
               2022, <https://www.ietf.org/archive/id/draft-ietf-add-dnr-
               13.txt>.
-
-
-
-Boucadair, et al.        Expires 13 August 2023                [Page 16]
-
-Internet-Draft             RADIUS DHCP-Options             February 2023
-
 
    [RADIUS-Types]
               IANA, "RADIUS Types",
@@ -940,19 +945,18 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
               Networks", RFC 6911, DOI 10.17487/RFC6911, April 2013,
               <https://www.rfc-editor.org/info/rfc6911>.
 
-   [RFC7037]  Yeh, L. and M. Boucadair, "RADIUS Option for the DHCPv6
-              Relay Agent", RFC 7037, DOI 10.17487/RFC7037, October
-              2013, <https://www.rfc-editor.org/info/rfc7037>.
 
 
 
 
-
-
-Boucadair, et al.        Expires 13 August 2023                [Page 17]
+Boucadair, et al.        Expires 25 August 2023                [Page 17]
 
 Internet-Draft             RADIUS DHCP-Options             February 2023
 
+
+   [RFC7037]  Yeh, L. and M. Boucadair, "RADIUS Option for the DHCPv6
+              Relay Agent", RFC 7037, DOI 10.17487/RFC7037, October
+              2013, <https://www.rfc-editor.org/info/rfc7037>.
 
    [RFC7227]  Hankins, D., Mrugalski, T., Siodelski, M., Jiang, S., and
               S. Krishnan, "Guidelines for Creating New DHCPv6 Options",
@@ -996,18 +1000,20 @@ Authors' Addresses
    Email: mohamed.boucadair@orange.com
 
 
+
+
+
+
+
+Boucadair, et al.        Expires 25 August 2023                [Page 18]
+
+Internet-Draft             RADIUS DHCP-Options             February 2023
+
+
    Tirumaleswar Reddy
    Nokia
    India
    Email: kondtir@gmail.com
-
-
-
-
-
-Boucadair, et al.        Expires 13 August 2023                [Page 18]
-
-Internet-Draft             RADIUS DHCP-Options             February 2023
 
 
    Alan DeKok
@@ -1055,10 +1061,4 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
 
 
 
-
-
-
-
-
-
-Boucadair, et al.        Expires 13 August 2023                [Page 19]
+Boucadair, et al.        Expires 25 August 2023                [Page 19]
