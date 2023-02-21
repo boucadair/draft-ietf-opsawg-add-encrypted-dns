@@ -210,8 +210,8 @@ Internet-Draft             RADIUS DHCP-Options             February 2023
    bytes (Section 3 of [RFC2865]).  In order to accommodate deployments
    with large DHCP options, RADIUS implementations are RECOMMENDED to
    support a packet size up to 65535 bytes.  Such a recommendation can
-   be met if RADIUS implementations support a mechanisms that relaxed
-   the relaxed the 4096 bytes limit (e.g., [RFC7499] and [RFC7930]).
+   be met if RADIUS implementations support a mechanism that relaxes the
+   4096 bytes limit (e.g., [RFC7499] or [RFC7930]).
 
 
 
