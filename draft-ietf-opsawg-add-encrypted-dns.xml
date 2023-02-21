@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-ietf-opsawg-add-encrypted-dns-08"
+<rfc category="std" docName="draft-ietf-opsawg-add-encrypted-dns-09"
      ipr="trust200902" updates="4014">
   <front>
     <title abbrev="RADIUS DHCP-Options">RADIUS Extensions for DHCP Configured
@@ -230,12 +230,18 @@
       attributes are limited by the maximum packet size of 4096 bytes (<xref
       section="3" target="RFC2865"></xref>). In order to accommodate
       deployments with large DHCP options, RADIUS implementations are
-      RECOMMENDED to support a packet size up to 65535 bytes. <list
-          style="hanging">
-          <t hangText="Note:">The 4096 bytes size limit was relaxed by other
-          RFCs, e.g., <xref target="RFC7499"></xref> and <xref
-          target="RFC7930"></xref>.</t>
-        </list></t>
+      RECOMMENDED to support a packet size up to 65535 bytes. Such a
+      recommendation can be met if RADIUS implementations support a mechanisms
+      that relaxed the relaxed the 4096 bytes limit (e.g., <xref
+      target="RFC7499"></xref> and <xref target="RFC7930"></xref>). </t>
+
+      <t></t>
+
+      <t></t>
+
+      <t></t>
+
+      <t></t>
 
       <t>The value fields of DHCP*-Options Attributes are encoded in clear and
       not encrypted as, for example, Tunnel-Password Attribute <xref
@@ -813,8 +819,10 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
       <t>Thanks to Ben Schwartz and Bernie Volz for the comments.</t>
 
-      <t>Thanks to Rob Wilton for the AD review and Ralf Weber for the dnsdir
-      review.</t>
+      <t>Thanks to Rob Wilton for the careful AD review.</t>
+
+      <t>Thanks to Ralf Weber for the dnsdir review and Robert Sparks for
+      genart review.</t>
     </section>
   </middle>
 
