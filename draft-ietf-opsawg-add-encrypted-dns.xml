@@ -175,7 +175,7 @@
       server to a DHCP server (<xref target="RAD"></xref>).</t>
 
       <t>DHCP options that are included in the new RADIUS attributes can be
-      controlled by a deployment specific policy. Discussing such as policy is
+      controlled by a deployment specific policy. Discussing such a policy is
       out of scope.</t>
 
       <t>This document adheres to <xref target="RFC8044"></xref> for defining
@@ -233,15 +233,7 @@
       RECOMMENDED to support a packet size up to 65535 bytes. Such a
       recommendation can be met if RADIUS implementations support a mechanism
       that relaxes the 4096 bytes limit (e.g., <xref target="RFC7499"></xref>
-      or <xref target="RFC7930"></xref>). </t>
-
-      <t></t>
-
-      <t></t>
-
-      <t></t>
-
-      <t></t>
+      or <xref target="RFC7930"></xref>).</t>
 
       <t>The value fields of DHCP*-Options Attributes are encoded in clear and
       not encrypted as, for example, Tunnel-Password Attribute <xref
@@ -505,7 +497,8 @@
       procedure discussed in <xref section="3" target="RFC7037"></xref> can be
       followed. To that aim, <xref target="urd"></xref> updates the "RADIUS
       Attributes Permitted in DHCPv6 RADIUS Option" registry (<xref
-      target="DHCP-RADIUS"></xref>).</t>
+      target="DHCP-RADIUS"></xref>). CoA-Requests can be used following the
+      procedure specified in <xref target="RFC6977"></xref>.</t>
 
       <t><xref target="ex2"></xref> shows another example where a CPE is
       provided with an encrypted DNS resolver, but the CPE uses DHCPv4 to
@@ -546,23 +539,29 @@
 
     <section anchor="Security" title="Security Considerations">
       <t>RADIUS-related security considerations are discussed in <xref
-      target="RFC2865"></xref>.</t>
+      target="RFC2865"></xref>. </t>
 
       <t>This document targets deployments where a trusted relationship is in
       place between the RADIUS client and server with communication optionally
       secured by IPsec or Transport Layer Security (TLS) <xref
       target="RFC6614"></xref>.</t>
 
-      <t>Security considerations specific to the DHCP options that are carried
-      in RADIUS are discussed in relevant documents that specify these
-      options. For example, security considerations (including traffic theft)
-      are discussed in <xref section="7"
-      target="I-D.ietf-add-dnr"></xref>.</t>
+      <t></t>
+
+      <t>As a reminder, DHCPv6-related security issues are discussed in <xref
+      section="22" target="RFC8415"></xref>, while DHCPv4-related security
+      issues are discussed in <xref section="7" target="RFC2131"></xref>.
+      Security considerations specific to the DHCP options that are carried in
+      RADIUS are discussed in relevant documents that specify these options.
+      For example, security considerations (including traffic theft) are
+      discussed in <xref section="7" target="I-D.ietf-add-dnr"></xref>.</t>
 
       <t>The considerations discussed in Section 7 of <xref
       target="RFC4014"></xref> and Section 8 of <xref target="RFC7037"></xref>
       should be taken into account in deployments where DHCP relay agents pass
-      the DHCP*-Options Attributes to DHCP servers.</t>
+      the DHCP*-Options Attributes to DHCP servers. Additional considerations
+      specific to the use of Reconfigure messages are discussed in <xref
+      section="9" target="RFC6977"></xref>.</t>
     </section>
 
     <section title="Table of Attributes">
@@ -821,8 +820,8 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
       <t>Thanks to Rob Wilton for the careful AD review.</t>
 
-      <t>Thanks to Ralf Weber for the dnsdir review and Robert Sparks for
-      genart review.</t>
+      <t>Thanks to Ralf Weber for the dnsdir review, Robert Sparks for genart
+      review, and Tatuya Jinmei for the int-dir review.</t>
     </section>
   </middle>
 
@@ -874,6 +873,8 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
       <?rfc include='reference.RFC.2132'?>
 
+      <?rfc include='reference.RFC.2131'?>
+
       <?rfc include='reference.RFC.7037'?>
 
       <?rfc include='reference.I-D.ietf-add-dnr'?>
@@ -883,6 +884,8 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
       <?rfc include='reference.RFC.7930'?>
 
       <?rfc include='reference.RFC.7499'?>
+
+      <?rfc include='reference.RFC.6977'?>
 
       <reference anchor="RADIUS-Types"
                  target="http://www.iana.org/assignments/radius-types">
