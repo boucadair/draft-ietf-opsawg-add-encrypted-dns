@@ -245,9 +245,18 @@
       configuration parameter to control the permitted DHCP options in a
       DHCP*-Options RADIUS attribute.</t>
 
-      <t>For ease of administrator configuration, the RADIUS server SHOULD
-      expose the DHCP options and allow administrators to configure them,
-      instead of requiring them to be entered as opaque data.</t>
+      <t>RADIUS servers have conventionally allowed the input of arbitrary
+      data via the "string" data type (<xref section="3.5"
+      target="RFC8044"></xref>). This practice allows RADIUS servers to
+      support newer standards without software upgrades, by allowing
+      administrators to manually create complex attribute content, and then to
+      pass them to the RADIUS server as opaque strings. While this practice is
+      useful, it is RECOMMENDED that RADIUS servers implementing the present
+      specification are instead updated to understand the format and encoding
+      of DHCP options. Administrators can then enter the DHCP options as
+      options instead of manually-encoded opaque strings. This recommendation
+      increases security and interoperability by ensuring that the options are
+      encoded correctly. It also increases usability for administrators.</t>
 
       <t>RADIUS supplied data is specific configuration data that is returned
       as a function of authentication and authorization checks. As such,
@@ -539,7 +548,7 @@
 
     <section anchor="Security" title="Security Considerations">
       <t>RADIUS-related security considerations are discussed in <xref
-      target="RFC2865"></xref>. </t>
+      target="RFC2865"></xref>.</t>
 
       <t>This document targets deployments where a trusted relationship is in
       place between the RADIUS client and server with communication optionally
@@ -820,7 +829,7 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
 
       <t>Thanks to Rob Wilton for the careful AD review.</t>
 
-      <t>Thanks to Ralf Weber for the dnsdir review, Robert Sparks for genart
+      <t>Thanks to Ralf Weber for the dnsdir reviews, Robert Sparks for genart
       review, and Tatuya Jinmei for the int-dir review.</t>
     </section>
   </middle>
