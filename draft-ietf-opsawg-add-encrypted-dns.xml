@@ -251,8 +251,8 @@
 
       <t>These attributes are defined with globally unique names. The naming
       of the attributes follows the guidelines in Section 2.7.1 of <xref
-      target="RFC6929"></xref>. As a reminder, invalid attributes are handled
-      as per Section 2.8 of <xref target="RFC6929"></xref>.</t>
+      target="RFC6929"></xref>. Invalid attributes are handled as per Section
+      2.8 of <xref target="RFC6929"></xref>.</t>
 
       <section anchor="v6" title="DHCPv6-Options Attribute">
         <t>This attribute is of type "string" as defined in <xref
@@ -296,7 +296,7 @@
             the options MUST NOT be concatenated or otherwise combined.
             Consistent with Section 17 of <xref target="RFC7227"></xref>, this
             document does not impose any option order when multiple options
-            are present. </t>
+            are present.</t>
 
             <t><vspace blankLines="1" /></t>
 
@@ -432,7 +432,7 @@
     </section>
 
     <section anchor="sample"
-             title="Applicability to Encrypted DNS Provisioning">
+             title="Sample Example: Applicability to Encrypted DNS Provisioning">
       <t>Typical deployment scenarios are similar to those described, for
       instance, in <xref section="2" target="RFC6911"></xref>. For
       illustration purposes, <xref target="ex"></xref> shows an example where
@@ -547,13 +547,13 @@
 
       <t></t>
 
-      <t>As a reminder, DHCPv6-related security issues are discussed in <xref
-      section="22" target="RFC8415"></xref>, while DHCPv4-related security
-      issues are discussed in <xref section="7" target="RFC2131"></xref>.
-      Security considerations specific to the DHCP options that are carried in
-      RADIUS are discussed in relevant documents that specify these options.
-      For example, security considerations (including traffic theft) are
-      discussed in <xref section="7" target="I-D.ietf-add-dnr"></xref>.</t>
+      <t>DHCPv6-related security issues are discussed in <xref section="22"
+      target="RFC8415"></xref>, while DHCPv4-related security issues are
+      discussed in <xref section="7" target="RFC2131"></xref>. Security
+      considerations specific to the DHCP options that are carried in RADIUS
+      are discussed in relevant documents that specify these options. For
+      example, security considerations (including traffic theft) are discussed
+      in <xref section="7" target="I-D.ietf-add-dnr"></xref>.</t>
 
       <t>RADIUS servers have conventionally tolerated the input of arbitrary
       data via the "string" data type (<xref section="3.5"
@@ -836,7 +836,7 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
       <t>Thanks to Ralf Weber for the dnsdir reviews, Robert Sparks for genart
       review, and Tatuya Jinmei for the int-dir review.</t>
 
-      <t>Thanks to Eric Vyncke for the IESG review.</t>
+      <t>Thanks to Eric Vyncke and Paul Wouters for the IESG review.</t>
     </section>
   </middle>
 
