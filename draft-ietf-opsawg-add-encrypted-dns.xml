@@ -411,6 +411,8 @@
               DHCP relay agent SHOULD include only the attributes in the
               IANA-maintained registry (<xref target="IANA-RAD"></xref> of
               [This-Document]) in an instance of the RADIUS Attributes
+              suboption. The DHCP relay agent may support a configuration
+              parameter to control the attributes in a RADIUS Attributes
               suboption.</t>
             </list></t>
         </section>
@@ -425,14 +427,15 @@
               <t hangText="NEW:"><vspace blankLines="1" />If the relay agent
               relays RADIUS attributes not included in the IANA-maintained
               registry (<xref target="IANA-RAD"></xref> of [This-Document]),
-              the DHCP server SHOULD ignore them.</t>
+              and absent explicit configuration, the DHCP server SHOULD ignore
+              them. </t>
             </list></t>
         </section>
       </section>
     </section>
 
     <section anchor="sample"
-             title="Sample Example: Applicability to Encrypted DNS Provisioning">
+             title="An Example: Applicability to Encrypted DNS Provisioning">
       <t>Typical deployment scenarios are similar to those described, for
       instance, in <xref section="2" target="RFC6911"></xref>. For
       illustration purposes, <xref target="ex"></xref> shows an example where
@@ -541,8 +544,8 @@
       target="RFC2865"></xref>.</t>
 
       <t>This document targets deployments where a trusted relationship is in
-      place between the RADIUS client and server with communication optionally
-      secured by IPsec or Transport Layer Security (TLS) <xref
+      place between the RADIUS client and server with communication secured by
+      IPsec or Transport Layer Security (TLS) <xref
       target="RFC6614"></xref>.</t>
 
       <t></t>
@@ -836,7 +839,8 @@ CoA-Request CoA-ACK CoA-NACK #        Attribute
       <t>Thanks to Ralf Weber for the dnsdir reviews, Robert Sparks for genart
       review, and Tatuya Jinmei for the int-dir review.</t>
 
-      <t>Thanks to Eric Vyncke and Paul Wouters for the IESG review.</t>
+      <t>Thanks to Eric Vyncke, Paul Wouters, and Warren Kumari for the IESG
+      review.</t>
     </section>
   </middle>
 

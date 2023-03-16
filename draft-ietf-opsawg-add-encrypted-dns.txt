@@ -6,9 +6,9 @@ opsawg                                                      M. Boucadair
 Internet-Draft                                                    Orange
 Updates: 4014 (if approved)                                     T. Reddy
 Intended status: Standards Track                                   Nokia
-Expires: 16 September 2023                                      A. DeKok
+Expires: 17 September 2023                                      A. DeKok
                                                               FreeRADIUS
-                                                           15 March 2023
+                                                           16 March 2023
 
 
              RADIUS Extensions for DHCP Configured Services
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 September 2023.
+   This Internet-Draft will expire on 17 September 2023.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.       Expires 16 September 2023               [Page 1]
+Boucadair, et al.       Expires 17 September 2023               [Page 1]
 
 Internet-Draft             RADIUS DHCP-Options                March 2023
 
@@ -77,8 +77,7 @@ Table of Contents
      4.2.  Updates to RFC 4014 . . . . . . . . . . . . . . . . . . .   7
        4.2.1.  Section 3 of RFC 4014 . . . . . . . . . . . . . . . .   7
        4.2.2.  Section 4 of RFC 4014 . . . . . . . . . . . . . . . .   8
-   5.  Sample Example: Applicability to Encrypted DNS
-           Provisioning  . . . . . . . . . . . . . . . . . . . . . .   8
+   5.  An Example: Applicability to Encrypted DNS Provisioning . . .   8
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  10
    7.  Table of Attributes . . . . . . . . . . . . . . . . . . . . .  11
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
@@ -106,15 +105,15 @@ Table of Contents
    of DNS recursive servers to their customers.  Typically, the
    information used to populate DHCP messages and/or IPv6 Router
    Advertisements relies upon specific Remote Authentication Dial-In
+   User Service (RADIUS) [RFC2865] attributes, such as the DNS-Server-
 
 
 
-Boucadair, et al.       Expires 16 September 2023               [Page 2]
+Boucadair, et al.       Expires 17 September 2023               [Page 2]
 
 Internet-Draft             RADIUS DHCP-Options                March 2023
 
 
-   User Service (RADIUS) [RFC2865] attributes, such as the DNS-Server-
    IPv6-Address Attribute specified in [RFC6911].
 
    With the advent of encrypted DNS (e.g., DNS-over-HTTPS (DoH)
@@ -165,7 +164,8 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
 
 
 
-Boucadair, et al.       Expires 16 September 2023               [Page 3]
+
+Boucadair, et al.       Expires 17 September 2023               [Page 3]
 
 Internet-Draft             RADIUS DHCP-Options                March 2023
 
@@ -221,7 +221,7 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
 
 
 
-Boucadair, et al.       Expires 16 September 2023               [Page 4]
+Boucadair, et al.       Expires 17 September 2023               [Page 4]
 
 Internet-Draft             RADIUS DHCP-Options                March 2023
 
@@ -277,7 +277,7 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
 
 
 
-Boucadair, et al.       Expires 16 September 2023               [Page 5]
+Boucadair, et al.       Expires 17 September 2023               [Page 5]
 
 Internet-Draft             RADIUS DHCP-Options                March 2023
 
@@ -333,7 +333,7 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
 
 
 
-Boucadair, et al.       Expires 16 September 2023               [Page 6]
+Boucadair, et al.       Expires 17 September 2023               [Page 6]
 
 Internet-Draft             RADIUS DHCP-Options                March 2023
 
@@ -389,7 +389,7 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
 
 
 
-Boucadair, et al.       Expires 16 September 2023               [Page 7]
+Boucadair, et al.       Expires 17 September 2023               [Page 7]
 
 Internet-Draft             RADIUS DHCP-Options                March 2023
 
@@ -415,7 +415,9 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
       state information between the RADIUS server and the DHCP server,
       the DHCP relay agent SHOULD include only the attributes in the
       IANA-maintained registry (Section 8.3 of [This-Document]) in an
-      instance of the RADIUS Attributes suboption.
+      instance of the RADIUS Attributes suboption.  The DHCP relay agent
+      may support a configuration parameter to control the attributes in
+      a RADIUS Attributes suboption.
 
 4.2.2.  Section 4 of RFC 4014
 
@@ -427,10 +429,10 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
 
    NEW:
       If the relay agent relays RADIUS attributes not included in the
-      IANA-maintained registry (Section 8.3 of [This-Document]), the
-      DHCP server SHOULD ignore them.
+      IANA-maintained registry (Section 8.3 of [This-Document]), and
+      absent explicit configuration, the DHCP server SHOULD ignore them.
 
-5.  Sample Example: Applicability to Encrypted DNS Provisioning
+5.  An Example: Applicability to Encrypted DNS Provisioning
 
    Typical deployment scenarios are similar to those described, for
    instance, in Section 2 of [RFC6911].  For illustration purposes,
@@ -443,9 +445,7 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
 
 
 
-
-
-Boucadair, et al.       Expires 16 September 2023               [Page 8]
+Boucadair, et al.       Expires 17 September 2023               [Page 8]
 
 Internet-Draft             RADIUS DHCP-Options                March 2023
 
@@ -501,7 +501,7 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
 
 
 
-Boucadair, et al.       Expires 16 September 2023               [Page 9]
+Boucadair, et al.       Expires 17 September 2023               [Page 9]
 
 Internet-Draft             RADIUS DHCP-Options                March 2023
 
@@ -551,21 +551,15 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
 
    RADIUS-related security considerations are discussed in [RFC2865].
 
+   This document targets deployments where a trusted relationship is in
+   place between the RADIUS client and server with communication secured
+   by IPsec or Transport Layer Security (TLS) [RFC6614].
 
 
 
-
-
-
-Boucadair, et al.       Expires 16 September 2023              [Page 10]
+Boucadair, et al.       Expires 17 September 2023              [Page 10]
 
 Internet-Draft             RADIUS DHCP-Options                March 2023
-
-
-   This document targets deployments where a trusted relationship is in
-   place between the RADIUS client and server with communication
-   optionally secured by IPsec or Transport Layer Security (TLS)
-   [RFC6614].
 
 
    DHCPv6-related security issues are discussed in Section 22 of
@@ -610,18 +604,19 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
      0+          0       0      245.TBA1 DHCPv6-Options
      0+          0       0      245.TBA2 DHCPv4-Options
 
-
-
-
-Boucadair, et al.       Expires 16 September 2023              [Page 11]
-
-Internet-Draft             RADIUS DHCP-Options                March 2023
-
-
    The following table defines the meaning of the above table entries:
 
    0  This attribute MUST NOT be present in packet.
    0+ Zero or more instances of this attribute MAY be present in packet.
+
+
+
+
+
+Boucadair, et al.       Expires 17 September 2023              [Page 11]
+
+Internet-Draft             RADIUS DHCP-Options                March 2023
+
 
 8.  IANA Considerations
 
@@ -665,20 +660,19 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
    Host Configuration Protocol (DHCP) and Bootstrap Protocol (BOOTP)
    Parameters" registry [BOOTP].
 
-
-
-
-
-Boucadair, et al.       Expires 16 September 2023              [Page 12]
-
-Internet-Draft             RADIUS DHCP-Options                March 2023
-
-
    The allocation policy of this new sub-registry is Expert Review
    (Section 4.5 of [RFC8126]).  Designated experts should carefully
    consider the security implications of allowing the relay agent to
    include new RADIUS attributes to this registry.  Additional
    considerations are provided in Section 8.4.3.
+
+
+
+
+Boucadair, et al.       Expires 17 September 2023              [Page 12]
+
+Internet-Draft             RADIUS DHCP-Options                March 2023
+
 
    The initial content of this sub-registry is listed in Table 3.  The
    reference may include the document that registers or specifies the
@@ -719,21 +713,22 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
    The registration policy for this new sub-registry is Expert Review
    (Section 4.5 of [RFC8126]).  See more details in Section 8.4.3.
 
-
-
-
-
-
-
-Boucadair, et al.       Expires 16 September 2023              [Page 13]
-
-Internet-Draft             RADIUS DHCP-Options                March 2023
-
-
    The initial content of this sub-registry is listed in Table 4.  The
    Value and Description fields echo those of [DHCPv6].  The reference
    may include the document that registers the option or the document
    that specifies the option.
+
+
+
+
+
+
+
+
+Boucadair, et al.       Expires 17 September 2023              [Page 13]
+
+Internet-Draft             RADIUS DHCP-Options                March 2023
+
 
                  +=======+===============+===============+
                  | Value | Description   | Reference     |
@@ -777,19 +772,19 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
    It is suggested that multiple designated experts be appointed for
    registry change requests.
 
-
-
-
-
-Boucadair, et al.       Expires 16 September 2023              [Page 14]
-
-Internet-Draft             RADIUS DHCP-Options                March 2023
-
-
    Criteria that should be applied by the designated experts include
    determining whether the proposed registration duplicates existing
    entries and whether the registration description is clear and fits
    the purpose of this registry.
+
+
+
+
+
+Boucadair, et al.       Expires 17 September 2023              [Page 14]
+
+Internet-Draft             RADIUS DHCP-Options                March 2023
+
 
    Registration requests are to be sent to radius-dhcp-review@ietf.org
    and are evaluated within a three-week review period on the advice of
@@ -812,7 +807,8 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
    Thanks to Ralf Weber for the dnsdir reviews, Robert Sparks for genart
    review, and Tatuya Jinmei for the int-dir review.
 
-   Thanks to Eric Vyncke and Paul Wouters for the IESG review.
+   Thanks to Eric Vyncke, Paul Wouters, and Warren Kumari for the IESG
+   review.
 
 10.  References
 
@@ -833,20 +829,18 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
               DOI 10.17487/RFC3396, November 2002,
               <https://www.rfc-editor.org/info/rfc3396>.
 
-
-
-
-
-Boucadair, et al.       Expires 16 September 2023              [Page 15]
-
-Internet-Draft             RADIUS DHCP-Options                March 2023
-
-
    [RFC4014]  Droms, R. and J. Schnizlein, "Remote Authentication Dial-
               In User Service (RADIUS) Attributes Suboption for the
               Dynamic Host Configuration Protocol (DHCP) Relay Agent
               Information Option", RFC 4014, DOI 10.17487/RFC4014,
               February 2005, <https://www.rfc-editor.org/info/rfc4014>.
+
+
+
+Boucadair, et al.       Expires 17 September 2023              [Page 15]
+
+Internet-Draft             RADIUS DHCP-Options                March 2023
+
 
    [RFC6158]  DeKok, A., Ed. and G. Weber, "RADIUS Design Guidelines",
               BCP 158, RFC 6158, DOI 10.17487/RFC6158, March 2011,
@@ -888,16 +882,6 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
               (DHCPv6)", <https://www.iana.org/assignments/dhcpv6-
               parameters/dhcpv6-parameters.xhtml>.
 
-
-
-
-
-
-Boucadair, et al.       Expires 16 September 2023              [Page 16]
-
-Internet-Draft             RADIUS DHCP-Options                March 2023
-
-
    [DHCPv6]   IANA, "Dynamic Host Configuration Protocol for IPv6
               (DHCPv6), Option Codes",
               <https://www.iana.org/assignments/dhcpv6-parameters/
@@ -906,6 +890,14 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
    [I-D.ietf-add-dnr]
               Boucadair, M., Reddy.K, T., Wing, D., Cook, N., and T.
               Jensen, "DHCP and Router Advertisement Options for the
+
+
+
+Boucadair, et al.       Expires 17 September 2023              [Page 16]
+
+Internet-Draft             RADIUS DHCP-Options                March 2023
+
+
               Discovery of Network-designated Resolvers (DNR)", Work in
               Progress, Internet-Draft, draft-ietf-add-dnr-13, 13 August
               2022, <https://datatracker.ietf.org/doc/html/draft-ietf-
@@ -947,17 +939,20 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
               DOI 10.17487/RFC5176, January 2008,
               <https://www.rfc-editor.org/info/rfc5176>.
 
-
-
-Boucadair, et al.       Expires 16 September 2023              [Page 17]
-
-Internet-Draft             RADIUS DHCP-Options                March 2023
-
-
    [RFC6614]  Winter, S., McCauley, M., Venaas, S., and K. Wierenga,
               "Transport Layer Security (TLS) Encryption for RADIUS",
               RFC 6614, DOI 10.17487/RFC6614, May 2012,
               <https://www.rfc-editor.org/info/rfc6614>.
+
+
+
+
+
+
+Boucadair, et al.       Expires 17 September 2023              [Page 17]
+
+Internet-Draft             RADIUS DHCP-Options                March 2023
+
 
    [RFC6911]  Dec, W., Ed., Sarikaya, B., Zorn, G., Ed., Miles, D., and
               B. Lourdelet, "RADIUS Attributes for IPv6 Access
@@ -1001,19 +996,19 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
               January 2019, <https://www.rfc-editor.org/info/rfc8499>.
 
-
-
-
-
-Boucadair, et al.       Expires 16 September 2023              [Page 18]
-
-Internet-Draft             RADIUS DHCP-Options                March 2023
-
-
    [RFC9250]  Huitema, C., Dickinson, S., and A. Mankin, "DNS over
               Dedicated QUIC Connections", RFC 9250,
               DOI 10.17487/RFC9250, May 2022,
               <https://www.rfc-editor.org/info/rfc9250>.
+
+
+
+
+
+Boucadair, et al.       Expires 17 September 2023              [Page 18]
+
+Internet-Draft             RADIUS DHCP-Options                March 2023
+
 
 Authors' Addresses
 
@@ -1061,4 +1056,9 @@ Authors' Addresses
 
 
 
-Boucadair, et al.       Expires 16 September 2023              [Page 19]
+
+
+
+
+
+Boucadair, et al.       Expires 17 September 2023              [Page 19]
