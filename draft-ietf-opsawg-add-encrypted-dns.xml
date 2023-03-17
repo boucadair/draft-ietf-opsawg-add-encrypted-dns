@@ -241,7 +241,10 @@
       control the DHCP options that can be included in a DHCP*-Options RADIUS
       attribute. Likewise, DHCP server implementations may support a
       configuration parameter to control the permitted DHCP options in a
-      DHCP*-Options RADIUS attribute.</t>
+      DHCP*-Options RADIUS attribute. Absent explicit configuration, RADIUS
+      implementations and DHCP server implementations SHOULD ignore
+      non-permitted DHCP options received in a DHCP*-Options RADIUS
+      attribute.</t>
 
       <t>RADIUS supplied data is specific configuration data that is returned
       as a function of authentication and authorization checks. As such,
@@ -302,9 +305,7 @@
 
             <t>Permitted DHCPv6 options in the DHCPv6-Options Attribute are
             maintained by IANA in the registry created in <xref
-            format="default" target="drv6-reg"></xref>. Absent explicit
-            configuration, RADIUS implementations and DHCP server
-            implementations SHOULD ignore non-permitted DHCPv6 options.</t>
+            format="default" target="drv6-reg"></xref>. </t>
           </list></t>
 
         <t>The DHCPv6-Options Attribute is associated with the following
@@ -356,10 +357,7 @@
 
             <t><vspace blankLines="1" />Permitted DHCPv4 options in the
             DHCPv4-Options Attribute are maintained by IANA in the registry
-            created in <xref format="default" target="drv4-reg"></xref>.
-            Absent explicit configuration, RADIUS implementations and DHCP
-            server implementations SHOULD ignore non-permitted DHCPv4
-            options.</t>
+            created in <xref format="default" target="drv4-reg"></xref>. </t>
           </list></t>
 
         <t>The DHCPv4-Options Attribute is associated with the following

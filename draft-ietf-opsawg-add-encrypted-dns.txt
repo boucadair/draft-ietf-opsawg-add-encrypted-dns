@@ -212,10 +212,10 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
    control the DHCP options that can be included in a DHCP*-Options
    RADIUS attribute.  Likewise, DHCP server implementations may support
    a configuration parameter to control the permitted DHCP options in a
-   DHCP*-Options RADIUS attribute.
-
-
-
+   DHCP*-Options RADIUS attribute.  Absent explicit configuration,
+   RADIUS implementations and DHCP server implementations SHOULD ignore
+   non-permitted DHCP options received in a DHCP*-Options RADIUS
+   attribute.
 
 
 
@@ -293,8 +293,6 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
 
       Permitted DHCPv6 options in the DHCPv6-Options Attribute are
       maintained by IANA in the registry created in Section 8.4.1.
-      Absent explicit configuration, RADIUS implementations and DHCP
-      server implementations SHOULD ignore non-permitted DHCPv6 options.
 
    The DHCPv6-Options Attribute is associated with the following
    identifier: 245.TBA1.
@@ -330,6 +328,8 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
       this attribute, including the Type, Length, Extended-Type, and
       "Value".
 
+   Extended-Type
+
 
 
 
@@ -337,8 +337,6 @@ Boucadair, et al.       Expires 18 September 2023               [Page 6]
 
 Internet-Draft             RADIUS DHCP-Options                March 2023
 
-
-   Extended-Type
 
       TBA2 (see Section 8.1).
 
@@ -353,8 +351,6 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
 
       Permitted DHCPv4 options in the DHCPv4-Options Attribute are
       maintained by IANA in the registry created in Section 8.4.2.
-      Absent explicit configuration, RADIUS implementations and DHCP
-      server implementations SHOULD ignore non-permitted DHCPv4 options.
 
    The DHCPv4-Options Attribute is associated with the following
    identifier: 245.TBA2.
@@ -386,6 +382,10 @@ Internet-Draft             RADIUS DHCP-Options                March 2023
    This document updates Section 3 of [RFC4014] as follows:
 
    OLD:
+
+
+
+
 
 
 
