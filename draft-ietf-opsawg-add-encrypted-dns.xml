@@ -302,7 +302,9 @@
 
             <t>Permitted DHCPv6 options in the DHCPv6-Options Attribute are
             maintained by IANA in the registry created in <xref
-            format="default" target="drv6-reg"></xref>.</t>
+            format="default" target="drv6-reg"></xref>. Absent explicit
+            configuration, RADIUS implementations and DHCP server
+            implementations SHOULD ignore non-permitted DHCPv6 options.</t>
           </list></t>
 
         <t>The DHCPv6-Options Attribute is associated with the following
@@ -354,7 +356,10 @@
 
             <t><vspace blankLines="1" />Permitted DHCPv4 options in the
             DHCPv4-Options Attribute are maintained by IANA in the registry
-            created in <xref format="default" target="drv4-reg"></xref>.</t>
+            created in <xref format="default" target="drv4-reg"></xref>.
+            Absent explicit configuration, RADIUS implementations and DHCP
+            server implementations SHOULD ignore non-permitted DHCPv4
+            options.</t>
           </list></t>
 
         <t>The DHCPv4-Options Attribute is associated with the following
@@ -428,7 +433,7 @@
               relays RADIUS attributes not included in the IANA-maintained
               registry (<xref target="IANA-RAD"></xref> of [This-Document]),
               and absent explicit configuration, the DHCP server SHOULD ignore
-              them. </t>
+              them.</t>
             </list></t>
         </section>
       </section>
